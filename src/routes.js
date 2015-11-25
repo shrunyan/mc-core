@@ -9,7 +9,7 @@ passport.use(new Strategy(function (username, pasword, done) {
   return done(null, false)
 }))
 
-export default function (app) {
+export default function (app, passport) {
   app.use('/api/*', auth)
 
   app.get('/', (req, res) => {
