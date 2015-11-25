@@ -1,14 +1,20 @@
-var authMiddleware = require('./middleware/auth');
-var pipelinesController = require('./controllers/pipelines');
+import auth from './middleware/auth'
+import pipelines from './controllers/pipelines'
 
-module.exports = function(app) {
+import passport from 'passport'
+import {Strategy} from 'passport-local'
 
-    app.use('/api/*', authMiddleware);
+passport.use(new Strategy(function (username, pasword, done) {
+  // console.log('HERE')
+  return done(null, false)
+}))
 
-    app.get('/', function (req, res) {
-        res.send({message: 'Welcome to the API!'});
-    });
+export default function (app, passport) {
+  app.use('/api/*', auth)
 
-    app.get('/api/pipelines', pipelinesController.getList);
+  app.get('/', (req, res) => {
+    res.send({message: 'Welcome to the API!'})
+  })
 
-};
+  app.get('/api/pipelines', pipelines.getList)
+}
