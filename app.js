@@ -1,10 +1,30 @@
-var express = require('express');
-var app = express();
-require('./src/routes')(app);
+import express from 'express'
+import session from 'express-session'
+import cookieParser from 'cookie-parser'
+import bodyParser from 'body-parser'
+import morgan from 'morgan'
+import passport from 'passport'
+import routes from './src/routes'
 
-var server = app.listen(3000, function () {
-    var host = server.address().address;
-    var port = server.address().port;
+let port = process.env.PORT || 3000
+let host = process.env.HOST || 'localhost'
+let app = express()
 
-    console.log('Mission Control listening at http://%s:%s', host, port);
-});
+app.use(morgan('dev'))
+app.use(cookieParser())
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({
+  extended: true
+}))
+app.use(session({
+  resave: false,
+  secret: 'TEST'
+}))
+app.use(passport.initialize())
+app.use(passport.session())
+
+routes(app, passport)
+
+app.listen(port, () => {
+  console.log('Mission Control listening at http://%s:%s', host, port)
+})
