@@ -1,2 +1,8 @@
+# Directories
 .idea/
-node_modules
+dist/
+node_modules/
+
+# Files
+.DS_Store
+.env
