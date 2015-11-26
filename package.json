@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node node_modules/.bin/jshint src;node node_modules/.bin/jshint ui/assets/js",
     "start": "nf start",
     "dev": "nodemon src/server.js --exec babel-node --optimize_for_size --max_old_space_size=920 --gc_interval=100 & gulp watch"
   },
@@ -32,6 +32,8 @@
     "gulp-plumber": "^1.0.1",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-uglify": "^1.5.1",
+    "jshint": "^2.9.1-rc1",
+    "lazy-dependable": "^0.2.0",
     "morgan": "1.6.1",
     "passport": "0.3.2",
     "passport-local": "1.0.0",
