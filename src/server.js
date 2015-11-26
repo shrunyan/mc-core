@@ -8,7 +8,7 @@ import routes from './api/routes'
 import dotenv from 'dotenv'
 
 // Load environment variables from .env file
-dotenv.load();
+dotenv.load()
 
 let port = process.env.PORT || 3000
 let host = process.env.HOST || 'localhost'
