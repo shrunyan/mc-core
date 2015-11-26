@@ -2,7 +2,9 @@
 .idea/
 dist/
 node_modules/
+/build
 
 # Files
 .DS_Store
 .env
+npm-debug.log
