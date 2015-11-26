@@ -9,3 +9,10 @@ To get the app started in a local development environment run these 2 commands.
 
     $npm install
     $npm start
+
+## Development and Contributing
+
+To develop, run:
+
+    npm run dev
+

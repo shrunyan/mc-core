@@ -4,7 +4,7 @@ import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
 import morgan from 'morgan'
 import passport from 'passport'
-import routes from './src/routes'
+import routes from './api/routes'
 
 let port = process.env.PORT || 3000
 let host = process.env.HOST || 'localhost'
