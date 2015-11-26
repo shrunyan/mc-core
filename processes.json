@@ -1,0 +1,29 @@
+{
+    "apps" : [{
+        "name"        : "launchpad",
+        "script"     : "apps/launchpad.js",
+        "instances"  : 4,
+        "exec_mode"  : "cluster_mode",
+        "error_file" : "./logs/launchpad/launchpad-err.log",
+        "out_file"   : "./logs/launchpad/launchpad-out.log",
+        "pid_file"   : "./logs/launchpad/launchpad.pid"
+    },{
+        "name"       : "mission-control-api",
+        "script"     : "apps/mission-control-api.js",
+        "error_file" : "./logs/mission-control-api/mission-control-api-err.log",
+        "out_file"   : "./logs/mission-control-api/mission-control-api-out.log",
+        "pid_file"   : "./logs/mission-control-api/mission-control-api.pid"
+    }, {
+        "name"       : "mission-control-ui",
+        "script"     : "apps/mission-control-ui.js",
+        "error_file" : "./logs/mission-control-ui/child-err.log",
+        "out_file"   : "./logs/mission-control-ui/child-out.log",
+        "pid_file"   : "./logs/mission-control-ui/child.pid"
+    }, {
+        "name"       : "telemetry",
+        "script"     : "apps/telemetry.js",
+        "error_file" : "./logs/telemetry/telemetry-err.log",
+        "out_file"   : "./logs/telemetry/telemetry-out.log",
+        "pid_file"   : "./logs/telemetry/telemetry.pid"
+    }]
+}
