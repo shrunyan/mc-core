@@ -1,6 +1,8 @@
-var program = require('commander');
+import program from 'commander'
+import setupCommand from './cli-commands/setup'
 
 program
-    .parse(process.argv);
+    .command('setup', 'runs setup assistant')
+    .action(setupCommand)
 
-console.log('output');
+program.parse(process.argv)
