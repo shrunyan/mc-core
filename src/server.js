@@ -5,6 +5,10 @@ import bodyParser from 'body-parser'
 import morgan from 'morgan'
 import passport from 'passport'
 import routes from './api/routes'
+import dotenv from 'dotenv'
+
+// Load environment variables from .env file
+dotenv.load();
 
 let port = process.env.PORT || 3000
 let host = process.env.HOST || 'localhost'
