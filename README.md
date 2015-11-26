@@ -7,8 +7,8 @@ Mission Control is a devops automation orchestration tool. It was built with the
 
 To get the app started in a local development environment run these 2 commands.
 
-    $npm install
-    $npm start
+    npm install
+    npm start
 
 ## Development and Contributing
 
