@@ -1,29 +1,23 @@
 {
     "apps" : [{
-        "name"        : "launchpad",
-        "script"     : "apps/launchpad.js",
+        "name"       : "mission-control-server",
+        "script"     : "build/server.js",
+        "error_file" : "./logs/mission-control-api/server-err.log",
+        "out_file"   : "./logs/mission-control-api/server-out.log",
+        "pid_file"   : "./logs/mission-control-api/server.pid"
+    }, {
+        "name"        : "launchpad-worker",
+        "script"     : "build/workers/launchpad/worker.js",
         "instances"  : 4,
         "exec_mode"  : "cluster_mode",
-        "error_file" : "./logs/launchpad/launchpad-err.log",
-        "out_file"   : "./logs/launchpad/launchpad-out.log",
-        "pid_file"   : "./logs/launchpad/launchpad.pid"
+        "error_file" : "./logs/launchpad/worker-err.log",
+        "out_file"   : "./logs/launchpad/worker-out.log",
+        "pid_file"   : "./logs/launchpad/worker.pid"
     },{
-        "name"       : "mission-control-api",
-        "script"     : "apps/mission-control-api.js",
-        "error_file" : "./logs/mission-control-api/mission-control-api-err.log",
-        "out_file"   : "./logs/mission-control-api/mission-control-api-out.log",
-        "pid_file"   : "./logs/mission-control-api/mission-control-api.pid"
-    }, {
-        "name"       : "mission-control-ui",
-        "script"     : "apps/mission-control-ui.js",
-        "error_file" : "./logs/mission-control-ui/child-err.log",
-        "out_file"   : "./logs/mission-control-ui/child-out.log",
-        "pid_file"   : "./logs/mission-control-ui/child.pid"
-    }, {
-        "name"       : "telemetry",
-        "script"     : "apps/telemetry.js",
-        "error_file" : "./logs/telemetry/telemetry-err.log",
-        "out_file"   : "./logs/telemetry/telemetry-out.log",
-        "pid_file"   : "./logs/telemetry/telemetry.pid"
+        "name"       : "telemetry-worker",
+        "script"     : "build/workers/telemetry/worker.js",
+        "error_file" : "./logs/telemetry/worker-err.log",
+        "out_file"   : "./logs/telemetry/worker-out.log",
+        "pid_file"   : "./logs/telemetry/worker.pid"
     }]
 }
