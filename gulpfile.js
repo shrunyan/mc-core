@@ -12,7 +12,7 @@ var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 
 var options = {
-    DEST: './build',
+    DEST: './build/ui',
     APP_ENTRY: 'ui/assets/js/app.js',
     LESS: [
         'ui/assets/less/*.less'
