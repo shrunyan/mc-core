@@ -6,6 +6,7 @@ import morgan from 'morgan'
 import passport from 'passport'
 import routes from './api/routes'
 import dotenv from 'dotenv'
+import container from './container'
 
 // Load environment variables from .env file
 dotenv.load()
