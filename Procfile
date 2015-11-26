@@ -1,1 +1,1 @@
-web: nodemon app.js --exec babel-node --optimize_for_size --max_old_space_size=920 --gc_interval=100
+web: pm2 start processes.json
