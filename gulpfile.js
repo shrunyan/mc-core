@@ -83,6 +83,5 @@ gulp.task('watch-html', function () {
 });
 
 gulp.task('build', ['html', 'less', 'bundle']);
-gulp.task('watch', ['watch-bundle', 'watch-less', 'watch-html']);
+gulp.task('watch', ['build', 'watch-bundle', 'watch-less', 'watch-html']);
 gulp.task('default', ['watch']);
-
