@@ -1,5 +1,5 @@
-import auth from 'middleware/auth'
-import pipelines from 'controllers/pipelines'
+import auth from './middleware/auth'
+import pipelines from './controllers/pipelines'
 
 import passport from 'passport'
 import {Strategy} from 'passport-local'
