@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nf start",
-    "dev": "nodemon src/server.js --exec babel-node --optimize_for_size --max_old_space_size=920 --gc_interval=100"
+    "dev": "nodemon src/server.js --exec babel-node --optimize_for_size --max_old_space_size=920 --gc_interval=100 & gulp watch"
   },
   "author": "Andy Fleming <andy@zesty.io>",
   "contributors": [
