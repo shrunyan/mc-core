@@ -8,6 +8,9 @@
     "start": "nf start"
   },
   "author": "Andy Fleming <andy@zesty.io>",
+  "contributors": [
+    "Stuart Runyan <stuart@zesty.io>"
+  ],
   "license": "MIT",
   "dependencies": {
     "body-parser": "1.14.1",
