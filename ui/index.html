@@ -8,7 +8,7 @@
 	<title>Mission Control</title>
 
 	<!-- Bootstrap: See http://getbootstrap.com/css/ -->
-	<!--<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" type="text/css" integrity="sha384-pdapHxIh7EYuwy6K7iE41uXVxGCXY0sAjBzaElYGJUrzwodck3Lx6IE2lA0rFREo" crossorigin="anonymous">-->
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" type="text/css" integrity="sha384-pdapHxIh7EYuwy6K7iE41uXVxGCXY0sAjBzaElYGJUrzwodck3Lx6IE2lA0rFREo" crossorigin="anonymous">
 
 	<!-- Font Awesome -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" integrity="sha384-MI32KR77SgI9QAPUs+6R7leEOwtop70UsjEtFEezfKnMjXWx15NENsZpfDgq8m8S" crossorigin="anonymous">
@@ -18,10 +18,10 @@
 		  type="text/css" integrity="sha384-D/H+ikpaNaa5BgIzMjayCM2q1NXkqVT1y1bzUemHAJG1cyJMyJyRsgr/M7tpkaAF" crossorigin="anonymous">
 
 	<!-- App CSS -->
-	<link href="/assets/css/app.css" rel="stylesheet" type="text/css">
+	<link href="/assets/css/app.min.css" rel="stylesheet" type="text/css">
 
 </head>
-<body style="padding-bottom: 150px;">
+<body style="padding-bottom: 150px;" ng-app="mission-control">
 <nav class="navbar navbar-default navbar-fixed-top">
 	<div class="container">
 		<div class="navbar-header">
@@ -79,7 +79,7 @@
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown">
 					<a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-					   aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
+					   aria-expanded="false">{{ 'TODO: username' }} <span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li><a href="/auth/logout">Logout</a></li>
 					</ul>
@@ -91,8 +91,9 @@
 	</div>
 	<!-- /.container-fluid -->
 </nav>
-<div class="container" style="margin-top: 60px;" id="main" ng-app="mission-control">
+<div class="container" style="margin-top: 60px;" id="main">
 	<div class="content">
+		{{ 'example content 3' }}
 	</div>
 </div>
 
@@ -101,5 +102,6 @@
 <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/riot/2.2.4/riot.min.js" integrity="sha384-p/8cD65PRQA27rJ8EeVRccaOB3+LFJzxhIq3T1VUF08atn1GCBPvT25k10B/OfYx" crossorigin="anonymous"></script>-->
 <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js" integrity="sha384-v7eExOYhwaHa3+GhP+lHytJsMcidazNdjiaggRhdbvVTVTCjweLpa23t37ZKxaCf" crossorigin="anonymous"></script>-->
 
+<script src="/assets/js/app.min.js"></script>
 </body>
 </html>
