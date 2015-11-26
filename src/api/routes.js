@@ -25,7 +25,7 @@ export default function (app, passport) {
   //})
 
   // Static files
-  app.use(express.static('./build'))
+  app.use(express.static('./build/ui/'))
 
   app.use(function(req, res, next){
     res.status(404);
