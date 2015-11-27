@@ -19,7 +19,7 @@ To get the app started in a local development environment run these 2 commands.
 
 ## Development and Contributing
 
-To develop, run:
+For development, we've built a script to run all the necessary watch and build scripts. Just run:
 
     npm run dev
 
