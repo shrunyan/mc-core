@@ -1,19 +1,11 @@
-process.argv.forEach(function(val, index, array) {
-    console.log(index + ': ' + val);
-});
+let program = require('commander')
+let setupCommand = require('./cli/commands/setup')
 
-//import program from 'commander'
-//import setupCommand from './cli/commands/setup'
-//
-//console.log('loaded');
-//
-//console.log(process.argv.length);
-//
-//program
-//    .version('0.0.1')
-//    .command('setup', 'runs setup assistant')
-//    .action(setupCommand)
-//
-//program.parse(process.argv)
-//
-//console.log('post exec');
+// Setup command
+program
+    .command('setup')
+    .description('runs setup assistant')
+    .action(setupCommand)
+
+
+program.parse(process.argv)
