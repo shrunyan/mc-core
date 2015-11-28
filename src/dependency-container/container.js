@@ -1,4 +1,4 @@
-import lazyDependable from 'lazy-dependable'
+let lazyDependable = require('lazy-dependable')
 
 let container = new lazyDependable.Container()
 
@@ -17,4 +17,4 @@ let container = new lazyDependable.Container()
 //    return 'c'
 //})
 
-export default container
+module.exports = container
