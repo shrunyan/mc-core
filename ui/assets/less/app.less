@@ -4,7 +4,9 @@
 @mission-control-dark: #3D344E; // dark purple
 
 // Replacement colors
-@success: #6ABD7A;
+//@success: #6ABD7A;
+@success: #5CB88A; // more of a teal-ish that goes well with purple
+@warning: #E4BB59;
 @danger: #EF5555;
 
 // Color overrides
@@ -14,6 +16,46 @@
 
 .text-danger {
     color: @danger;
+}
+
+.btn-default {
+    color: #3D344E;
+    background-color: #FCFAFF;
+    border-color: #C5BDD4;
+    &:hover {
+        background-color: darken(#FCFAFF, 2%);
+        border-color: darken(#C5BDD4, 4%);
+    }
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #3D344E;
+    border-color: #3D344E;
+    &:hover {
+        background-color: lighten(#3D344E, 4%);
+        border-color: lighten(#3D344E, 4%);
+    }
+
+}
+
+.btn-success {
+    background-color: @success;
+    border-color: @success;
+    &:hover {
+        background-color: lighten(@success, 4%);
+        border-color: lighten(@success, 4%);
+    }
+}
+
+.btn-warning {
+    background-color: @warning;
+    border-color: @warning;
+    &:hover {
+        background-color: darken(@warning, 2%);
+        border-color: darken(@warning, 4%);
+    }
+
 }
 
 a, a:active, a:visited, a:hover {
@@ -76,6 +118,14 @@ h1, h2, h3, h4, h5 {
     color: #543F7D;
 }
 
+// sub-heading for h4 in job execution view
+.sub-heading {
+    font-weight: normal;
+    color: #B7ACCA;
+    margin-top: 0;
+    margin-bottom: 30px;
+}
+
 body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     //font-size: 14px;
@@ -83,7 +133,13 @@ body {
     //color: #333;
     -webkit-font-smoothing: antialiased;
     font-size: 16px;
-    color: #555555;
+    color: #514765; // shade of @mission-control-dark
+}
+
+pre {
+    background-color: #F4EFFF;
+    border-color: #D7D3E0;
+    color: #3D344E;
 }
 
 // pre in table cell fix
@@ -91,19 +147,28 @@ td pre {
     white-space: pre-wrap;
 }
 
+tr.off-white {
+    background-color: rgb(249, 247, 253); // used for tr in job logs table
+}
+
 // table row line colors
 .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
-    color: #E2DEEA;
+    border-color: #E2DEEA;
 }
 
 
 // Panel overrides
+.panel-default, .panel-default .panel-heading {
+    //border-color: #ACA1BF;
+    border-color: #C5BDD4;
+}
+
 .panel-default {
-    border-color: #ACA1BF;
+
     .panel-heading {
+        //background-color: #E8E2F3;
+        background-color: #EEE9F7;
         color: #3D344E;
-        background-color: #E8E2F3;
-        border-color: #ACA1BF;
     }
 }
 
@@ -178,8 +243,10 @@ td pre {
 
 pre.shell-output {
     -webkit-font-smoothing: subpixel-antialiased;
-    background: #252525;
-    color: #B5B3B3;
+    //background: #252525;
+    //color: #B5B3B3;
+    background: #2D263A; // dark-gray with a hint of mission-control-dark (purple)
+    color: #BEB3D2; // light-gray with a hint of mission-control-light (purple)
 
     .black { color: #5F5757; }
     .red { color: #FF2F2F; }
