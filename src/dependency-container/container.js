@@ -17,4 +17,4 @@ let container = new lazyDependable.Container()
 //    return 'c'
 //})
 
-module.exports = container
+export default container
