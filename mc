@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-babel-node src/cli.js "$@"
+node src/cli.js "$@"
