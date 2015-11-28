@@ -1,11 +1,12 @@
-import prompt from '../helpers/prompt'
+let promptly = require('promptly')
 
-export default function(cmd, options){
-    console.log('exec "%s" using %s mode', cmd, options.exec_mode);
+module.exports = (cmd, options) => {
 
-    prompt('Yes or no? ', function(text) {
-        console.log('You responded: ');
-        console.log(text);
+    console.log('Setup command')
+
+    promptly.prompt('Name: ', function (err, value) {
+        // err is always null in this case, because no validators are set
+        console.log(value);
     });
 
 };
