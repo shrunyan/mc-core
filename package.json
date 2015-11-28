@@ -2,11 +2,13 @@
   "name": "mc-node",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "src/server.js",
   "scripts": {
     "test": "node node_modules/.bin/jshint src;node node_modules/.bin/jshint ui/assets/js",
+    "postinstall": "gulp build && npm run build-server",
     "start": "nf start",
-    "dev": "nodemon src/server.js --exec babel-node --optimize_for_size --max_old_space_size=920 --gc_interval=100 & gulp watch"
+    "dev": "nodemon src/server.js --exec babel-node --optimize_for_size --max_old_space_size=920 --gc_interval=100 & gulp watch",
+    "build-server": "node_modules/.bin/babel src/ --out-dir build/"
   },
   "author": "Andy Fleming <andy@zesty.io>",
   "contributors": [
@@ -45,6 +47,7 @@
     "babel-preset-es2015": "6.1.18",
     "foreman": "1.4.1",
     "nodemon": "1.8.1",
+    "pm2": "0.15.10",
     "standard": "5.4.1"
   }
 }
