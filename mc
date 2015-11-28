@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-node src/cli.js "$@"
+node --use_strict src/cli.js "$@"
