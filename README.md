@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/space-race/mission-control.svg)](https://travis-ci.org/space-race/mission-control)
 [![Dependency Status](https://david-dm.org/space-race/mission-control.svg)](https://david-dm.org/space-race/mission-control)
+[![Dev Dependency Status](https://david-dm.org/space-race/mission-control/dev-status.svg)](https://david-dm.org/space-race/mission-control#info=devDependencies)
 
 
 Mission Control is a devops automation orchestration tool. It was built with the following common devops automation tasks in mind, but can be configured for just about anything.
