@@ -7,6 +7,7 @@
     "test": "node node_modules/.bin/jshint src;node node_modules/.bin/jshint ui/assets/js",
     "postinstall": "node_modules/.bin/gulp build && npm run build-server",
     "start": "./node_modules/.bin/nf start",
+    "build-server": "node_modules/.bin/babel src/ --out-dir build/",
     "dev": "nodemon src/server.js --use-strict --optimize_for_size --max_old_space_size=920 --gc_interval=100 & gulp watch"
   },
   "author": "Andy Fleming <andy@zesty.io>",
