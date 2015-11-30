@@ -4,35 +4,33 @@
  * This command is written (and should continue to be written) as idempotent.
  * It should be able to be run over and over to complete installation, even if cancelled by the user at a given step.
  */
-let promptly = require('promptly')
-let migrationRunner = require('../../db/migration-runner')
+// let promptly = require('promptly')
+// let migrationRunner = require('../../db/migration-runner')
 
 module.exports = (cmd, options) => {
 
-    // Create a .env file if there is not one
-    // If we create one, inform the user they should configure it now (and exit)
-    // Also notify them to install mysql and redis if they haven't yet (and they plan to do so locally)
+  // Create a .env file if there is not one
+  // If we create one, inform the user they should configure it now (and exit)
+  // Also notify them to install mysql and redis if they haven't yet (and they plan to do so locally)
 
-    // Test the redis connection
+  // Test the redis connection
 
-    // Test the mysql database connection
+  // Test the mysql database connection
 
-    // Run migrations
+  // Run migrations
 
-    // Check if there are any users in the users table
-    // If not, walk the user through creating an admin user (interactively)
-    //var salt = bcrypt.genSaltSync(10)
-    //var result = bcrypt.hashSync("pass")
-    //res.send(result)
-    //return
+  // Check if there are any users in the users table
+  // If not, walk the user through creating an admin user (interactively)
+  // var salt = bcrypt.genSaltSync(10)
+  // var result = bcrypt.hashSync("pass")
+  // res.send(result)
+  // return
 
-
-  //promptly.prompt('Name: ', function (err, value) {
-    //    // err is always null in this case, because no validators are set
-    //    console.log(value);
-    //    migrationRunner(() => {
-    //        process.exit(0);
-    //    });
-    //});
-
-};
+  // promptly.prompt('Name: ', function (err, value) {
+  //    // err is always null in this case, because no validators are set
+  //    console.log(value);
+  //    migrationRunner(() => {
+  //        process.exit(0);
+  //    });
+  // });
+}

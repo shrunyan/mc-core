@@ -8,7 +8,8 @@
   },
   "main": "app.js",
   "scripts": {
-    "test": "node node_modules/.bin/jshint src;node node_modules/.bin/jshint ui/assets/js",
+    "lint": "node_modules/.bin/standard",
+    "test": "",
     "start": "./node_modules/.bin/nf start",
     "dev": "nodemon --use-strict src/server.js --optimize_for_size --max_old_space_size=920 --gc_interval=100 & gulp watch"
   },

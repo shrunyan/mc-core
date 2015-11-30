@@ -1,3 +1,3 @@
 module.exports = {
-    directory: './src/db/migrations'
-};
+  directory: './src/db/migrations'
+}
