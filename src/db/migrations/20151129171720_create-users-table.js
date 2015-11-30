@@ -5,8 +5,8 @@ exports.up = function(knex, Promise) {
         table.string('email')
         table.string('first_name')
         table.string('last_name')
-        table.timestamp('created_at')
-        table.timestamp('updated_at')
+        table.timestamp('created_at').nullable()
+        table.timestamp('updated_at').nullable()
     })
 };
 
