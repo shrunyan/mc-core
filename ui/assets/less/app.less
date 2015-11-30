@@ -1,11 +1,15 @@
 // Custom Vars
-@mission-control-orange: #EF784A;
+//@mission-control-orange: #EF784A;
+@mission-control-light: #A498BB; // light purple
+@mission-control-dark: #3D344E; // dark purple
 
 // Replacement colors
-@success: #6ABD7A;
+//@success: #6ABD7A;
+@success: #5CB88A; // more of a teal-ish that goes well with purple
+@warning: #E4BB59;
 @danger: #EF5555;
 
-// Color overides
+// Color overrides
 .text-success {
     color: @success;
 }
@@ -14,70 +18,164 @@
     color: @danger;
 }
 
+.btn-default {
+    color: #3D344E;
+    background-color: #FCFAFF;
+    border-color: #C5BDD4;
+    &:hover {
+        background-color: darken(#FCFAFF, 2%);
+        border-color: darken(#C5BDD4, 4%);
+    }
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #3D344E;
+    border-color: #3D344E;
+    &:hover {
+        background-color: lighten(#3D344E, 4%);
+        border-color: lighten(#3D344E, 4%);
+    }
+
+}
+
+.btn-success {
+    background-color: @success;
+    border-color: @success;
+    &:hover {
+        background-color: lighten(@success, 4%);
+        border-color: lighten(@success, 4%);
+    }
+}
+
+.btn-warning {
+    background-color: @warning;
+    border-color: @warning;
+    &:hover {
+        background-color: darken(@warning, 2%);
+        border-color: darken(@warning, 4%);
+    }
+
+}
+
+a, a:active, a:visited, a:hover {
+    color: #675884;
+}
+
 .text-muted {
-    color: rgba(0, 0, 0, 0.36);
+    //color: rgba(0, 0, 0, 0.36);
+    color: rgba(105, 85, 144, 0.54)
 }
 
 // Nav overrides
-.navbar-default {
-    background: white;
+.navbar-inverse {
+    background: @mission-control-dark;
+    border-color: @mission-control-dark;
 }
 
-.navbar-default .navbar-nav > li > a, .navbar-default .navbar-nav > li > a:focus, .navbar-default .navbar-nav > li > a:hover {
-    text-transform: uppercase;
-    font-size: 12px;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+.navbar-inverse .navbar-nav > li > a, .navbar-inverse .navbar-nav > li > a:focus, .navbar-inverse .navbar-nav > li > a:hover {
+    //text-transform: uppercase;
+    //font-size: 12px;
+    //font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: "Helvetica Neue", HelveticaNeue, "TeX Gyre Heros", TeXGyreHeros, FreeSans, "Nimbus Sans L", "Liberation Sans", Arimo, Helvetica, Arial, sans-serif;
+    color: @mission-control-light;
 }
 
-.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:focus, .navbar-default .navbar-nav > .active > a:hover {
-    background-color: transparent;
-    //color: #69499a;
-    //color: #42B5D2;
-    color: #555;
-    font-weight: bold;
-}
+//.navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:focus, .navbar-inverse .navbar-nav > .active > a:hover {
+//    background-color: transparent;
+//    //color: #69499a;
+//    //color: #42B5D2;
+//    color: @mission-control-light;
+//    font-weight: bold;
+//}
 
 // Navbar logo
-.navbar-default .navbar-brand {
+.navbar-inverse .navbar-brand {
     display: inline-block;
     border-radius: 50%;
     //border: solid 2px #69499a;
-    border: solid 2px @mission-control-orange;
+    border: solid 2px @mission-control-light;
     width: 30px;
     padding: 3px 7px;
     height: 30px;
     margin-top: 10px;
     font-size: 14px;
     //color: #69499a;
-    color: @mission-control-orange;
+    color: @mission-control-light;
     font-weight: bold;
     margin-left: 15px;
+    margin-right: 10px;
 }
 
-.navbar-default .navbar-brand:hover {
-    background-color: #ffedd4;
-    color: #FF9D00;
+.navbar-inverse .navbar-brand:hover {
+    //background-color: #ffedd4;
+    color: white;
+    border-color: white;
 }
 
 // Basic typography overrides
 h1, h2, h3, h4, h5 {
-    color: rgb(85, 85, 85);
+    //color: rgb(85, 85, 85);
+    color: #543F7D;
+}
+
+// sub-heading for h4 in job execution view
+.sub-heading {
+    font-weight: normal;
+    color: #B7ACCA;
+    margin-top: 0;
+    margin-bottom: 30px;
 }
 
 body {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "Helvetica Neue", HelveticaNeue, "TeX Gyre Heros", TeXGyreHeros, FreeSans, "Nimbus Sans L", "Liberation Sans", Arimo, Helvetica, Arial, sans-serif;
     //font-size: 14px;
     line-height: 1.42857143;
     //color: #333;
     -webkit-font-smoothing: antialiased;
     font-size: 16px;
-    color: #555555;
+    color: #514765; // shade of @mission-control-dark
+}
+
+pre {
+    background-color: #F4EFFF;
+    border-color: #D7D3E0;
+    color: #3D344E;
 }
 
 // pre in table cell fix
 td pre {
     white-space: pre-wrap;
 }
+
+tr.off-white {
+    background-color: rgb(249, 247, 253); // used for tr in job logs table
+}
+
+// table row line colors
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+    border-color: #E2DEEA;
+}
+
+
+// Panel overrides
+.panel-default, .panel-default .panel-heading {
+    //border-color: #ACA1BF;
+    border-color: #C5BDD4;
+}
+
+.panel-default {
+
+    .panel-heading {
+        //background-color: #E8E2F3;
+        background-color: #EEE9F7;
+        color: #3D344E;
+    }
+}
+
+
+
+
 
 // Job Steps
 
@@ -101,7 +199,7 @@ td pre {
         // Icon stack
         span.icon {
             .icon-bg {
-                color: @mission-control-orange;
+                color: @mission-control-dark;
             }
 
             .icon-mg { /*<i class="fa fa-globe fa-stack-2x icon-mg"></i>*/
@@ -146,8 +244,10 @@ td pre {
 
 pre.shell-output {
     -webkit-font-smoothing: subpixel-antialiased;
-    background: #252525;
-    color: #B5B3B3;
+    //background: #252525;
+    //color: #B5B3B3;
+    background: #2D263A; // dark-gray with a hint of mission-control-dark (purple)
+    color: #BEB3D2; // light-gray with a hint of mission-control-light (purple)
 
     .black { color: #5F5757; }
     .red { color: #FF2F2F; }

@@ -3,6 +3,7 @@
 dist/
 node_modules/
 build/
+/ui-build
 
 # Files
 .DS_Store

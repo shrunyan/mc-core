@@ -12,7 +12,7 @@ var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 
 var options = {
-    DEST: './build/ui',
+    DEST: './ui-build',
     APP_ENTRY: 'ui/assets/js/app.js',
     LESS: [
         'ui/assets/less/*.less'
@@ -21,7 +21,6 @@ var options = {
         'ui/**/*.html'
     ]
 };
-
 
 var bundle = function bundle() {
     var b = browserify(watchify.args)
