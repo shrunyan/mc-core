@@ -34,7 +34,7 @@ module.exports = {
 
 
     }).catch(function(error) {
-      res.status(500).send({message: 'An error occurred.'})
+      res.status(401).send({message: 'Incorrect email or password.'})
     })
 
 
