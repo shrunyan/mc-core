@@ -1,4 +1,4 @@
-modules.exports = function authMiddleware(req, res, next) {
+module.exports = function authMiddleware(req, res, next) {
   console.log('Auth Middleware: Start')
 
   // TODO: check for JWT token

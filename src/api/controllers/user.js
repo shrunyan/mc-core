@@ -1,4 +1,4 @@
-modules.exports = {
+module.exports = {
 
   getUser: function(req, res) {
 

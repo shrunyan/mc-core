@@ -4,7 +4,7 @@ let pipelinesController = require('./controllers/pipelines')
 let userController = require('./controllers/user')
 
 
-modules.exports = function (app) {
+module.exports = function (app) {
 
   // Authentication middleware
   app.use('/api/*', authMiddleware)
