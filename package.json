@@ -6,7 +6,7 @@
   "scripts": {
     "test": "node node_modules/.bin/jshint src;node node_modules/.bin/jshint ui/assets/js",
     "start": "./node_modules/.bin/nf start",
-    "dev": "nodemon src/server.js --use-strict --optimize_for_size --max_old_space_size=920 --gc_interval=100 & gulp watch"
+    "dev": "nodemon --use-strict src/server.js --optimize_for_size --max_old_space_size=920 --gc_interval=100 & gulp watch"
   },
   "author": "Andy Fleming <andy@zesty.io>",
   "contributors": [
@@ -21,6 +21,7 @@
     "angular-ui-bootstrap": "^0.14.3",
     "angular-ui-router": "^0.2.15",
     "babelify": "^7.2.0",
+    "bcryptjs": "^2.3.0",
     "body-parser": "1.14.1",
     "browserify": "^12.0.1",
     "commander": "^2.9.0",
@@ -36,12 +37,10 @@
     "gulp-sourcemaps": "^1.6.0",
     "gulp-uglify": "^1.5.1",
     "jshint": "^2.9.1-rc1",
-    "knex": "^0.8.6",
-    "lazy-dependable": "^0.2.0",
+    "jsonwebtoken": "^5.4.1",
+    "knex": "^0.9.0",
     "morgan": "1.6.1",
     "mysql2": "^0.15.8",
-    "passport": "0.3.2",
-    "passport-local": "1.0.0",
     "promptly": "^0.2.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
