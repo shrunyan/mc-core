@@ -25,7 +25,7 @@ module.exports = function (app) {
   //})
 
   // Static files
-  app.use(express.static('./build/ui/'))
+  app.use(express.static('./ui-build/'))
 
   // 404
   app.use(function(req, res, next){
