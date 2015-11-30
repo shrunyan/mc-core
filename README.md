@@ -3,8 +3,8 @@
 [![Build Status](https://travis-ci.org/space-race/mission-control.svg)](https://travis-ci.org/space-race/mission-control)
 [![Dependency Status](https://david-dm.org/space-race/mission-control.svg)](https://david-dm.org/space-race/mission-control)
 [![Dev Dependency Status](https://david-dm.org/space-race/mission-control/dev-status.svg)](https://david-dm.org/space-race/mission-control#info=devDependencies)
-[![Slack Status](https://space-race-slackin.herokuapp.com/badge.svg)](https://space-race-slackin.herokuapp.com/)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
+[![Slack Status](https://space-race-slackin.herokuapp.com/badge.svg)](https://space-race-slackin.herokuapp.com/)
 
 Mission Control is a devops automation orchestration tool. It was built with the following common devops automation tasks in mind, but can be configured for just about anything.
 
