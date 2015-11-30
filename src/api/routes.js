@@ -33,18 +33,18 @@ modules.exports = function (app) {
 
     // respond with html page
     if (req.accepts('html')) {
-      res.send('<h1>404 Not found</h1>');
-      return;
+      res.send('<h1>404 Not found</h1>')
+      return
     }
 
     // respond with json
     if (req.accepts('json')) {
-      res.send({ error: 'Not found' });
-      return;
+      res.send({ error: 'Not found' })
+      return
     }
 
     // default to plain-text. send()
-    res.type('txt').send('Not found');
+    res.type('txt').send('Not found')
   });
 
 }
