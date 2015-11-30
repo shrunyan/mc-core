@@ -1,3 +1,3 @@
-export default ['$scope', function($scope) {
-    $scope.example = 'Woot!';
-}];
+export default ['$scope', function ($scope) {
+  $scope.example = 'Woot!'
+}]

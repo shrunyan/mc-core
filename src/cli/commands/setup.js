@@ -4,8 +4,8 @@
  * This command is written (and should continue to be written) as idempotent.
  * It should be able to be run over and over to complete installation, even if cancelled by the user at a given step.
  */
-let promptly = require('promptly')
-let migrationRunner = require('../../db/migration-runner')
+// let promptly = require('promptly')
+// let migrationRunner = require('../../db/migration-runner')
 
 module.exports = (cmd, options) => {
 
@@ -22,12 +22,11 @@ module.exports = (cmd, options) => {
     // Check if there are any users in the users table
     // If not, walk the user through creating an admin user (interactively)
 
-    //promptly.prompt('Name: ', function (err, value) {
+    // promptly.prompt('Name: ', function (err, value) {
     //    // err is always null in this case, because no validators are set
     //    console.log(value);
     //    migrationRunner(() => {
     //        process.exit(0);
     //    });
-    //});
-
-};
+    // });
+}
