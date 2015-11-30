@@ -1,37 +1,33 @@
-import passport from 'passport'
-import {Strategy} from 'passport-local'
+let jwt = require('jsonwebtoken');
 
-passport.use(new Strategy(function (username, pasword, done) {
-  // console.log('HERE')
-  return done(null, false)
-}))
-// passport.serializeUser(serialize)
-// passport.deserializeUser(deSerialize)
-
-// function verify (username, pasword, done) {
-//   // TODO: fetch user from database
-//   console.log('HERE')
-//   return done(null, false)
-// }
-
-export function serialize (user, cb) {
-  cb(null, user.id)
-}
-
-export function deSerialize (id, cb) {
-  // TODO: use ID to look in DB
-  // and return user
-}
-
-export default function middleware (req, res, next) {
+module.exports = function authMiddleware(req, res, next) {
   console.log('Auth Middleware: Start')
 
-  // Auth this biz
-  passport.authenticate('local', {
-    failureRedirect: '/fail'
-  })
+  // check for JWT token
+  if (req.cookies.mc_jwt) {
+
+    try {
+      var decoded = jwt.verify(req.cookies.mc_jwt, process.env.SECRET_KEY)
+
+      // TODO: look up user
+      req.user = {
+        id: 1,
+        first_name: 'Andy',
+        is_admin: 1
+      }
+      next()
+
+
+    } catch(err) {
+      console.log('JWT not verified')
+      console.log(err)
+      // err
+    }
+
+  }
 
   console.log('Auth Middleware: Done')
 
-  next()
+  res.status(401).send({message: 'Unauthorized'})
+
 }

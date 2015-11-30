@@ -1,18 +1,19 @@
-import auth from './middleware/auth'
-import pipelines from './controllers/pipelines'
-import express from 'express'
+let express = require('express')
+let authMiddleware = require('./middleware/auth')
+let pipelinesController = require('./controllers/pipelines')
+let userController = require('./controllers/user')
 
-import passport from 'passport'
-import {Strategy} from 'passport-local'
+module.exports = function (app) {
+  // Authentication middleware
+  app.use('/api/*', authMiddleware)
 
-passport.use(new Strategy(function (username, pasword, done) {
-  // console.log('HERE')
-  return done(null, false)
-}))
+  // User
+  app.get('/api/user', userController.getUser)
+  app.post('/login', userController.login)
+  app.all('/logout', userController.logout)
 
-export default function (app, passport) {
-  app.use('/api/*', auth)
-  app.get('/api/pipelines', pipelines.getList)
+  // Pipelines
+  app.get('/api/pipelines', pipelinesController.getList)
 
   // app.get('/', (req, res) => {
   //  res.send({message: 'Welcome to the API!'})
@@ -23,8 +24,9 @@ export default function (app, passport) {
   // })
 
   // Static files
-  app.use(express.static('./build/ui/'))
+  app.use(express.static('./ui-build/'))
 
+  // 404
   app.use(function (req, res, next) {
     res.status(404)
 
