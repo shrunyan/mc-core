@@ -23,7 +23,10 @@ module.exports = {
       // Test hash. If successful, respond with JWT
       if (bcrypt.compareSync(req.body.password, user.password)) {
         let token = jwt.sign({ user_id: user.id }, process.env.SECRET_KEY)
-        res.cookie('mc_jwt' , token, {maxAge: 3*24*60*60*1000})
+        res.cookie('mc_jwt' , token, {
+          maxAge: 3*24*60*60*1000,
+          httpOnly: true
+        })
         res.send({message: 'Successfully logged in.'})
       } else {
         res.status(401).send({message: 'Incorrect email or password.'})
