@@ -5,7 +5,6 @@ let bodyParser = require('body-parser')
 let morgan = require('morgan')
 let routes = require('./api/routes')
 let dotenv = require('dotenv')
-let container = require('./dependency-container/container')
 
 // Load environment variables from .env file
 dotenv.load()
