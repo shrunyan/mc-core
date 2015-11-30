@@ -15,23 +15,23 @@ let port = process.env.PORT || 3000
 let host = process.env.HOST || 'localhost'
 let app = express()
 
-// app.use(morgan('dev'))
-// app.use(cookieParser())
-// app.use(bodyParser.json())
-// app.use(bodyParser.urlencoded({
-//   extended: true
-// }))
-// app.use(session({
-//   resave: false,
-//   secret: 'TEST'
-// }))
-// app.use(passport.initialize())
-// app.use(passport.session())
-//
-// routes(app, passport)
+app.use(morgan('dev'))
+app.use(cookieParser())
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({
+  extended: true
+}))
+app.use(session({
+  resave: false,
+  secret: 'TEST'
+}))
+app.use(passport.initialize())
+app.use(passport.session())
+
+routes(app, passport)
 
 
-app.all('*', (req, res) => res.send('Hello World'))
+// app.all('*', (req, res) => res.send('Hello World'))
 
 app.listen(port, () => {
   console.log('Mission Control listening at http://%s:%s', host, port)
