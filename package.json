@@ -1,7 +1,11 @@
 {
-  "name": "mc-node",
-  "version": "1.0.0",
+  "name": "mission-control",
+  "version": "0.0.1",
   "description": "",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/space-race/mission-control.git"
+  },
   "main": "app.js",
   "scripts": {
     "test": "node node_modules/.bin/jshint src;node node_modules/.bin/jshint ui/assets/js",
