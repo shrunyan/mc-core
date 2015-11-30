@@ -11,7 +11,7 @@ module.exports = function (app) {
 
   // User
   app.get('/api/user', userController.getUser)
-  app.all('/login', userController.login)
+  app.post('/login', userController.login)
   app.all('/logout', userController.logout)
 
   // Pipelines

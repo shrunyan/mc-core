@@ -1,41 +1,39 @@
 let bcrypt = require('bcryptjs')
-let jwt = require('jsonwebtoken');
+let jwt = require('jsonwebtoken')
+let connection = require('../../db/connection')
 
 
 module.exports = {
 
   getUser: function(req, res) {
-    var salt = bcrypt.genSaltSync(10)
-    var result = bcrypt.hashSync("pass")
-    res.send(result)
-    return
-
-    //var result = bcrypt.compareSync('baconn', '$2a$10$XBqixdbL/0PFTVyLl7SvlORc/o47ppSGYebTAVYFGifHPhTZrqsFC')
-    //
-    //if (result) {
-    //  res.send('correct')
-    //} else {
-    //  res.send('wrong')
-    //}
-
     res.send({user_id: req.user.id})
-
   },
 
   login: function(req, res) {
 
-    // verify username and password
-
-    // if successful, respond with JWT
-    if (true) {
-      let token = jwt.sign({ user_id: 1 }, process.env.SECRET_KEY)
-      res.cookie('mc_jwt' , token, {maxAge: 3*24*60*60*1000})
-      res.send({'message': 'Successfully logged in.'})
-    } else {
-      res.status(401).send({'message': 'Incorrect email or password.'})
+    // validate request
+    if (!req.body.email || !req.body.password) {
+      res.status(400).send({message: 'Both "email" and "password" are required fields.'})
+      return
     }
 
-    // otherwise, respond with 401
+    // Look up user
+    connection.table('users').first('id', 'email', 'password').where('email', req.body.email).then(function(user) {
+
+      // Test hash. If successful, respond with JWT
+      if (bcrypt.compareSync(req.body.password, user.password)) {
+        let token = jwt.sign({ user_id: user.id }, process.env.SECRET_KEY)
+        res.cookie('mc_jwt' , token, {maxAge: 3*24*60*60*1000})
+        res.send({message: 'Successfully logged in.'})
+      } else {
+        res.status(401).send({message: 'Incorrect email or password.'})
+      }
+
+
+    }).catch(function(error) {
+      res.status(500).send({message: 'An error occurred.'})
+    })
+
 
   },
 
