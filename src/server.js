@@ -1,12 +1,11 @@
-import express from 'express'
-import session from 'express-session'
-import cookieParser from 'cookie-parser'
-import bodyParser from 'body-parser'
-import morgan from 'morgan'
-import passport from 'passport'
-import routes from './api/routes'
-import dotenv from 'dotenv'
-import container from './dependency-container/container'
+let express = require('express')
+let session = require('express-session')
+let cookieParser = require('cookie-parser')
+let bodyParser = require('body-parser')
+let morgan = require('morgan')
+let routes = require('./api/routes')
+let dotenv = require('dotenv')
+let container = require('./dependency-container/container')
 
 // Load environment variables from .env file
 dotenv.load()
@@ -21,14 +20,9 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
   extended: true
 }))
-app.use(session({
-  resave: false,
-  secret: 'TEST'
-}))
-app.use(passport.initialize())
-app.use(passport.session())
 
-routes(app, passport)
+// Load routes
+routes(app)
 
 app.listen(port, () => {
   console.log('Mission Control listening at http://%s:%s', host, port)

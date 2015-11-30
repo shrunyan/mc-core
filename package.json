@@ -42,8 +42,6 @@
     "lazy-dependable": "^0.2.0",
     "morgan": "1.6.1",
     "mysql2": "^0.15.8",
-    "passport": "0.3.2",
-    "passport-local": "1.0.0",
     "promptly": "^0.2.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
