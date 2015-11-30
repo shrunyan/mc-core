@@ -1,12 +1,17 @@
+let express = require('express')
 let authMiddleware = require('./middleware/auth')
 let pipelinesController = require('./controllers/pipelines')
-let express = require('express')
+let userController = require('./controllers/user')
 
-export default function (app) {
+
+modules.exports = function (app) {
 
   // Authentication middleware
   app.use('/api/*', authMiddleware)
 
+  // User
+  app.get('/api/user', userController.getUser)
+  app.post('/api/user/login', userController.login)
 
   // Pipelines
   app.get('/api/pipelines', pipelinesController.getList)
