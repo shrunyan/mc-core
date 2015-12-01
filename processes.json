@@ -1,9 +1,9 @@
 {
-    "apps" : [{
-        "name"       : "mission-control-server",
-        "script"     : "./build/server.js",
-        "error_file" : "./logs/server-err.log",
-        "out_file"   : "./logs/server-out.log",
-        "pid_file"   : "./logs/server.pid"
-    }]
+  "apps" : [{
+    "name"       : "mission-control-server",
+    "script"     : "./build/server.js",
+    "error_file" : "./logs/server-err.log",
+    "out_file"   : "./logs/server-out.log",
+    "pid_file"   : "./logs/server.pid"
+  }]
 }
