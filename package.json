@@ -11,7 +11,7 @@
     "lint": "node_modules/.bin/standard",
     "test": "",
     "start": "./node_modules/.bin/nf start",
-    "dev": "nodemon --use-strict src/server.js --optimize_for_size --max_old_space_size=920 --gc_interval=100 & gulp watch"
+    "dev": "nodemon --use-strict src/server.js --optimize_for_size --max_old_space_size=920 --gc_interval=100 & nodemon --use-strict src/worker-jobs.js & gulp watch"
   },
   "author": "Andy Fleming <andy@zesty.io>",
   "contributors": [
