@@ -7,6 +7,17 @@ module.exports = function (app) {
   // Authentication middleware
   app.use('/api/*', authMiddleware)
 
+  app.get('/test-queue', function(req, res) {
+    let jobsRsmq = require('../queueing/jobs-queue')
+    jobsRsmq.sendMessage({qname:"jobs", message:"Hello World"}, function (err, resp) {
+      if (resp) {
+        console.log("Message sent. ID:", resp);
+      }
+    })
+
+    res.send({message: 'Item added to queue'})
+  })
+
   // User
   app.get('/api/user', userController.getUser)
   app.post('/login', userController.login)
