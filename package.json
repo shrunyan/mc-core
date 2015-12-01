@@ -47,6 +47,8 @@
     "morgan": "1.6.1",
     "mysql2": "^0.15.8",
     "promptly": "^0.2.1",
+    "rsmq": "^0.4.0",
+    "rsmq-worker": "^0.3.7",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.6.1"
