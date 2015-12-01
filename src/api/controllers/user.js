@@ -1,3 +1,5 @@
+'use strict';
+
 let bcrypt = require('bcryptjs')
 let jwt = require('jsonwebtoken')
 let connection = require('../../db/connection')
