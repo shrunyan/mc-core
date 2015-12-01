@@ -1,3 +1,5 @@
+'use strict';
+
 let jwt = require('jsonwebtoken');
 
 module.exports = function authMiddleware(req, res, next) {
