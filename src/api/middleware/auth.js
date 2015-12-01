@@ -16,7 +16,7 @@ module.exports = function authMiddleware(req, res, next) {
         is_admin: 1
       }
       next()
-
+      return
 
     } catch(err) {
       console.log('JWT not verified')
