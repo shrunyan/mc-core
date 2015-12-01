@@ -82,4 +82,4 @@ gulp.task('watch-html', function () {
 
 gulp.task('build', ['html', 'less', 'bundle'])
 gulp.task('watch', ['build', 'watch-bundle', 'watch-less', 'watch-html'])
-gulp.task('default', ['watch'])
+gulp.task('default', ['build'])
