@@ -1,1 +1,1 @@
-web: node build/pm2.js
+web: node src/server.js
