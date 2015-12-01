@@ -8,5 +8,5 @@ logs/
 
 # Files
 .DS_Store
-/*.env
+.env
 npm-debug.log
