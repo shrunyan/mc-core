@@ -291,3 +291,49 @@ pre.shell-output {
         color: @mission-control-light;
     }
 }
+
+
+@-webkit-keyframes pulsate {
+    0% {opacity: 0.6;}
+    50% {opacity: 1.0;}
+    100% {opacity: 0.6;}
+}
+
+.pulse {
+    -webkit-animation: pulsate 1000ms linear;
+    -webkit-animation-iteration-count: infinite;
+    opacity: 0.6;
+}
+
+table.stage-bar {
+    width: 100%;
+    margin-top: 10px;
+
+    tr {
+        td {
+            background: #eee;
+            border: solid 2px white;
+            border-top: none;
+            border-bottom: none;
+            line-height: 14px;
+
+            &:first-child {
+                border-radius: 15px 0 0 15px !important;
+                border-left: none;
+            }
+
+            &:last-child {
+                border-radius: 0 15px 15px 0 !important;
+                border-right: none;
+            }
+
+            &.successful {
+                background-color: #7DCE7D;
+            }
+
+            &.running {
+                background-color: #469EBB;
+            }
+        }
+    }
+}
