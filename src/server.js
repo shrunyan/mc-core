@@ -1,6 +1,6 @@
 if (!process.version.startsWith('v5')) {
-  console.log('This app must be run with node v5.0.0 (at minimum)');
-  process.exit(1);
+  console.log('This app must be run with node v5.0.0 (at minimum)')
+  process.exit(1)
 }
 
 let express = require('express')

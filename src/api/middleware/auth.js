@@ -1,6 +1,6 @@
-let jwt = require('jsonwebtoken');
+let jwt = require('jsonwebtoken')
 
-module.exports = function authMiddleware(req, res, next) {
+module.exports = function authMiddleware (req, res, next) {
   console.log('Auth Middleware: Start')
 
   // check for JWT token
@@ -18,7 +18,7 @@ module.exports = function authMiddleware(req, res, next) {
       next()
       return
 
-    } catch(err) {
+    } catch (err) {
       console.log('JWT not verified')
       console.log(err)
       // err
