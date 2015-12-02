@@ -1,3 +1,5 @@
+'use strict';
+
 let express = require('express')
 let authMiddleware = require('./middleware/auth')
 let pipelinesController = require('./controllers/pipelines')

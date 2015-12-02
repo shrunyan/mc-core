@@ -1,23 +1,9 @@
 {
-    "apps" : [{
-        "name"       : "mission-control-server",
-        "script"     : "src/server.js",
-        "error_file" : "./logs/server-err.log",
-        "out_file"   : "./logs/server-out.log",
-        "pid_file"   : "./logs/server.pid"
-    }, {
-        "name"        : "worker-jobs",
-        "script"     : "src/worker-jobs.js",
-        "instances"  : 2,
-        "exec_mode"  : "cluster_mode",
-        "error_file" : "./logs/worker-jobs-err.log",
-        "out_file"   : "./logs/worker-jobs-out.log",
-        "pid_file"   : "./logs/worker-jobs.pid"
-    },{
-        "name"       : "worker-monitoring",
-        "script"     : "src/worker-monitoring.js",
-        "error_file" : "./logs/worker-monitoring.log",
-        "out_file"   : "./logs/worker-monitoring.log",
-        "pid_file"   : "./logs/worker-monitoring.pid"
-    }]
+  "apps" : [{
+    "name"       : "mission-control-server",
+    "script"     : "./build/server.js",
+    "error_file" : "./logs/server-err.log",
+    "out_file"   : "./logs/server-out.log",
+    "pid_file"   : "./logs/server.pid"
+  }]
 }

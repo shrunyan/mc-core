@@ -1,1 +1,1 @@
-web: ./node_modules/.bin/pm2 start processes.json
+web: node src/server.js --optimize_for_size --max_old_space_size=920 --gc_interval=100

@@ -1,3 +1,5 @@
+'use strict';
+
 let dotenv = require('dotenv')
 let knex = require('knex')
 
