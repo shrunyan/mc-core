@@ -1,27 +1,31 @@
 'use strict'
 
 let express = require('express')
-let authMiddleware = require('./middleware/auth')
-let pipelinesController = require('./controllers/pipelines')
-let userController = require('./controllers/user')
-let notFoundController = require('./controllers/not-found')
+let middleware = {
+  auth: require('./middleware/auth'),
+  notFound: require('./middleware/not-found')
+}
+let controllers = {
+  pipelines: require('./controllers/pipelines'),
+  user: require('./controllers/user'),
+}
 
 module.exports = function (app) {
 
   // Authentication middleware
-  app.use('/api/*', authMiddleware)
+  app.use('/api/*', middleware.auth)
 
   // User
-  app.get('/api/user', userController.getUser)
-  app.post('/login', userController.login)
-  app.all('/logout', userController.logout)
+  app.get('/api/user', controllers.user.getUser)
+  app.post('/login', controllers.user.login)
+  app.all('/logout', controllers.user.logout)
 
   // Groups
-  // TODO: GET /api/groups
-  // TODO: POST / api/groups
+  // TODO: GET /api/service-groups
+  // TODO: POST /api/service-groups
 
   // Pipelines
-  app.get('/api/pipelines', pipelinesController.getList)
+  app.get('/api/pipelines', controllers.pipelines.getList)
   // TODO: POST /api/pipelines
 
   // Pipeline Executions
@@ -32,6 +36,6 @@ module.exports = function (app) {
   app.use(express.static('./ui-build/'))
 
   // 404
-  app.use(notFoundController.notFound)
+  app.use(middleware.notFound)
 
 }
