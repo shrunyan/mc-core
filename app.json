@@ -14,10 +14,8 @@
     "postdeploy": "echo 'restarting'"
   },
   "addons": [
-    "mongolab",
-    "rediscloud",
-    "cloudamqp",
-    "blitz"
+    "jawsdb",
+    "rediscloud"
   ],
   "env": {
     "THRIFTY": {
