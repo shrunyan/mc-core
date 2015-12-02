@@ -180,6 +180,8 @@ function createMysqlUserRecord () {
               console.log(colors.red('MySQL Error: '), err)
             })
         })
+      } else {
+        process.exit(0)
       }
     })
   })
