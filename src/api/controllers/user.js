@@ -5,7 +5,9 @@ let connection = require('../../db/connection')
 module.exports = {
 
   getUser: function (req, res) {
+
     res.send({user_id: req.user.id})
+
   },
 
   login: function (req, res) {
