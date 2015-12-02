@@ -5,9 +5,12 @@ rsmq.createQueue({qname: 'jobs'}, function (err, resp) {
 
   // If queue is successfully created
   if (resp === 1) {
+
   }
   if (err) {
+
     throw err
+
   }
 
 })

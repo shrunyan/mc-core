@@ -13,15 +13,19 @@ var app = angular.module('mission-control', [
 
 // For any unmatched url, redirect to /dashboard
 app.config(['$urlRouterProvider', function ($urlRouterProvider) {
+
   $urlRouterProvider.otherwise('/dashboard')
+
 }])
 
 // Configure $http
 app.config(['$httpProvider', function ($httpProvider) {
+
   // Automatically send credentials (cookies)
   $httpProvider.defaults.withCredentials = true
   // Register $http middleware/"interceptor" for re-authenticating
   $httpProvider.interceptors.push(authInterceptor)
+
 }])
 
 app.run(loginController)
