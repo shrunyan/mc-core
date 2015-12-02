@@ -9,6 +9,7 @@ let colors = require('colors/safe')
 let redis = require('redis')
 let knex = require('knex')
 let promptly = require('promptly')
+let bcrypt = require('bcryptjs')
 
 // Check options
 if (!process.env.DB_USER) {
@@ -132,7 +133,7 @@ function enterPassword (user) {
   return new Promise((resolve) => {
     promptly.prompt('Enter your Misison Control password.', (err, password) => {
       if (err) {console.log(err)}
-      user['password'] = password
+      user['password'] = bcrypt.hashSync(password, 10)
       resolve(user)
     })
   })
