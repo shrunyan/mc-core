@@ -21,6 +21,7 @@ module.exports = {
       return
 
     }
+    
     // Look up user
     connection.table('users').first('id', 'email', 'password').where('email', req.body.email).then(function (user) {
 
