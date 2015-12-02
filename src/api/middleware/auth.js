@@ -4,8 +4,6 @@ let jwt = require('jsonwebtoken')
 
 module.exports = function authMiddleware (req, res, next) {
 
-  console.log('Auth Middleware: Start')
-
   // check for JWT token
   if (req.cookies.mc_jwt) {
 
@@ -30,8 +28,6 @@ module.exports = function authMiddleware (req, res, next) {
     }
 
   }
-
-  console.log('Auth Middleware: Done')
 
   res.status(401).send({message: 'Unauthorized'})
 
