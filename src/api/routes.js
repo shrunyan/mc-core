@@ -7,7 +7,7 @@ let middleware = {
 }
 let controllers = {
   pipelines: require('./controllers/pipelines'),
-  user: require('./controllers/user'),
+  user: require('./controllers/user')
 }
 
 module.exports = function (app) {
