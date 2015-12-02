@@ -21,13 +21,13 @@ export default ['$rootScope', '$http', '$q', function ($rootScope, $http, $q) {
       password: $rootScope.loginFormPassword
     }
 
-    $http.post('/login', data).then(function (response) {
+    $http.post('/login', data).then((response) => {
 
       $rootScope.promise.resolve($http($rootScope.originalResponse.config))
       jQuery('#login').hide()
       $rootScope.showLoginError = false
 
-    }, function () {
+    }, () => {
 
       $rootScope.showLoginError = true
 
@@ -36,13 +36,9 @@ export default ['$rootScope', '$http', '$q', function ($rootScope, $http, $q) {
   }
 
   $rootScope.logout = function logout () {
-
-    $http.post('/logout').then(function () {
-
+    $http.post('/logout').then(() => {
       $rootScope.showLogin()
-
     })
-
   }
 
 }]
