@@ -9,9 +9,12 @@ module.exports = function (app) {
 
   app.get('/test-queue', function (req, res) {
     let jobsRsmq = require('../queueing/jobs-queue')
-    jobsRsmq.sendMessage({qname: "jobs", message: "Hello World"}, function (err, resp) {
+    jobsRsmq.sendMessage({qname: 'jobs', message: 'Hello World'}, function (err, resp) {
       if (resp) {
-        console.log("Message sent. ID:", resp)
+        console.log('Message sent. ID:', resp)
+      }
+      if (err) {
+        res.status(500).send({message: 'An error occurred'})
       }
     })
 

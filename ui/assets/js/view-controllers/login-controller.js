@@ -1,9 +1,7 @@
 export default ['$rootScope', '$http', '$q', function ($rootScope, $http, $q) {
-
   $rootScope.showLoginError = false
 
   $rootScope.showLogin = function showLogin (originalResponse) {
-
     jQuery('#login').fadeIn()
 
     let deferred = $q.defer()
@@ -11,11 +9,9 @@ export default ['$rootScope', '$http', '$q', function ($rootScope, $http, $q) {
     $rootScope.promise = deferred
 
     return deferred.promise
-
   }
 
   $rootScope.attemptLogin = function attemptLogin () {
-
     let data = {
       email: $rootScope.loginFormEmail,
       password: $rootScope.loginFormPassword
@@ -35,5 +31,4 @@ export default ['$rootScope', '$http', '$q', function ($rootScope, $http, $q) {
       $rootScope.showLogin()
     })
   }
-
 }]

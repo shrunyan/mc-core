@@ -18,15 +18,15 @@ worker.on('message', function (msg, next) {
 
 // optional error listeners
 worker.on('error', function (err, msg) {
-  console.log("ERROR", err, msg.id)
+  console.log('ERROR', err, msg.id)
 })
 
 worker.on('exceeded', function (msg) {
-  console.log("EXCEEDED", msg.id)
+  console.log('EXCEEDED', msg.id)
 })
 
 worker.on('timeout', function (msg) {
-  console.log("TIMEOUT", msg.id, msg.rc)
+  console.log('TIMEOUT', msg.id, msg.rc)
 })
 
 worker.start()
