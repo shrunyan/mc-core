@@ -54,7 +54,7 @@
     "mysql2": "^0.15.8",
     "nodemon": "1.8.1",
     "pm2": "0.15.10",
-    "promptly": "^0.2.1",
+    "q": "1.4.1",
     "standard": "5.4.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
