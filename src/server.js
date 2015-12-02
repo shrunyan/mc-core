@@ -1,8 +1,10 @@
-'use strict';
+'use strict'
 
 if (!process.version.startsWith('v5')) {
+
   console.log('This app must be run with node v5.0.0 (at minimum)')
   process.exit(1)
+
 }
 
 let express = require('express')
@@ -31,5 +33,7 @@ app.use(bodyParser.urlencoded({
 routes(app)
 
 app.listen(port, () => {
+
   console.log('Mission Control listening at http://%s:%s', host, port)
+
 })
