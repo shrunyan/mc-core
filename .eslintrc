@@ -1,0 +1,6 @@
+{
+  "extends": "standard",
+  "rules": {
+    "padded-blocks": [1, "always"]
+  }
+}

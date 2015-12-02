@@ -9,6 +9,20 @@ module.exports = function (app) {
   // Authentication middleware
   app.use('/api/*', authMiddleware)
 
+  app.get('/test-queue', function (req, res) {
+    let jobsRsmq = require('../queueing/jobs-queue')
+    jobsRsmq.sendMessage({qname: 'jobs', message: 'Hello World'}, function (err, resp) {
+      if (resp) {
+        console.log('Message sent. ID:', resp)
+      }
+      if (err) {
+        res.status(500).send({message: 'An error occurred'})
+      }
+    })
+
+    res.send({message: 'Item added to queue'})
+  })
+
   // User
   app.get('/api/user', userController.getUser)
   app.post('/login', userController.login)
@@ -22,7 +36,7 @@ module.exports = function (app) {
   // })
   //
   // app.use('*', function(req, res) {
-  //  res.sendFile('index.html');
+  //  res.sendFile('index.html')
   // })
 
   // Static files
@@ -40,7 +54,7 @@ module.exports = function (app) {
 
     // respond with json
     if (req.accepts('json')) {
-      res.send({ error: 'Not found' })
+      res.send({error: 'Not found'})
       return
     }
 

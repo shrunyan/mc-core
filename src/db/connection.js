@@ -14,11 +14,7 @@ let connection = knex({
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
     port: process.env.DB_PORT
-  },
-  // pool: {
-  //     min: 0,
-  //     max: 7
-  // }
+  }
 })
 
 module.exports = connection
