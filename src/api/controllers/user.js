@@ -9,7 +9,23 @@ module.exports = {
 
   getUser: function (req, res) {
 
-    res.send({user_id: req.user.id})
+    connection.table('users')
+      .first()
+      .where('id', req.user.id)
+      .then(function (user) {
+
+        delete user.password
+        res.send({data: user})
+      }).catch(function (err) {
+
+        logger.error(err)
+
+        // TODO: differentiate between a 404 and a 500
+        res.status(500).send({
+          message: 'User not found or another error occurred.'
+        })
+
+      })
 
   },
 
