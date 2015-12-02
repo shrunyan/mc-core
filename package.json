@@ -8,7 +8,7 @@
   },
   "main": "app.js",
   "scripts": {
-    "lint": "./node_modules/.bin/eslint ./**",
+    "lint": "./node_modules/.bin/eslint src/**/*.js ui/**/*.js",
     "test": "",
     "start": "./node_modules/.bin/nf start",
     "dev": "nodemon --use-strict src/server.js --optimize_for_size --max_old_space_size=920 --gc_interval=100 & nodemon --use-strict src/worker-jobs.js & gulp watch"
