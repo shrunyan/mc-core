@@ -1,3 +1,5 @@
+'use strict';
+
 let connection = require('./connection')
 let migrationConfig = require('./migration-config')
 
