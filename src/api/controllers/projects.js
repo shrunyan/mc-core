@@ -2,6 +2,7 @@
 
 let connection = require('../../db/connection')
 let logger = require('tracer').colorConsole()
+let basic = require('./basic-response-helper')
 
 module.exports = {
 
@@ -12,12 +13,7 @@ module.exports = {
    * @param res
    */
   getProjects: (req, res) => {
-    connection.select().from('projects').then((projects) => {
-      res.send({data: projects})
-    }).catch(err => {
-      logger.error(err)
-      res.status(500).send({message: 'An error occurred.'})
-    })
+    basic.getList(req, res, 'projects')
   },
 
   /**
@@ -63,17 +59,7 @@ module.exports = {
    * @param res
    */
   createProject: (req, res) => {
-
-    let newProject = req.body
-    newProject.created_at = new Date()
-    newProject.updated_at = new Date()
-
-    connection.insert(newProject).into('projects').then((projects) => {
-      res.status(201).send()
-    }).catch(err => {
-      logger.error(err)
-      res.status(500).send({message: 'An error occurred.'})
-    })
+    basic.insertRespond(req, res, 'projects')
   }
 
 }
