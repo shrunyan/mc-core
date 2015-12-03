@@ -5,6 +5,12 @@ let logger = require('tracer').colorConsole()
 
 module.exports = {
 
+  /**
+   * Sends a list of projects
+   *
+   * @param req
+   * @param res
+   */
   getProjects: (req, res) => {
     connection.select().from('projects').then((projects) => {
       res.send({data: projects})
@@ -14,6 +20,12 @@ module.exports = {
     })
   },
 
+  /**
+   * Get projects with nested properties nested in each
+   *
+   * @param req
+   * @param res
+   */
   getProjectsWithPipelines: (req, res) => {
 
     let p1 = connection.select().from('pipelines')
