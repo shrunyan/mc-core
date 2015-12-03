@@ -2,6 +2,7 @@ import dashboard from './dashboard'
 import login from './login'
 import pipelines from './pipelines'
 import pipelineExecutionDetails from './pipeline-execution-details'
+import projects from './projects'
 import applications from './applications'
 import applicationBuilds from './application-builds'
 import servers from './servers'
@@ -23,6 +24,7 @@ export default {
   login,
   pipelines,
   pipelineExecutionDetails,
+  projects,
   applications,
   applicationBuilds,
   servers,
