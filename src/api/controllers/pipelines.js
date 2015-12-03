@@ -9,7 +9,7 @@ module.exports = {
     connection.select().from('pipelines').then(function (pipelines) {
       res.send({data: pipelines})
     }).catch(err => {
-      logger.log(err)
+      logger.error(err)
     })
   }
 
