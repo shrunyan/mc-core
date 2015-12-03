@@ -26,6 +26,7 @@ export default ['$rootScope', '$http', '$q', function ($rootScope, $http, $q) {
       $rootScope.promise.resolve($http($rootScope.originalResponse.config))
       jQuery('#login').hide()
       $rootScope.showLoginError = false
+      $rootScope.loadAuthenticatedUser()
 
     }, () => {
 
