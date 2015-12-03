@@ -12,25 +12,32 @@ let controllers = {
 
 module.exports = function (app) {
 
-  // Authentication middleware
+  // Authentication Verification middleware
   app.use('/api/*', middleware.auth)
 
-  // User
-  app.get('/api/user', controllers.user.getUser)
+  // Authentication
   app.post('/login', controllers.user.login)
   app.all('/logout', controllers.user.logout)
 
-  // Groups
-  // TODO: GET /api/service-groups
-  // TODO: POST /api/service-groups
+  // User
+  app.get('/api/user', controllers.user.getUser)
+
+  // Projects
+  // TODO: GET /api/projects
+  // TODO: POST /api/projects
 
   // Pipelines
   app.get('/api/pipelines', controllers.pipelines.getList)
   // TODO: POST /api/pipelines
 
+  // Pipeline Stages
+  // TODO: /api/pipelines
+
   // Pipeline Executions
   // TODO: GET /api/pipeline-executions
   // TODO: POST /api/pipeline-executions
+
+  // Pipeline Execution Logs
 
   // Static files
   app.use(express.static('./ui-build/'))
