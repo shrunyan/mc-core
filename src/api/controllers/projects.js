@@ -22,11 +22,11 @@ module.exports = {
       let projects = values[1]
       let pipelinesByProjectId = {}
 
-      pipelines.forEach((value) => {
-        if (!pipelinesByProjectId[value.project_id]) {
-          pipelinesByProjectId[value.project_id] = [value]
+      pipelines.forEach((pipeline) => {
+        if (!pipelinesByProjectId[pipeline.project_id]) {
+          pipelinesByProjectId[pipeline.project_id] = [pipeline]
         } else {
-          pipelinesByProjectId[value.project_id].push(value)
+          pipelinesByProjectId[pipeline.project_id].push(pipeline)
         }
       })
 
