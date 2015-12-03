@@ -1,5 +1,7 @@
 import dashboard from './dashboard'
 import login from './login'
+import pipelines from './pipelines'
+import pipelineExecutionDetails from './pipeline-execution-details'
 import projects from './projects'
 import applications from './applications'
 import applicationBuilds from './application-builds'
@@ -15,10 +17,13 @@ import configuration from './configuration'
 import users from './users'
 import slack from './slack'
 import email from './email'
+import user from './user'
 
 export default {
   dashboard,
   login,
+  pipelines,
+  pipelineExecutionDetails,
   projects,
   applications,
   applicationBuilds,
@@ -33,5 +38,6 @@ export default {
   configuration,
   users,
   slack,
-  email
+  email,
+  user
 }

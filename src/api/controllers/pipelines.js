@@ -1,16 +1,27 @@
 'use strict'
 
-let connection = require('../../db/connection')
-let logger = require('tracer').colorConsole()
+let basic = require('./basic-response-helper')
 
 module.exports = {
 
+  /**
+   * Sends a list of pipelines
+   *
+   * @param req
+   * @param res
+   */
   getList: (req, res) => {
-    connection.select().from('pipelines').then(function (pipelines) {
-      res.send({data: pipelines})
-    }).catch(err => {
-      logger.log(err)
-    })
+    basic.getList(req, res, 'pipelines')
+  },
+
+  /**
+   * Create a pipeline
+   *
+   * @param req
+   * @param res
+   */
+  createPipeline: (req, res) => {
+    basic.insertRespond(req, res, 'pipelines')
   }
 
 }

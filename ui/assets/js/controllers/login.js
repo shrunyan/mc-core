@@ -1,6 +1,10 @@
 export default ['$rootScope', '$http', '$q', function ($rootScope, $http, $q) {
 
   $rootScope.showLoginError = false
+  $rootScope.loginForm = {
+    email: '',
+    password: ''
+  }
 
   $rootScope.showLogin = function showLogin (originalResponse) {
 
@@ -16,16 +20,27 @@ export default ['$rootScope', '$http', '$q', function ($rootScope, $http, $q) {
 
   $rootScope.attemptLogin = function attemptLogin () {
 
-    let data = {
-      email: $rootScope.loginFormEmail,
-      password: $rootScope.loginFormPassword
-    }
+    $http.post('/login', $rootScope.loginForm).then((response) => {
 
-    $http.post('/login', data).then((response) => {
+      // If there was a request in progress, re-run it
+      if ($rootScope.originalResponse) {
+        $rootScope.promise.resolve($http($rootScope.originalResponse.config))
+      }
 
-      $rootScope.promise.resolve($http($rootScope.originalResponse.config))
+      // Hide login form
       jQuery('#login').hide()
+
+      // Reset login errors
       $rootScope.showLoginError = false
+
+      // Load/reload user details
+      $rootScope.loadAuthenticatedUser()
+
+      // Reset the form
+      $rootScope.loginForm = {
+        email: '',
+        password: ''
+      }
 
     }, () => {
 

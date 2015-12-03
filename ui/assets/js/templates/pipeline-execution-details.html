@@ -1,0 +1,192 @@
+
+<h1 style="margin-bottom: 0;margin-top: 39px;">Pipeline Execution #{{ execution.id }}</h1>
+<h4 style="margin-top: 0;color: #aaa;font-weight: normal;margin-bottom: 30px;">Server Build for Example Service</h4>
+<div class="row">
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Pipeline Details
+            </div>
+            <table class="table">
+                <tbody>
+                <tr>
+                    <th>Status</th>
+                    <td>
+                        <i class="fa fa-circle text-success"></i> <span class="text-success">Succeeded</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Name</th>
+                    <td>Pipeline #{{ execution.id }}</td>
+                </tr>
+                <tr>
+                    <th>Created by</th>
+                    <!--<td><i class="fa fa-github"></i> GitHub Webhook</td>-->
+                    <td><i class="octicon octicon-person"></i> Andy Fleming</td>
+                </tr>
+                <tr>
+                    <th>Created</th>
+                    <td>1 month ago<br><small class="text-muted">October 8 2015, 22:47:50 UTC</small></td>
+                </tr>
+                <tr>
+                    <th>Finished in</th>
+                    <td>2 minutes</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Steps
+            </div>
+            <table class="table">
+
+                <tbody><tr>
+                    <td>Step</td>
+                    <td>Status</td>
+                    <td>Name</td>
+                </tr>
+
+
+                <tr>
+                    <td class="text-muted">1</td>
+                    <td class="text-success"><i class="fa fa-check"></i> Succeeded</td>
+                    <td>Clone Repo<br><small class="text-muted">GitHub › Clone Repository</small></td>
+                </tr>
+
+
+                <tr>
+                    <td class="text-muted">2</td>
+                    <td class="text-success"><i class="fa fa-check"></i> Succeeded</td>
+                    <td>Pause for a few seconds<br><small class="text-muted">Mission Control › Pause Execution</small></td>
+                </tr>
+
+
+                <tr>
+                    <td class="text-muted">3</td>
+                    <td class="text-success"><i class="fa fa-check"></i> Succeeded</td>
+                    <td>Grab template.json<br><small class="text-muted">Mission Control › Copy File(s) to Workspace</small></td>
+                </tr>
+
+
+                <tr>
+                    <td class="text-muted">4</td>
+                    <td class="text-success"><i class="fa fa-check"></i> Succeeded</td>
+                    <td>Build Server AMI<br><small class="text-muted">Packer › Run</small></td>
+                </tr>
+
+
+                <tr>
+                    <td class="text-muted">5</td>
+                    <td class="text-success"><i class="fa fa-check"></i> Succeeded</td>
+                    <td>Pause for another few seconds<br><small class="text-muted">Mission Control › Pause Execution</small></td>
+                </tr>
+
+
+                </tbody></table>
+        </div><!-- end of steps panel -->
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Pipeline Logs
+            </div>
+            <table class="table">
+                <tbody><tr>
+                    <th class="text-center" style="width: 60px;">Step</th>
+                    <th class="text-center">Time</th>
+                    <th>Title</th>
+                    <th>Options</th>
+                </tr>
+                <tr>
+                    <td class="text-center text-muted" style="vertical-align: middle;">1</td>
+                    <td class="text-center text-muted" style="vertical-align: middle;">3:47pm</td>
+                    <td style="vertical-align: middle;" class="">Git clone command succeeded.</td>
+                    <td>
+                        <a class="btn btn-sm btn-default view-log-details"><span>View</span><span style="display:none;">Hide</span> Details <i class="fa fa-angle-down"></i></a>
+                    </td>
+                </tr>
+                <tr style="display:none;background: #fafafa">
+                    <td colspan="4"><h5>Exit Code and Text:</h5><pre>0 — OK</pre><h5>Output (STDOUT):</h5><pre class="shell-output"></pre><h5>Error Output (STDERR):</h5><pre class="shell-output">Cloning into 'example-service'...
+</pre></td>
+                </tr>
+
+                <tr>
+                    <td class="text-center text-muted" style="vertical-align: middle;">2</td>
+                    <td class="text-center text-muted" style="vertical-align: middle;">3:47pm</td>
+                    <td style="vertical-align: middle;" class="">Paused execution for 3 seconds.</td>
+                    <td>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="text-center text-muted" style="vertical-align: middle;">3</td>
+                    <td class="text-center text-muted" style="vertical-align: middle;">3:47pm</td>
+                    <td style="vertical-align: middle;" class="">Files copied into workspace</td>
+                    <td>
+                        <a class="btn btn-sm btn-default view-log-details"><span>View</span><span style="display:none;">Hide</span> Details <i class="fa fa-angle-down"></i></a>
+                    </td>
+                </tr>
+                <tr style="display:none;background: #fafafa">
+                    <td colspan="4"><pre>File 1 v1 copied into workspace as:
+/mission_control/workspaces/pipeline_execution_113/template.json
+
+</pre></td>
+                </tr>
+
+                <tr>
+                    <td class="text-center text-muted" style="vertical-align: middle;">4</td>
+                    <td class="text-center text-muted" style="vertical-align: middle;">3:50pm</td>
+                    <td style="vertical-align: middle;" class="">Packer command succeeded.</td>
+                    <td>
+                        <a class="btn btn-sm btn-default view-log-details"><span style="display: none;">View</span><span style="">Hide</span> Details <i class="fa fa-angle-up"></i></a>
+                    </td>
+                </tr>
+                <tr style="background: rgb(250, 250, 250);">
+                    <td colspan="4"><h5>Exit Code and Text:</h5><pre>0 — OK</pre><h5>Output (STDOUT):</h5><pre class="shell-output"><span class="green">amazon-ebs output will be in this color.</span>
+
+<span class="green">==&gt; amazon-ebs: Prevalidating AMI Name...</span>
+<span class="green">==&gt; amazon-ebs: Inspecting the source AMI...</span>
+<span class="green">==&gt; amazon-ebs: Creating temporary keypair: packer 5616f29c-72b3-bead-2abd-795ba4a2d090</span>
+<span class="green">==&gt; amazon-ebs: Creating temporary security group for this instance...</span>
+<span class="green">==&gt; amazon-ebs: Authorizing access to port 22 the temporary security group...</span>
+<span class="green">==&gt; amazon-ebs: Launching a source AWS instance...</span>
+<span class="bright-green">    amazon-ebs: Instance ID: i-e88e443c</span>
+<span class="green">==&gt; amazon-ebs: Waiting for instance (i-e88e443c) to become ready...</span>
+<span class="green">==&gt; amazon-ebs: Waiting for SSH to become available...</span>
+<span class="green">==&gt; amazon-ebs: Connected to SSH!</span>
+<span class="green">==&gt; amazon-ebs: Stopping the source instance...</span>
+<span class="green">==&gt; amazon-ebs: Waiting for the instance to stop...</span>
+<span class="green">==&gt; amazon-ebs: Creating the AMI: packer-example 1444344476</span>
+<span class="bright-green">    amazon-ebs: AMI: ami-4da9e628</span>
+<span class="green">==&gt; amazon-ebs: Waiting for AMI to become ready...</span>
+<span class="green">==&gt; amazon-ebs: Terminating the source AWS instance...</span>
+<span class="green">==&gt; amazon-ebs: Cleaning up any extra volumes...</span>
+<span class="green">==&gt; amazon-ebs: No volumes to clean up, skipping</span>
+<span class="green">==&gt; amazon-ebs: Deleting temporary security group...</span>
+<span class="green">==&gt; amazon-ebs: Deleting temporary keypair...</span>
+<span class="green">Build 'amazon-ebs' finished.</span>
+
+==&gt; Builds finished. The artifacts of successful builds are:
+--&gt; amazon-ebs: AMIs were created:
+
+us-east-1: ami-4da9e628
+</pre><h5>Error Output (STDERR):</h5><pre class="shell-output"></pre></td>
+                </tr>
+
+                <tr>
+                    <td class="text-center text-muted" style="vertical-align: middle;">5</td>
+                    <td class="text-center text-muted" style="vertical-align: middle;">3:50pm</td>
+                    <td style="vertical-align: middle;" class="">Paused execution for 3 seconds.</td>
+                    <td>
+                    </td>
+                </tr>
+
+                </tbody></table>
+        </div>
+
+
+    </div>
+</div>

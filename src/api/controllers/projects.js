@@ -2,31 +2,43 @@
 
 let connection = require('../../db/connection')
 let logger = require('tracer').colorConsole()
+let basic = require('./basic-response-helper')
 
 module.exports = {
+
+  /**
+   * Sends a list of projects
+   *
+   * @param req
+   * @param res
+   */
+  getProjects: (req, res) => {
+    basic.getListCustom(req, res, 'projects', query => {
+      query.orderBy('name', 'ASC')
+    })
+  },
+
+  /**
+   * Get projects with nested properties nested in each
+   *
+   * @param req
+   * @param res
+   */
   getProjectsWithPipelines: (req, res) => {
 
-    /*
-     .then(function (pipelines) {
-     res.send({data: pipelines})
-     }).catch(err => {
-     logger.log(err)
-     })
-     */
-
     let p1 = connection.select().from('pipelines')
-    let p2 = connection.select().from('projects')
+    let p2 = connection.select().orderBy('name', 'ASC').from('projects')
 
     Promise.all([p1, p2]).then((values) => {
       let pipelines = values[0]
       let projects = values[1]
       let pipelinesByProjectId = {}
 
-      pipelines.forEach((value) => {
-        if (!pipelinesByProjectId[value.project_id]) {
-          pipelinesByProjectId[value.project_id] = [value]
+      pipelines.forEach((pipeline) => {
+        if (!pipelinesByProjectId[pipeline.project_id]) {
+          pipelinesByProjectId[pipeline.project_id] = [pipeline]
         } else {
-          pipelinesByProjectId[value.project_id].push(value)
+          pipelinesByProjectId[pipeline.project_id].push(pipeline)
         }
       })
 
@@ -34,10 +46,22 @@ module.exports = {
         projects[index].pipelines = pipelinesByProjectId[project.id] || []
       })
 
-      res.send(projects)
+      res.send({data:projects})
 
     }).catch(err => {
-      logger.log(err)
+      logger.error(err)
+      res.status(500).send({message: 'An error occurred.'})
     })
+  },
+
+  /**
+   * Creates a project
+   *
+   * @param req
+   * @param res
+   */
+  createProject: (req, res) => {
+    basic.insertRespond(req, res, 'projects')
   }
+
 }

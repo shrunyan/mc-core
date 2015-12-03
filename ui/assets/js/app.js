@@ -27,10 +27,15 @@ app.config(['$httpProvider', ($httpProvider) => {
 
 }])
 
+app.run(controllers.user)
 app.run(controllers.login)
 
 // Routes
 addRoute('dashboard', '/dashboard', 'dashboard.html', controllers.dashboard)
+
+addRoute('pipelines', '/pipelines', 'pipelines.html', controllers.pipelines)
+addRoute('pipeline-execution-details', '/pipelines/executions/{id}', 'pipeline-execution-details.html', controllers.pipelineExecutionDetails)
+
 addRoute('projects', '/projects', 'projects.html', controllers.projects)
 
 addRoute('project', '/project/:project', '/project/project.html', controllers.project)
