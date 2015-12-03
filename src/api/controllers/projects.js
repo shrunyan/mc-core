@@ -4,6 +4,16 @@ let connection = require('../../db/connection')
 let logger = require('tracer').colorConsole()
 
 module.exports = {
+
+  getProjects: (req, res) => {
+    connection.select().from('projects').then((projects) => {
+      res.send({data: projects})
+    }).catch(err => {
+      logger.error(err)
+      res.status(500).send({message: 'An error occurred.'})
+    })
+  },
+
   getProjectsWithPipelines: (req, res) => {
 
     let p1 = connection.select().from('pipelines')
