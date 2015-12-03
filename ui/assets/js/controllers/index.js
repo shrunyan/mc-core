@@ -15,6 +15,7 @@ import configuration from './configuration'
 import users from './users'
 import slack from './slack'
 import email from './email'
+import user from './user'
 
 export default {
   dashboard,
@@ -33,5 +34,6 @@ export default {
   configuration,
   users,
   slack,
-  email
+  email,
+  user
 }

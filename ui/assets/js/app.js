@@ -27,6 +27,7 @@ app.config(['$httpProvider', ($httpProvider) => {
 
 }])
 
+app.run(controllers.user)
 app.run(controllers.login)
 
 // Routes
