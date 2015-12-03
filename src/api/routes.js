@@ -7,6 +7,7 @@ let middleware = {
 }
 let controllers = {
   pipelines: require('./controllers/pipelines'),
+  pipelineExecutions: require('./controllers/pipeline-executions'),
   projects: require('./controllers/projects'),
   user: require('./controllers/user')
 }
@@ -26,7 +27,7 @@ module.exports = function (app) {
   // Projects
   app.get('/api/projects', controllers.projects.getProjects)
   app.post('/api/projects', controllers.projects.createProject)
-  app.get('/api/projects-with-pipelines', controllers.projects.getProjectsWithPipelines)
+  app.get('/api/projects/with-pipelines', controllers.projects.getProjectsWithPipelines)
 
   // Pipelines
   app.get('/api/pipelines', controllers.pipelines.getList)
@@ -37,6 +38,7 @@ module.exports = function (app) {
 
   // Pipeline Executions
   // TODO: GET /api/pipeline-executions
+  app.get('/api/pipeline-executions/recent', controllers.pipelineExecutions.getRecent)
   // TODO: POST /api/pipeline-executions
 
   // Pipeline Stage Executions
