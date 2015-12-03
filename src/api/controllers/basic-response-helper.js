@@ -27,7 +27,14 @@ module.exports = {
     item.updated_at = new Date()
 
     connection.insert(item, 'id').into(table).then((id) => {
-      res.status(201).send({id: id})
+
+      connection.table(table).where('id', id).first().then((item) => {
+        res.status(201).send({data: item})
+      }).catch(err => {
+        logger.error(err)
+        res.status(500).send({message: 'An error occurred.'})
+      })
+
     }).catch(err => {
       logger.error(err)
       res.status(500).send({message: 'An error occurred.'})
