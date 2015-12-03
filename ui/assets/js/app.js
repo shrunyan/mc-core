@@ -33,6 +33,7 @@ app.run(controllers.login)
 // Routes
 addRoute('dashboard', '/dashboard', 'dashboard.html', controllers.dashboard)
 addRoute('pipelines', '/pipelines', 'pipelines.html', controllers.pipelines)
+addRoute('pipeline-execution-details', '/pipelines/executions/{id}', 'pipeline-execution-details.html', controllers.pipelineExecutionDetails)
 
 addRoute('applications', '/resources/applications', 'applications.html', controllers.applications)
 addRoute('application-builds', '/resources/application-builds', 'application-builds.html', controllers.applicationBuilds)
