@@ -1,4 +1,5 @@
 {
+  "root": true,
   "extends": "standard",
   "rules": {
     "padded-blocks": 0
