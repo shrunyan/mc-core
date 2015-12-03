@@ -32,7 +32,7 @@ app.run(controllers.login)
 
 // Routes
 addRoute('dashboard', '/dashboard', 'dashboard.html', controllers.dashboard)
-addRoute('jobs', '/jobs', 'jobs.html', controllers.jobs)
+addRoute('pipelines', '/pipelines', 'pipelines.html', controllers.pipelines)
 
 addRoute('applications', '/resources/applications', 'applications.html', controllers.applications)
 addRoute('application-builds', '/resources/application-builds', 'application-builds.html', controllers.applicationBuilds)

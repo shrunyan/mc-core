@@ -1,6 +1,6 @@
 import dashboard from './dashboard'
 import login from './login'
-import jobs from './jobs'
+import pipelines from './pipelines'
 import applications from './applications'
 import applicationBuilds from './application-builds'
 import servers from './servers'
@@ -20,7 +20,7 @@ import user from './user'
 export default {
   dashboard,
   login,
-  jobs,
+  pipelines,
   applications,
   applicationBuilds,
   servers,
