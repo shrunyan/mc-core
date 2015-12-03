@@ -1,0 +1,125 @@
+<section class="container-fluid">
+
+  <div class="row">
+    <div class="col-md-12">
+      <h1>{{ project.name }}</h1>
+    </div>
+  </div>
+
+  <div class="row">
+    Details
+  </div>
+
+</section>
+
+
+<!-- <div class="row">
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Active Jobs
+            </div>
+            <table class="table">
+                <tbody>
+                @forelse ($activeJobs as $job)
+                    <tr>
+                        <td class="text-center" style="vertical-align:middle;width: 30px;padding-right: 0;">
+                            @if ($job->status_id == 1)
+                                <i class="fa fa-refresh fa-hourglass-2"></i>
+                            @endif
+                            @if ($job->status_id == 2)
+                                <i class="fa fa-refresh fa-spin"></i>
+                            @endif
+                            @if ($job->status_id == 3)
+                                <i class="fa fa-circle text-success"></i>
+                            @endif
+                            @if ($job->status_id == 4)
+                                <i class="fa fa-circle text-danger"></i>
+                            @endif
+                        </td>
+                        <td><a href="/jobs/{{ $job->id }}">Job #{{ $job->id }}</a><br><small class="text-muted">{{ $job->configuration->name }}</small></td>
+                    </tr>
+                @empty
+                <tr>
+                    <td><em class="text-muted">No active jobs</em></td>
+                </tr>
+                @endforelse
+                </tbody>
+            </table>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Recent Job Executions
+            </div>
+            <table class="table">
+                <tbody>
+                @forelse ($recentJobs as $job)
+                <tr>
+                    <td class="text-center" style="vertical-align:middle;width: 30px;padding-right: 0;">
+                        @if ($job->status_id == 1)
+                        <i class="fa fa-refresh fa-hourglass-2"></i>
+                        @endif
+                        @if ($job->status_id == 2)
+                        <i class="fa fa-refresh fa-spin"></i>
+                        @endif
+                        @if ($job->status_id == 3)
+                        <i class="fa fa-circle text-success"></i>
+                        @endif
+                        @if ($job->status_id == 4)
+                        <i class="fa fa-circle text-danger"></i>
+                        @endif
+                    </td>
+                    <td><a href="/jobs/{{ $job->id }}">Job #{{ $job->id }}</a><br><small class="text-muted">{{ $job->configuration->name }}</small></td>
+                </tr>
+                @empty
+                <tr>
+                    <td><em class="text-muted">No recent jobs</em></td>
+                </tr>
+                @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Job Configurations
+            </div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Recent Executions</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach ($jobConfigurations as $jobConfiguration)
+                <tr>
+                    <td><a href="/jobs/configurations/{{ $jobConfiguration->id }}"><strong>{{ $jobConfiguration->name }}</strong></a></td>
+                    <td>
+                        @foreach ($recentJobsForConfigurations[$jobConfiguration->id] as $job)
+                            @if ($job->status_id == 1)
+                                <a href="/jobs/{{ $job->id }}"><i class="fa fa-refresh fa-hourglass-2"></i></a>&nbsp;
+                            @endif
+                            @if ($job->status_id == 2)
+                                <a href="/jobs/{{ $job->id }}"><i class="fa fa-refresh fa-spin"></i></a>&nbsp;
+                            @endif
+                            @if ($job->status_id == 3)
+                                <a href="/jobs/{{ $job->id }}"><i class="fa fa-circle text-success"></i></a>&nbsp;
+                            @endif
+                            @if ($job->status_id == 4)
+                                <a href="/jobs/{{ $job->id }}"><i class="fa fa-circle text-danger"></i></a>&nbsp;
+                            @endif
+
+                        @endforeach
+                    </td>
+                </tr>
+                @endforeach
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+ -->
