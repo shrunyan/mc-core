@@ -24,7 +24,7 @@ module.exports = function (app) {
   app.get('/api/user', controllers.user.getUser)
 
   // Projects
-  // TODO: GET /api/projects
+  app.get('/api/projects', controllers.projects.getProjects)
   // TODO: POST /api/projects
   app.get('/api/projects-with-pipelines', controllers.projects.getProjectsWithPipelines)
 
