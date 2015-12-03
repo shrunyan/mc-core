@@ -6,14 +6,6 @@ let logger = require('tracer').colorConsole()
 module.exports = {
   getProjectsWithPipelines: (req, res) => {
 
-    /*
-     .then(function (pipelines) {
-     res.send({data: pipelines})
-     }).catch(err => {
-     logger.log(err)
-     })
-     */
-
     let p1 = connection.select().from('pipelines')
     let p2 = connection.select().from('projects')
 
