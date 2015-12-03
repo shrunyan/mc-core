@@ -1,11 +1,16 @@
+'use strict'
+
+let connection = require('../../db/connection')
+let logger = require('tracer').colorConsole()
+
 module.exports = {
 
   getList: (req, res) => {
-
-    res.send({
-      data: [1, 2, 3, 4]
+    connection.select().from('pipelines').then(function (pipelines) {
+      res.send({data: pipelines})
+    }).catch(err => {
+      logger.log(err)
     })
-
   }
 
 }
