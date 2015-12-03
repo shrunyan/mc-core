@@ -13,7 +13,9 @@ module.exports = {
    * @param res
    */
   getProjects: (req, res) => {
-    basic.getList(req, res, 'projects')
+    basic.getListCustom(req, res, 'projects', query => {
+      query.orderBy('name', 'ASC')
+    })
   },
 
   /**
@@ -25,7 +27,7 @@ module.exports = {
   getProjectsWithPipelines: (req, res) => {
 
     let p1 = connection.select().from('pipelines')
-    let p2 = connection.select().from('projects')
+    let p2 = connection.select().orderBy('name', 'ASC').from('projects')
 
     Promise.all([p1, p2]).then((values) => {
       let pipelines = values[0]
