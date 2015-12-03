@@ -14,7 +14,7 @@ module.exports = {
     basic.getListCustom(req, res, 'pipeline_executions', function(query) {
       return query
         .orderBy('finished_at', 'desc')
-        .take(10)
+        .limit(10)
     })
   }
 
