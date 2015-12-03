@@ -1,1 +1,69 @@
 <h1>Pipelines</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Recently Completed Executions
+            </div>
+            <table class="table">
+                <tbody>
+                <tr ng-repeat="pe in pipelineExecutions">
+                    <td class="text-center" style="vertical-align:middle;width: 30px;padding-right: 0;">
+                        <i class="fa fa-circle text-success"></i>
+                    </td>
+                    <td><a ui-sref="pipeline-execution({id: pe.id})">Job #{{ pe.id }}</a><br><small class="text-muted">MC Test</small></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <a ui-sref="pipeline-executions">View All</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="panel panel-default" ng-repeat="project in projects">
+            <div class="panel-heading">
+                <i class="fa fa-code"></i> {{ project.name }}
+            </div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Recent Executions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="pipeline in project.pipelines">
+                    <td><a href="/jobs/configurations/1"><strong><i class="fa fa-tasks"></i> {{ pipeline.name }}</strong></a></td>
+                    <td>
+                        <a href="/jobs/113"><i class="fa fa-circle text-success"></i></a>&nbsp;
+
+                        <a href="/jobs/112"><i class="fa fa-circle text-danger"></i></a>&nbsp;
+
+                        <a href="/jobs/111"><i class="fa fa-circle text-danger"></i></a>&nbsp;
+
+                        <a href="/jobs/110"><i class="fa fa-circle text-danger"></i></a>&nbsp;
+
+                        <a href="/jobs/109"><i class="fa fa-circle text-danger"></i></a>&nbsp;
+
+                        <a href="/jobs/108"><i class="fa fa-circle text-danger"></i></a>&nbsp;
+
+                        <a href="/jobs/107"><i class="fa fa-circle text-danger"></i></a>&nbsp;
+
+                        <a href="/jobs/106"><i class="fa fa-circle text-danger"></i></a>&nbsp;
+
+                    </td>
+                </tr>
+                <tr ng-if="project.pipelines.length === 0">
+                   <td colspan="2" class="text-center" style="line-height: 30px; padding: 20px 10px"><!--<em class="text-muted">No pipelines have been created for this project yet.</em>
+                       <br>--><a href="#" class="btn btn-default btn-xs"><i class="fa fa-plus text-muted"></i> Create New Pipeline</a>
+                   </td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div></div>
