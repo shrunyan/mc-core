@@ -30,6 +30,7 @@ module.exports = {
 
     }).catch(err => {
       logger.log(err)
+      res.status(500).send({message: 'An error occurred.'})
     })
   }
 }
