@@ -29,7 +29,7 @@
                 <i class="fa fa-code"></i> {{ project.name }}
             </div>
             <table class="table">
-                <thead>
+                <thead ng-if="project.pipelines.length !== 0">
                 <tr>
                     <th>Type</th>
                     <th>Recent Executions</th>
