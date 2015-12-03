@@ -22,6 +22,30 @@ module.exports = {
   },
 
   /**
+   * A basic lookup with extra query builder modifications
+   *
+   * @param {object} req
+   * @param {object} res
+   * @param {string} table
+   * @param {function} queryModifications
+   */
+  getListCustom: (req, res, table, queryModifications) => {
+
+    let query = connection.select()
+
+    // Apply query modifications
+    query = queryModifications(query)
+
+    // continue the query as usual
+    query.from(table).then(items => {
+      res.send({data: items})
+    }).catch(err => {
+      logger.error(err)
+      res.status(500).send({message: 'An error occurred.'})
+    })
+  },
+
+  /**
    * Basic insert and returns the new object
    *
    * @param req
