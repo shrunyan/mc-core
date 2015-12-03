@@ -29,7 +29,7 @@ module.exports = {
       res.send({data:projects})
 
     }).catch(err => {
-      logger.log(err)
+      logger.error(err)
       res.status(500).send({message: 'An error occurred.'})
     })
   }
