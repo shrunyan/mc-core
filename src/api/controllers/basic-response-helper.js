@@ -5,6 +5,13 @@ let logger = require('tracer').colorConsole()
 
 module.exports = {
 
+  /**
+   * A basic list of items lookup and response
+   *
+   * @param req
+   * @param res
+   * @param table
+   */
   getList: (req, res, table) => {
     connection.select().from(table).then((items) => {
       res.send({data: items})
@@ -14,6 +21,13 @@ module.exports = {
     })
   },
 
+  /**
+   * Basic insert and returns the new object
+   *
+   * @param req
+   * @param res
+   * @param table
+   */
   insertRespond: (req, res, table) => {
 
     // Create a new object from the incoming data
