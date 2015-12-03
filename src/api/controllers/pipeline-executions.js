@@ -35,6 +35,13 @@ module.exports = {
     Promise.all([p1]).then((values) => {
       let execution = values[0]
 
+      // Append owner
+      execution.owner = {
+        id: 1,
+        first_name: 'Andy',
+        last_name: 'Fleming'
+      }
+
       // Append stage executions
       execution.stageExecutions = []
 
