@@ -2,7 +2,7 @@
 
 exports.up = function (knex, Promise) {
 
-  return knex.schema.createTable('service_groups', function (table) {
+  return knex.schema.createTable('projects', function (table) {
     table.increments()
     table.string('name')
     table.timestamp('created_at').nullable()
@@ -13,6 +13,6 @@ exports.up = function (knex, Promise) {
 
 exports.down = function (knex, Promise) {
 
-  return knex.schema.dropTable('service_groups')
+  return knex.schema.dropTable('projects')
 
 }

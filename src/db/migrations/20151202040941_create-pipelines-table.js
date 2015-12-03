@@ -4,7 +4,7 @@ exports.up = function (knex, Promise) {
 
   return knex.schema.createTable('pipelines', function (table) {
     table.increments()
-    table.integer('service_group_id')
+    table.integer('project_id')
     table.string('name')
     table.timestamp('created_at').nullable()
     table.timestamp('updated_at').nullable()
