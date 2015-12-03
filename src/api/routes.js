@@ -39,6 +39,7 @@ module.exports = function (app) {
   // Pipeline Executions
   // TODO: GET /api/pipeline-executions
   app.get('/api/pipeline-executions/recent', controllers.pipelineExecutions.getRecent)
+  app.get('/api/pipeline-executions/:id/with-details', controllers.pipelineExecutions.getOneWithDetails)
   // TODO: POST /api/pipeline-executions
 
   // Pipeline Stage Executions
