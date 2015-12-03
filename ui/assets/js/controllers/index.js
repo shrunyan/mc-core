@@ -1,6 +1,6 @@
 import dashboard from './dashboard'
 import login from './login'
-import jobs from './jobs'
+import projects from './projects'
 import applications from './applications'
 import applicationBuilds from './application-builds'
 import servers from './servers'
@@ -19,7 +19,7 @@ import email from './email'
 export default {
   dashboard,
   login,
-  jobs,
+  projects,
   applications,
   applicationBuilds,
   servers,
