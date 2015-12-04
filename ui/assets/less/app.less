@@ -85,6 +85,11 @@ a, a:active, a:visited, a:hover {
     i {
         color: #675C7B;
         font-size: 14px;
+
+        // For this icon, it looks better without font-smoothing on in chrome
+        &.fa-alt-list {
+            -webkit-font-smoothing: none;
+        }
     }
 }
 
