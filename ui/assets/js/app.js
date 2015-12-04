@@ -50,10 +50,6 @@ addRoute('servers', '/resources/servers', '/resources/servers.html', controllers
 addRoute('files', '/resources/files', '/resources/files.html', controllers.files)
 addRoute('credentials', '/resources/credentials', '/resources/credentials.html', controllers.credentials)
 addRoute('github-repositories', '/resources/github-repositories', '/resources/github-repositories.html', controllers.githubRepositories)
-addRoute('ami', '/resources/ami', '/resources/ami.html', controllers.ami)
-addRoute('elb', '/resources/elb', '/resources/elb.html', controllers.elb)
-addRoute('asg', '/resources/asg', '/resources/asg.html', controllers.asg)
-addRoute('ec2', '/resources/ec2', '/resources/ec2.html', controllers.ec2)
 
 addRoute('configuration', '/settings/general/configuration', '/settings/general/configuration.html', controllers.configuration)
 addRoute('users', '/settings/general/users', '/settings/general/users.html', controllers.users)
