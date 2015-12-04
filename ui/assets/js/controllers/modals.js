@@ -7,7 +7,6 @@ export default ['$rootScope', '$uibModal', function ($rootScope, $uibModal) {
   $rootScope.modal.createProject = function createProject (callback) {
 
     var modalInstance = $uibModal.open({
-      animation: true,
       templateUrl: '/assets/js/templates/create-project-modal.html',
       controller: createProjectModalController
     })
