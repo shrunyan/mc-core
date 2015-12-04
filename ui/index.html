@@ -41,16 +41,16 @@
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
 			<ul class="nav navbar-nav">
-				<li><a href="#/dashboard">Dashboard</a></li>
-				<li><a href="#/pipelines">Pipelines</a></li>
-				<li><a href="#/jobs">Monitoring</a></li>
+				<li><a href="#/dashboard"><i class="fa fa-list-alt"></i> Dashboard</a></li>
+				<li><a ui-sref="projects"><i class="fa fa-code"></i> Projects</a></li>
+				<li ui-sref-active="active"><a ui-sref="pipelines"><i class="fa fa-tasks"></i> Pipelines</a></li>
+				<li><a ui-sref="health"><i class="fa fa-heartbeat"></i> Health</a></li>
 				<li class="dropdown">
 					<a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-					   aria-expanded="false">Resources <span class="caret"></span></a>
+					   aria-expanded="false"><i class="fa fa-cubes"></i> Resources <span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li class="dropdown-header">Mission Control</li>
-            <li><a href="#/projects"><i class="fa fa-code"></i> Projects</a></li>
-            <li><a href="#/resources/application-builds"><i class="octicon octicon-package"></i> Application Builds</a></li>
+						<!--<li><a href="#/resources/application-builds"><i class="octicon octicon-package"></i> Application Builds</a></li>-->
 						<li><a href="#/resources/files"><i class="fa fa-file"></i> Files</a></li>
 						<li><a href="#/resources/credentials"><i class="fa fa-key"></i> Credentials</a></li>
 						<!--<li><a href="#/resources/servers"><i class="octicon octicon-server"></i> Servers</a></li>-->
@@ -67,7 +67,7 @@
 				</li>
 				<li class="dropdown">
 					<a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-					   aria-expanded="false">Settings <span class="caret"></span></a>
+					   aria-expanded="false"><i class="fa fa-gears"></i> Settings <span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li class="dropdown-header">General</li>
 						<li><a href="#/settings/general/configuration"><i class="fa fa-cogs"></i> Configuration</a></li>
