@@ -14,7 +14,7 @@ module.exports = {
    */
   getProjects: (req, res) => {
     basic.getListCustom(req, res, 'projects', query => {
-      query.orderBy('name', 'ASC')
+      return query.orderBy('name', 'ASC')
     })
   },
 
