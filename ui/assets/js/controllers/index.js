@@ -3,6 +3,7 @@ import login from './login'
 import pipelines from './pipelines'
 import pipelineExecutionDetails from './pipeline-execution-details'
 import projects from './projects'
+import health from './health'
 import applications from './applications'
 import applicationBuilds from './application-builds'
 import servers from './servers'
@@ -22,9 +23,10 @@ import user from './user'
 export default {
   dashboard,
   login,
+  projects,
   pipelines,
   pipelineExecutionDetails,
-  projects,
+  health,
   applications,
   applicationBuilds,
   servers,

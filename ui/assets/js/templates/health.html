@@ -1,0 +1,40 @@
+<h1>Project Health Checks</h1>
+
+<div class="row">
+    <div class="col-md-4" ng-repeat="proj in projects">
+        <div class="panel panel-default">
+            <div class="panel-heading"><i class="fa fa-code"></i> {{ proj.name }}</div>
+            <table class="table">
+                <tr ng-if="$index !== 1 && $index !== 3">
+                    <td class="text-center" style="line-height: 30px; padding: 20px 10px"><em class="text-muted">No checks configured.</em>
+                        <br><a href="#" class="btn btn-default btn-xs"><i class="fa fa-plus text-muted"></i> Create New Health Check</a>
+                    </td>
+                </tr>
+                <tr ng-if="$index === 1 || $index === 3">
+                    <td>
+                        <i class="fa fa-circle text-success"></i>
+                    </td>
+                    <td>
+                        <i class="fa fa-amazon"></i>
+                    </td>
+                    <td>
+                        CloudWatch Health Check
+                    </td>
+                </tr>
+                <tr ng-if="$index === 3">
+                    <td>
+                        <i class="fa fa-circle text-success"></i>
+                    </td>
+                    <td>
+                        <img width="18" height="18" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyhpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDY3IDc5LjE1Nzc0NywgMjAxNS8wMy8zMC0yMzo0MDo0MiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MjVEQTRFNzA5MjQ5MTFFNTgxNjREQTgzMzhBNzAxOTUiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MjVEQTRFNkY5MjQ5MTFFNTgxNjREQTgzMzhBNzAxOTUiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTQgKE1hY2ludG9zaCkiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoyQjVBMjVERUYxMjQxMUU0OUQ0NkJBMDcyMTE3NTFCMyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoyQjVBMjVERkYxMjQxMUU0OUQ0NkJBMDcyMTE3NTFCMyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Ppp+fhMAAAsbSURBVHja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
+" />
+                    </td>
+                    <td>
+                        zesty.io website ping
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+</div>
