@@ -32,6 +32,7 @@ module.exports = function (app) {
   // Pipelines
   app.get('/api/pipelines', controllers.pipelines.getList)
   app.post('/api/pipelines', controllers.pipelines.createPipeline)
+  app.post('/api/pipelines/:id/execute', controllers.pipelines.executePipeline)
 
   // Pipeline Stages
   // TODO: /api/pipelines
