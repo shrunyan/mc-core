@@ -80,15 +80,25 @@ a, a:active, a:visited, a:hover {
     //font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-family: "Helvetica Neue", HelveticaNeue, "TeX Gyre Heros", TeXGyreHeros, FreeSans, "Nimbus Sans L", "Liberation Sans", Arimo, Helvetica, Arial, sans-serif;
     color: @mission-control-light;
+    font-size: 15px;
+
+    i {
+        color: #675C7B;
+        font-size: 14px;
+    }
 }
 
-//.navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:focus, .navbar-inverse .navbar-nav > .active > a:hover {
-//    background-color: transparent;
-//    //color: #69499a;
-//    //color: #42B5D2;
-//    color: @mission-control-light;
-//    font-weight: bold;
-//}
+.navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:focus, .navbar-inverse .navbar-nav > .active > a:hover {
+    //background-color: #332C40;
+    background-color: transparent;
+    color: #fff;
+    -webkit-font-smoothing: auto;
+    //font-weight: bold;
+
+    i {
+        color: white;
+    }
+}
 
 // Navbar logo
 .navbar-inverse .navbar-brand {
