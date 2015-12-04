@@ -29,6 +29,8 @@ app.config(['$httpProvider', ($httpProvider) => {
 
 app.run(controllers.user)
 app.run(controllers.login)
+app.run(controllers.modals)
+app.run(controllers.helpers)
 
 // Routes
 addRoute('dashboard', '/dashboard', 'dashboard.html', controllers.dashboard)

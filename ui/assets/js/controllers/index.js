@@ -1,3 +1,5 @@
+import modals from './modals'
+import helpers from './helpers'
 import dashboard from './dashboard'
 import login from './login'
 import pipelines from './pipelines'
@@ -21,6 +23,8 @@ import email from './email'
 import user from './user'
 
 export default {
+  modals,
+  helpers,
   dashboard,
   login,
   projects,
