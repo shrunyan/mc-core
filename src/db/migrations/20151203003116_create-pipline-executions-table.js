@@ -10,6 +10,8 @@ exports.up = function (knex, Promise) {
     table.timestamp('finished_at').nullable()
     table.timestamp('created_at').nullable()
     table.timestamp('updated_at').nullable()
+    table.text('initial_values')
+    table.text('config_snapshot')
   })
 
 }
