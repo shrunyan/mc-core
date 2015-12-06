@@ -32,8 +32,20 @@ module.exports = {
    * @param res
    */
   executePipeline: (req, res) => {
-    executePipelineCommand(req.params.id, req.body)
-    res.status(200).send()
+    try {
+      executePipelineCommand(req.params.id, req.body, (id) => {
+
+        res.status(200).send({
+          data: {
+            pipeline_execution_id: id
+          }
+        })
+
+      })
+
+    } catch (err) {
+      res.status(500).send()
+    }
   }
 
 }
