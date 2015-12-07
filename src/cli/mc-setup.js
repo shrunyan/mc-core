@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-'use strict';
+'use strict'
 
 require('dotenv').load({
   path: __dirname + '/../../.env'
@@ -50,7 +50,6 @@ checkRedisConn()
   .then(createMysqlUserRecord)
   .then(() => process.exit(0))
 
-
 function checkRedisConn () {
   return new Promise((resolve) => {
     redisClient
@@ -76,7 +75,7 @@ function checkMysqlConn () {
       .catch((err) => {
         console.log(colors.red('MySQL', err))
       })
-    })
+  })
 }
 
 function checkMysqlUserTable () {
@@ -98,6 +97,7 @@ function checkMysqlUserTable () {
 function createMysqlUserTable () {
   return new Promise((resolve) => {
     promptly.confirm('Run Mission Control MySQL Migrations? [y/n]', (err, value) => {
+      if (err) { console.log(err) }
       if (value) {
         console.log(colors.gray('Running Migrations...'))
         mysql
@@ -123,7 +123,7 @@ function createMysqlUserTable () {
 function enterEmail () {
   return new Promise((resolve) => {
     promptly.prompt('Enter your Misison Control email.', (err, email) => {
-      if (err) {console.log(err)}
+      if (err) { console.log(err) }
       resolve({email})
     })
   })
@@ -132,7 +132,7 @@ function enterEmail () {
 function enterPassword (user) {
   return new Promise((resolve) => {
     promptly.prompt('Enter your Misison Control password.', (err, password) => {
-      if (err) {console.log(err)}
+      if (err) { console.log(err) }
       user['password'] = bcrypt.hashSync(password, 10)
       resolve(user)
     })
@@ -142,7 +142,7 @@ function enterPassword (user) {
 function enterFirstName (user) {
   return new Promise((resolve) => {
     promptly.prompt('Enter your First Name.', (err, first) => {
-      if (err) {console.log(err)}
+      if (err) { console.log(err) }
       user['first_name'] = first
       resolve(user)
     })
@@ -152,7 +152,7 @@ function enterFirstName (user) {
 function enterLastName (user) {
   return new Promise((resolve) => {
     promptly.prompt('Enter your Last Name.', (err, last) => {
-      if (err) {console.log(err)}
+      if (err) { console.log(err) }
       user['last_name'] = last
       resolve(user)
     })
@@ -186,4 +186,3 @@ function createMysqlUserRecord () {
     })
   })
 }
-
