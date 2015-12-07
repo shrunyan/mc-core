@@ -1,3 +1,5 @@
+'use strict'
+
 let RSMQWorker = require('rsmq-worker')
 let dotenv = require('dotenv')
 
