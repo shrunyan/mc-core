@@ -12,8 +12,7 @@ let worker = new RSMQWorker('pipeline_executions', {
 worker.on('message', function (msg, next) {
 
   // process your message
-  console.log('message received')
-  console.log(msg)
+  console.log('message received. ID: ' + msg)
   next()
 
 })
