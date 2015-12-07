@@ -16,6 +16,7 @@ module.exports = {
     basic.getListCustom(req, res, 'pipeline_executions', function(query) {
       return query
         .orderBy('finished_at', 'desc')
+        .whereNotNull('finished_at')
         .limit(10)
     })
   },
