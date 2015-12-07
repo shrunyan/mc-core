@@ -41,7 +41,7 @@ module.exports = (pipelineId, input, callback) => {
         // Mark new execution as queued (using the id captured above)
         connection('pipeline_executions')
           .where('id', newExecutionId)
-          .update('status','queued').catch(err => {
+          .update('status', 'queued').catch(err => {
             logger.error(err)
           })
 
