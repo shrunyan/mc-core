@@ -13,7 +13,7 @@
     "build": "node_modules/.bin/gulp",
     "postinstall": "npm run build",
     "start": "./node_modules/.bin/nf start",
-    "dev": "node_modules/.bin/gulp watch & nodemon src/server.js nodemon src/worker-pipelines.js"
+    "dev": "node_modules/.bin/gulp watch & nodemon src/server.js & nodemon src/worker-pipelines.js"
   },
   "author": "Andy Fleming <andy@zesty.io>",
   "contributors": [
