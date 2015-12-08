@@ -48,7 +48,7 @@ module.exports = function (app) {
   // Pipeline Execution Logs
 
   // Static files
-  app.use(express.static('./ui-build/'))
+  app.use(express.static('./node_modules/mc-core/ui-build/'))
 
   // 404
   app.use(middleware.notFound)
