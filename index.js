@@ -9,11 +9,6 @@ let commands = {
     run: require('./src/cli/dev')
 }
 
-console.log(__dirname)
-console.log(process.cwd())
-
-process.exit(0)
-
 // make sure this is being run from the mission-control package
 let packageFile = JSON.parse(fs.readFileSync('package.json').toString())
 
