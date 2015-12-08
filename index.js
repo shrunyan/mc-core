@@ -5,8 +5,8 @@ let fs = require('fs')
 let commands = {
     help: require('./src/cli/help'),
     setup: require('./src/cli/setup'),
-    dev: require('./src/cli/dev'),
-    run: require('./src/cli/dev')
+    start: require('./src/cli/start'),
+    stop: require('./src/cli/stop')
 }
 
 // make sure this is being run from the mission-control package
@@ -28,16 +28,16 @@ if (args.length === 0) {
 
 switch (args[0]) {
 
-    case 'dev':
-        commands.dev()
-        break
-
     case 'setup':
         commands.setup()
         break
 
-    case 'run':
-        commands.run()
+    case 'start':
+        commands.start(args)
+        break
+
+    case 'stop':
+        commands.stop()
         break
 
     case 'help':

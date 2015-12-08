@@ -4,6 +4,8 @@ let RSMQWorker = require('rsmq-worker')
 let dotenv = require('dotenv')
 let logger = require('tracer').colorConsole()
 
+console.log('Starting worker for pipelines')
+
 dotenv.load()
 
 let worker = new RSMQWorker('pipeline_executions', {
