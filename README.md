@@ -1,10 +1,8 @@
 # Mission Control Core *(work in progress)*
 
-> **NOTE: This is the core repository for Mission Control.**
-> 
-> **To start a new mission control project, see the [space-race/mission-control](https://github.com/space-race/mission-control) repository.**
+This is the core repository for Mission Control.
 
----
+> **NOTE: To start a new mission control project, see the [space-race/mission-control](https://github.com/space-race/mission-control) repository.**
 
 [![Build Status](https://travis-ci.org/space-race/mc-core.svg)](https://travis-ci.org/space-race/mc-core)
 [![Dependency Status](https://david-dm.org/space-race/mc-core.svg)](https://david-dm.org/space-race/mc-core)
