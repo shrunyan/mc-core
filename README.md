@@ -1,8 +1,8 @@
 # Mission Control Core *(work in progress)*
 
-This is the core repository for Mission Control.
-
-To start a new mission control project, see the [space-race/mission-control repo](https://github.com/space-race/mission-control).
+> **NOTE: This is the core repository for Mission Control.**
+> 
+> **To start a new mission control project, see the [space-race/mission-control](https://github.com/space-race/mission-control) repository.**
 
 ---
 
@@ -13,8 +13,6 @@ To start a new mission control project, see the [space-race/mission-control repo
 [![Downloads](https://img.shields.io/npm/dt/mc-core.svg)](https://www.npmjs.com/package/mc-core)
 [![Docs Link](https://img.shields.io/badge/style-spacerace.io-brightgreen.svg?style=flat&label=docs)](http://spacerace.io/mission-control/docs)
 [![Slack Status](https://space-race-slackin.herokuapp.com/badge.svg)](https://space-race-slackin.herokuapp.com/)
-
-
 
 ## Project Sponsors
 
