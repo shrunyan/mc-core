@@ -8,12 +8,12 @@
   },
   "main": "build/server.js",
   "scripts": {
-    "lint": "./node_modules/.bin/eslint src/**/*.js src/**/**/*.js src/**/**/**/*.js ui/**/*.js ui/**/**/*.js ui/**/**/**/*.js; exit 0",
+    "lint": "./node_modules/.bin/eslint .; exit 0",
     "test": "",
     "build": "node_modules/.bin/gulp",
     "postinstall": "npm run build",
     "start": "./node_modules/.bin/nf start",
-    "dev": "node_modules/.bin/gulp watch & nodemon src/server.js nodemon src/worker-jobs.js"
+    "dev": "node_modules/.bin/gulp watch & nodemon src/server.js & nodemon src/worker-pipelines.js"
   },
   "author": "Andy Fleming <andy@zesty.io>",
   "contributors": [

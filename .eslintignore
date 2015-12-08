@@ -1,2 +1,6 @@
 # ignore node_modules directories
 **/node_modules/**
+extensions/**
+logs/**
+storage/**
+ui-build/**
