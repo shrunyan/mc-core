@@ -6,7 +6,7 @@ module.exports = [
         script: 'node_modules/mc-core/src/server.js'
     },
     {
-        name: 'mc--pipelines-worker',
+        name: 'mc-worker-pipelines',
         script: 'node_modules/mc-core/src/worker-pipelines.js'
     }
 ]
