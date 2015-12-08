@@ -1,7 +1,7 @@
 {
   "name": "mc-core",
-  "version": "0.0.3",
-  "description": "",
+  "version": "0.0.4",
+  "description": "Deployments made simple",
   "repository": {
     "type": "git",
     "url": "https://github.com/space-race/mc-core.git"
