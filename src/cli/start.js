@@ -23,6 +23,7 @@ module.exports = (args) => {
 
             // Disconnect to PM2 (and exit this script after)
             pm2.disconnect(function() {
+                console.log('Mission Control Processes running.')
                 process.exit(0)
             });
 

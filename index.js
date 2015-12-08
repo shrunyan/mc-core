@@ -42,7 +42,7 @@ switch (args[0]) {
         break
 
     case 'stop':
-        commands.stop()
+        commands.stop(args)
         break
 
     case 'help':
