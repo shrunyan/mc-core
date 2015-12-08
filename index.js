@@ -20,21 +20,27 @@ if (packageFile.name !== 'mission-control') {
 // Get args after node example.js
 let args = process.argv.slice(2)
 
-switch (args) {
+// If there was no command specified, display the help
+if (args.length === 0) {
+    commands.help()
+    process.exit(0)
+}
 
-    case (args[0] === 'dev'):
+switch (args[0]) {
+
+    case 'dev':
         commands.dev()
         break
 
-    case (args[0] === 'setup'):
+    case 'setup':
         commands.setup()
         break
 
-    case (args[0] === 'run'):
+    case 'run':
         commands.run()
         break
 
-    case (args[0] === 'help'):
+    case 'help':
         commands.help()
         break
 
