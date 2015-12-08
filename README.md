@@ -6,8 +6,6 @@
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 [![Docs Link](https://img.shields.io/badge/style-spacerace.io-brightgreen.svg?style=flat&label=docs)](http://spacerace.io/mission-control/docs)
 [![Slack Status](https://space-race-slackin.herokuapp.com/badge.svg)](https://space-race-slackin.herokuapp.com/)
-[![GA](https://ga-beacon.appspot.com/UA-70817336-2/space-race/mission-control?pixel)](https://github.com/igrigorik/ga-beacon)
-
 
 Mission Control is a devops automation orchestration tool. It was built with the following common devops automation tasks in mind, but can be configured for just about anything.
 
