@@ -6,6 +6,9 @@
     "type": "git",
     "url": "https://github.com/space-race/mc-core.git"
   },
+  "bin" : {
+    "mc" : "./index.js"
+  },
   "main": "build/server.js",
   "scripts": {
     "lint": "./node_modules/.bin/eslint .; exit 0",
@@ -60,6 +63,7 @@
     "pm2": "0.15.10",
     "promptly": "^0.2.1",
     "q": "1.4.1",
+    "redis": "2.4.2",
     "rsmq": "^0.4.0",
     "rsmq-worker": "^0.3.7",
     "standard": "5.4.1",
