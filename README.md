@@ -1,4 +1,4 @@
-# Mission Control *(work in progress)*
+# Mission Control Core *(work in progress)*
 
 [![Build Status](https://travis-ci.org/space-race/mc-core.svg)](https://travis-ci.org/space-race/mc-core)
 [![Dependency Status](https://david-dm.org/space-race/mc-core.svg)](https://david-dm.org/space-race/mc-core)
