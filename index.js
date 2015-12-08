@@ -9,6 +9,11 @@ let commands = {
     stop: require('./src/cli/stop')
 }
 
+if (!fs.existsSync('package.json')) {
+    console.error('This script must be ran from a mission-control project')
+    process.exit(1)
+}
+
 // make sure this is being run from the mission-control package
 let packageFile = JSON.parse(fs.readFileSync('package.json').toString())
 
