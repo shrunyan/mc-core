@@ -9,6 +9,14 @@
   "bin" : {
     "mc" : "./index.js"
   },
+  "keywords": [
+    "Continuous Integration",
+    "Continuous Delivery",
+    "Continuous Deployment",
+    "DevOps",
+    "Automation",
+    "Orchestration"
+  ],
   "main": "build/server.js",
   "scripts": {
     "lint": "./node_modules/.bin/eslint .; exit 0",
