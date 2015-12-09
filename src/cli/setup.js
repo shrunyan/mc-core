@@ -10,40 +10,35 @@ let knex = require('knex')
 let promptly = require('promptly')
 let bcrypt = require('bcryptjs')
 
-const ENV_FILE = '.env'
+const ENV_FILE_PATH = '.env'
+const MIGRATIONS_SOURCE_PATH = 'node_modules/mc-core/src/db/migrations'
 
 module.exports = () => {
 
 // Check .env file exits
-    fs.access(ENV_FILE, function (err) {
-        if (err) {
-            console.log(colors.red('We could not load your .env file.'))
-            console.log(colors.yellow('Check these requirements before proceeding.'))
+    try {
+        fs.accessSync(ENV_FILE_PATH)
+    } catch (err) {
+        console.log(colors.red('We could not load your .env file.'))
+        console.log(colors.yellow('Check these requirements before proceeding.'))
 
-            // .env instructions
-            console.log(colors.white('1) .env file exists'))
-            console.log(colors.grey('Use the .env.example file to get started.'))
+        // .env instructions
+        console.log(colors.white('1) .env file exists'))
+        console.log(colors.grey('Use the .env.example file to get started.'))
 
-            // Redis instructions
-            console.log(colors.white('2) Redis is installed and running'))
-            console.log(colors.grey('If running locally on OSX use brew to install and start Redis.'))
+        // Redis instructions
+        console.log(colors.white('2) Redis is installed and running'))
+        console.log(colors.grey('If running locally on OSX use brew to install and start Redis.'))
 
-            // MySQL instructions
-            console.log(colors.white('3) MySQL is installed and running'))
-            console.log(colors.grey('If running locally on OSX use brew to install and start MySQL'))
-        } else {
-            program
-                .version(pkg.version)
-                .usage('<command> [options]')
-                .command('setup', 'runs setup assistant')
-                // .command('migration', 'make a new migration')
-                // .command('run', 'run migrations')
-                .parse(process.argv)
-        }
-    })
+        // MySQL instructions
+        console.log(colors.white('3) MySQL is installed and running'))
+        console.log(colors.grey('If running locally on OSX use brew to install and start MySQL'))
+
+        process.exit(1)
+    }
 
     require('dotenv').load({
-        path: __dirname + '/../../.env'
+        path: ENV_FILE_PATH
     })
 
 
@@ -141,7 +136,7 @@ module.exports = () => {
                     mysql
                         .migrate
                         .latest({
-                            directory: 'src/db/migrations'
+                            directory: MIGRATIONS_SOURCE_PATH
                         })
                         .then(() => {
                             console.log(colors.green('Migrations Completed'))
