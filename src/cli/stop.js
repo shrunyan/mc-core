@@ -1,14 +1,14 @@
 'use strict'
 
 var pm2 = require('pm2');
-let devProcesses = require('./processes-dev')
+let devProcesses = require('./processes/processes-dev')
 
 module.exports = (args) => {
 
     let hammerTime = (args.length > 1 && args[1] === '--hammer-time');
 
     if (hammerTime) {
-        console.log(require('./stop-hammer-time-art'))
+        console.log(require('./content/stop-hammer-time-art'))
     }
 
     // Connect or launch PM2

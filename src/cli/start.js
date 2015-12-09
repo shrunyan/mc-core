@@ -5,7 +5,7 @@ let pm2 = require('pm2');
 module.exports = (args) => {
 
     let devMode = (args.length > 1 && args[1] === '--dev');
-    let processes = (devMode) ? require('./processes-dev') : require('./processes')
+    let processes = (devMode) ? require('./processes/processes-dev') : require('./processes/processes')
 
     // Connect or launch PM2
     pm2.connect(function(err) {
