@@ -16,7 +16,7 @@ module.exports = (pipelineId, input, callback) => {
     let newExecutionData = {
       pipeline_id: pipelineId,
       status: 'created',
-      started_at: new Date(),
+      created_at: new Date(),
       updated_at: new Date(),
       initial_values: JSON.stringify(input),
       config_snapshot: JSON.stringify(snapshot)
