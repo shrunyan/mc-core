@@ -1,0 +1,23 @@
+'use strict'
+
+module.exports = [
+    {
+        name: 'mc-web',
+        script: 'node_modules/mc-core/src/server.js',
+        node_args: '--optimize_for_size --max_old_space_size=920 --gc_interval=100',
+        watch: "node_modules/mc-core",
+        ignore_watch: "node_modules/mc-core/node_modules"
+    },
+    {
+        name: 'mc-worker-pipelines',
+        script: 'node_modules/mc-core/src/worker-pipelines.js',
+        watch: "node_modules/mc-core",
+        ignore_watch: "node_modules/mc-core/node_modules"
+    },
+    {
+        name: 'mc-ui-gulp-watch',
+        script: 'node_modules/mc-core/node_modules/.bin/gulp',
+        "args": ["watch"],
+        "cwd": "node_modules/mc-core/"
+    }
+]

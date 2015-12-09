@@ -1,7 +1,7 @@
 'use strict'
 
 var pm2 = require('pm2');
-let processes = require('./processes')
+let devProcesses = require('./processes-dev')
 
 module.exports = (args) => {
 
@@ -16,18 +16,23 @@ module.exports = (args) => {
 
         let promises = []
 
-        processes.forEach(config => {
+        // Note: we currently use the dev-processes process list for shutdown (so it will work regardless of
+        // whether "mc start" or "mc start --dev" was used.
+        devProcesses.forEach(config => {
 
             promises.push(new Promise((resolve, reject) => {
 
                 pm2.delete(config.name, function(err, proc) {
                     if (err) {
-                        console.error(err.message)
+                        if (err.msg !== 'process name not found') {
+                            console.error(err)
+                        }
                     }
 
                     resolve()
 
                 })
+
             }))
 
         })

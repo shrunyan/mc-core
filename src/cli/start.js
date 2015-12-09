@@ -1,19 +1,12 @@
 'use strict'
 
 let pm2 = require('pm2');
-let processes = require('./processes')
 
 module.exports = (args) => {
 
     let devMode = (args.length > 1 && args[1] === '--dev');
+    let processes = (devMode) ? require('./processes-dev') : require('./processes')
 
-    // If we are in dev mode, add additional options
-    if (devMode) {
-        processes.forEach((proccesConfig, index) => {
-            processes[index].watch = ["node_modules/mc-core"]
-            processes[index].ignore_watch = ["node_modules/mc-core/node_modules"]
-        })
-    }
     // Connect or launch PM2
     pm2.connect(function(err) {
 
