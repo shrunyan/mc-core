@@ -36,7 +36,7 @@ class PipelineExecutor {
    * @returns {Promise}
    */
   loadPipelineExecution() {
-    return connection.select()
+    return connection.first()
       .where('id', this.executionId)
       .from('pipeline_executions')
       .catch(err => logger.error(err))
