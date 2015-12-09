@@ -5,7 +5,7 @@
 [![Dev Dependency Status](https://david-dm.org/space-race/mc-core/dev-status.svg)](https://david-dm.org/space-race/mc-core#info=devDependencies)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 [![Downloads](https://img.shields.io/npm/dt/mc-core.svg)](https://www.npmjs.com/package/mc-core)
-[![Docs Link](https://img.shields.io/badge/style-spacerace.io-brightgreen.svg?style=flat&label=docs)](http://spacerace.io/mission-control/docs)
+[![Docs Link](https://img.shields.io/badge/style-spacerace.io-blue.svg?style=flat&label=docs)](http://spacerace.io/mission-control/docs)
 [![Slack Status](https://space-race-slackin.herokuapp.com/badge.svg)](https://space-race-slackin.herokuapp.com/)
 
 This is the core repository for Mission Control.
