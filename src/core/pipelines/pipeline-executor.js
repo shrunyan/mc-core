@@ -6,6 +6,9 @@ let logger = require('tracer').colorConsole()
 /**
  * @prop {int|string} executionId
  * @prop {object} execution
+ * @prop {object} config
+ * @prop {object} config.pipeline
+ * @prop {array}  config.stages
  */
 class PipelineExecutor {
 
@@ -42,6 +45,7 @@ class PipelineExecutor {
       .catch(err => logger.error(err))
       .then((execution) => {
         this.execution = execution
+        this.config = JSON.parse(execution.config_snapshot)
       })
   }
 
