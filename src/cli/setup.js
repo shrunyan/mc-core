@@ -62,7 +62,7 @@ module.exports = () => {
 
     const redisClient = redis.createClient(process.env.REDIS_PORT, process.env.REDIS_HOST)
     const mysql = knex({
-        client: 'mysql',
+        client: 'mysql2',
         connection: {
             host: process.env.DB_HOST,
             user: process.env.DB_USER,
