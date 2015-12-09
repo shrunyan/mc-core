@@ -2,6 +2,16 @@
 
 module.exports = () => {
 
-    console.log('This is the help command')
+console.log(`
+Mission Control CLI - Help
+
+Usage: mc [command] [options]
+
+Commands:
+    setup           Run setup assistant
+    start           Start server processes
+    stop            Stops server processes
+    help            Displays help menu
+`)
 
 }
