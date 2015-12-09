@@ -1,6 +1,11 @@
 #!/usr/bin/env node
 'use strict'
 
+if (!process.version.startsWith('v5')) {
+    console.log('Mission Control must be run with node v5.0.0 (at minimum)')
+    process.exit(1)
+}
+
 let fs = require('fs')
 let commands = {
     help: require('./src/cli/help'),
