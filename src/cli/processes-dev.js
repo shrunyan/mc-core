@@ -6,13 +6,13 @@ module.exports = [
         script: 'node_modules/mc-core/src/server.js',
         node_args: '--optimize_for_size --max_old_space_size=920 --gc_interval=100',
         watch: "node_modules/mc-core",
-        ignore_watch: "node_modules/mc-core/node_modules"
+        ignore_watch: [".git", "node_modules/mc-core/.git", "node_modules/mc-core/node_modules"]
     },
     {
         name: 'mc-worker-pipelines',
         script: 'node_modules/mc-core/src/worker-pipelines.js',
         watch: "node_modules/mc-core",
-        ignore_watch: "node_modules/mc-core/node_modules"
+        ignore_watch: [".git", "node_modules/mc-core/.git", "node_modules/mc-core/node_modules"]
     },
     {
         name: 'mc-ui-gulp-watch',
