@@ -72,6 +72,22 @@ class PipelineExecutor {
   executeStages() {
     // TODO: emit event for pipeline_execution update
     return new Promise(resolve => {
+
+      this.config.stages.forEach((stage) => {
+        connection('pipeline_stage_executions')
+          .insert({
+            pipeline_execution_id: this.executionId,
+            stage_id: stage.id,
+            status: 'succeeded',
+            created_at: new Date(),
+            updated_at: new Date(),
+            started_at: new Date(),
+            finished_at: new Date()
+          }).catch(err => {
+            logger.error(err)
+          })
+      })
+
       resolve()
     })
 
