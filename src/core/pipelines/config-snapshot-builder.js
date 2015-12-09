@@ -1,29 +1,58 @@
 'use strict'
 
+let connection = require('../../db/connection')
+let logger = require('tracer').colorConsole()
+
 /**
- * Returns an aggregate object for a full pipeline configuration snapshot. Includes:
+ * Creates an aggregate object for a pipeline configuration snapshot.
+ *
+ * Includes:
  * - initial variable values
  * - stages
  * - stage configuration values
  *
- * Ultimately, this is used to execute a pipeline and its stages
+ * Ultimately, this is used to execute a pipeline and its stages.
  *
- * @param id
+ * @param {int|string} pipelineId
+ * @param {function} callback
  */
-module.exports = function(id) {
+module.exports = function(pipelineId, callback) {
 
-  // TODO: load pipeline
+  let snapshot = {}
+  let promises = []
+
+  // Load pipeline
+  promises.push(new Promise((resolve, reject) => {
+
+    connection.first().where('id', pipelineId).from('pipelines').then((pipeline) => {
+      snapshot.pipeline = pipeline
+      resolve()
+    }).catch(err => {
+      logger.error(err)
+      reject()
+    })
+
+  }))
+
+  // Load stages
+  promises.push(new Promise((resolve, reject) => {
+
+    connection.select().where('pipeline_id', pipelineId).from('pipeline_stages').then((rows) => {
+      snapshot.stages = rows
+      resolve()
+    }).catch(err => {
+      logger.error(err)
+      reject()
+    })
+
+  }))
+
 
   // inject initial variables value
 
   // TODO: inject stages (with config)
 
-  return {
-    stages: [
-      {
-        id: 1
-      }
-    ]
-  }
-
+  Promise.all(promises).then(() => {
+    callback(snapshot)
+  })
 }
