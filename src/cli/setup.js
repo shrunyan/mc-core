@@ -2,9 +2,7 @@
 'use strict'
 
 let fs = require('fs')
-let program = require('commander')
 let colors = require('colors/safe')
-let pkg = JSON.parse(fs.readFileSync('./node_modules/mc-core/package.json').toString())
 let redis = require('redis')
 let knex = require('knex')
 let promptly = require('promptly')
