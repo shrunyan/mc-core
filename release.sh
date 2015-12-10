@@ -30,6 +30,22 @@ fi
 
 # TODO: Check that the npm user is someone who is authorized to release
 # See npm whoami
+AUTHORIZED_USERS=(andyfleming shrunyan)
+NPM_USERNAME="$(npm whoami)"
+
+MATCHED=0
+
+for i in "${AUTHORIZED_USERS[@]}"
+do
+    if [ "$i" == "${NPM_USERNAME}" ] ; then
+        MATCHED=1
+    fi
+done
+
+if [ "$MATCHED" -ne 1 ]; then
+    echo "no good"
+    exit 1
+fi
 
 # TODO: change package.json version or ensure that it is updated
 # ???
