@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 'use strict'
 
-var execSync = require('child_process').execSync;
+let execSync = require('child_process').execSync;
+let fs = require('fs')
 
 //###################################################################################################
 // Usage
@@ -21,20 +22,20 @@ var execSync = require('child_process').execSync;
 
 // Exit if no argument (version) was passed
 if (process.argv.length !== 3) {
-  console.log()
+  console.log('1 argument, "new version number" is required')
   process.exit(1)
 }
 
-let versionNumber = process.argv.length[2]
+let newVersion = process.argv[2]
 
 // TODO: consider validating the version number
 
 // Check that the npm user logged in
 try {
-  let npmUser = execSync("npm whoami");
-  let authenticatedUsers = ['andy', 'shrunyan']
+  let npmUser = execSync("npm whoami").toString().trim();
+  let authenticatedUsers = ['andyfleming', 'shrunyan']
 
-  if (authenticatedUsers.indexOf(npmUser) === false) {
+  if (authenticatedUsers.indexOf(npmUser) === -1) {
     console.log('You must be an authenticated user for the npm package to continue')
     process.exit(1)
   }
@@ -43,9 +44,6 @@ try {
   console.log('You must be logged into npm')
   process.exit(1)
 }
-
-// TODO: change package.json version or ensure that it is updated
-// ???
 
 // TODO: ensure our remote is the main repo
 // See git config --get remote.origin.url
@@ -62,28 +60,33 @@ try {
 // Start Actual Work
 //###################################################################################################
 
+// change package.json version to the new one provided
+let packageJson = require('./package.json')
+packageJson.version = newVersion
+fs.writeFileSync('package.json', JSON.stringify(packageJson, null, '  ')+"\n")
+
 // EXIT THE SCRIPT SINCE IT IS INCOMPLETE
-console.log('Script implementation not finished. Exiting before any destructive changes.')
+console.log('Script implementation not finished. Exiting.')
 process.exit(1)
 
 // lock package versions
-//npm shrinkwrap
+execSync('npm shrinkwrap')
 
 // Commit new shrinkwrap file
-//git add -A && git commit -m "Automatically updating shrinkwrap file"
+execSync('git add -A && git commit -m "Automatically updating shrinkwrap file"')
 
 // Checkout the stable branch
-//git checkout stable
+execSync('git checkout stable')
 
 // Merge in the latest from develop
-//git merge develop
+execSync('git merge develop')
 
 // Push the changes
-//git push
+execSync('git push')
 
 // tag the version
-//git tag $1
-//git push --tags
+execSync('git tag ' + newVersion)
+execSync('git push --tags')
 
 // Publish the package
-//npm publish --tag $1
+execSync('npm publish --tag ' + newVersion)
