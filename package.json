@@ -20,10 +20,8 @@
   "main": "build/server.js",
   "scripts": {
     "lint": "./node_modules/.bin/eslint .; exit 0",
-    "test": "",
-    "build": "./node_modules/mc-core/node_modules/.bin/gulp",
-    "postinstall": "npm run build",
-    "dev": "node_modules/.bin/gulp watch & nodemon src/server.js & nodemon src/worker-pipelines.js"
+    "test": "echo \"No tests implemented.\"; exit 0",
+    "postinstall": "node_modules/.bin/gulp"
   },
   "author": "Andy Fleming <andy@zesty.io>",
   "contributors": [
