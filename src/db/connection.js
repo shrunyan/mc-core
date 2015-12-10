@@ -1,10 +1,6 @@
 'use strict'
 
-let dotenv = require('dotenv')
 let knex = require('knex')
-
-// Load environment variables from .env file
-dotenv.load()
 
 let connection
 
