@@ -20,8 +20,13 @@ if [ "$#" -ne 1 ]; then
     exit 0
 fi
 
-# TODO: Check that the npm user logged in
-# See npm whoami;echo $?
+# Check that the npm user logged in
+npm whoami &> /dev/null
+
+if [ "$?" -ne 0 ]; then
+    echo "You must be logged into npm"
+    exit 1
+fi
 
 # TODO: Check that the npm user is someone who is authorized to release
 # See npm whoami
