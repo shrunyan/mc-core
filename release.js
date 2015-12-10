@@ -30,7 +30,8 @@ if (process.argv.length !== 3) {
 let newVersion = process.argv[2]
 
 console.log(colors.green('New version provided: '+ newVersion))
-console.log('Pre-flighting release...')
+console.log("\nPre-flighting release...")
+
 
 // TODO: consider validating the version number
 
@@ -80,7 +81,7 @@ if (branch !== 'develop') {
   process.exit(1)
 }
 
-console.log(colors.green('✓ The "develop" branch is checked out.'))
+console.log(colors.green('✓ The "develop" branch is checked out'))
 
 
 // TODO: Ensure the tag for this release hasn't already been tagged in the git repo
@@ -89,10 +90,14 @@ console.log(colors.green('✓ The "develop" branch is checked out.'))
 // Start Actual Work
 //###################################################################################################
 
+console.log("\nRunning release steps...")
+
 // change package.json version to the new one provided
 let packageJson = require('./package.json')
 packageJson.version = newVersion
 fs.writeFileSync('package.json', JSON.stringify(packageJson, null, '  ')+"\n")
+
+console.log(colors.green('✓ Version set in package.json'))
 
 // EXIT THE SCRIPT SINCE IT IS INCOMPLETE
 console.log(colors.red('Script implementation not finished. Exiting.'))
