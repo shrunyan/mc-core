@@ -5,6 +5,14 @@ let logger = require('tracer').colorConsole()
 let pipelineRsmq = require('../../queueing/pipeline-queue')
 let snapshotBuilder = require('./config-snapshot-builder')
 
+/**
+ * Execute Pipeline Command - Creates a new pipeline execution, and queues it for processing.
+ * This functionality is encapsulated here so it can be used by the API, a trigger, CLI, etc
+ *
+ * @param pipelineId
+ * @param input
+ * @param callback
+ */
 module.exports = (pipelineId, input, callback) => {
 
   input = input || []
