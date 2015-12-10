@@ -20,7 +20,7 @@
   "main": "build/server.js",
   "scripts": {
     "lint": "./node_modules/.bin/eslint .; exit 0",
-    "test": "echo \"No tests implemented.\"; exit 0",
+    "test": "./node_modules/.bin/mocha",
     "postinstall": "node_modules/.bin/gulp"
   },
   "author": "Andy Fleming <andy@zesty.io>",
@@ -73,5 +73,7 @@
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.6.1"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "mocha": "^2.3.4"
+  }
 }
