@@ -39,25 +39,41 @@ try {
   let authenticatedUsers = ['andyfleming', 'shrunyan']
 
   if (authenticatedUsers.indexOf(npmUser) === -1) {
-    console.log('You must be an authenticated user for the npm package to continue')
+    console.log(colors.red('You must be an authenticated user for the npm package to continue'))
     process.exit(1)
   }
 
+  console.log(colors.green('Logged into npm as ' + npmUser))
+
 } catch (err) {
-  console.log('You must be logged into npm')
+  console.log(colors.red('You must be logged into npm'))
   process.exit(1)
 }
 
-// TODO: ensure our remote is the main repo
-// See git config --get remote.origin.url
-// Should equal git@github.com:space-race/mc-core.git
+// Ensure our remote is the main repo
+let gitRemoteUrl = execSync("git config --get remote.origin.url").toString().trim();
 
-// TODO: exit if any uncommitted changes
-// See git diff --exit-code --quiet;echo $?
+if (gitRemoteUrl !== 'git@github.com:space-race/mc-core.git') {
+  console.log(colors.red('You should not be releasing from a fork.'))
+  process.exit(1)
+}
 
-// TODO: ensure we are on the develop branch
-// See git rev-parse --abbrev-ref HEAD
+// Exit if there are any uncommitted changes
+try {
+  execSync("git diff --exit-code --quiet")
+} catch (err) {
+  console.log(colors.red('You have uncommitted changes. Run git diff to view.'))
+}
 
+// Ensure we are on the develop branch
+let branch = execSync("git rev-parse --abbrev-ref HEAD").toString().trim();
+
+if (branch !== 'develop') {
+  console.log(colors.red('You should be on the "develop" branch.'))
+  process.exit(1)
+}
+
+// TODO: Ensure the tag for this release hasn't already been tagged in the git repo
 
 //###################################################################################################
 // Start Actual Work
