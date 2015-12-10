@@ -30,6 +30,7 @@ if (process.argv.length !== 3) {
 let newVersion = process.argv[2]
 
 console.log(colors.green('New version provided: '+ newVersion))
+console.log('Pre-flighting release...')
 
 // TODO: consider validating the version number
 
@@ -43,7 +44,7 @@ try {
     process.exit(1)
   }
 
-  console.log(colors.green('Logged into npm as ' + npmUser))
+  console.log(colors.green('✓ Logged into npm as ' + npmUser))
 
 } catch (err) {
   console.log(colors.red('You must be logged into npm'))
@@ -58,11 +59,17 @@ if (gitRemoteUrl !== 'git@github.com:space-race/mc-core.git') {
   process.exit(1)
 }
 
+console.log(colors.green('✓ Remote origin URL is correct'))
+
+
 // Exit if there are any uncommitted changes
 try {
   execSync("git diff --exit-code --quiet")
+  console.log(colors.green('✓ There are no uncommitted changes'))
+
 } catch (err) {
   console.log(colors.red('You have uncommitted changes. Run git diff to view.'))
+  process.exit(1)
 }
 
 // Ensure we are on the develop branch
@@ -72,6 +79,9 @@ if (branch !== 'develop') {
   console.log(colors.red('You should be on the "develop" branch.'))
   process.exit(1)
 }
+
+console.log(colors.green('✓ The "develop" branch is checked out.'))
+
 
 // TODO: Ensure the tag for this release hasn't already been tagged in the git repo
 
