@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 'use strict'
 
+let colors = require('colors/safe')
+
 if (!process.version.startsWith('v5')) {
-    console.log('Mission Control must be run with node v5.0.0 (at minimum)')
+    console.log(colors.red('Mission Control must be run with node v5.0.0 (at minimum)'))
     process.exit(1)
 }
 
@@ -15,7 +17,7 @@ let commands = {
 }
 
 if (!fs.existsSync('package.json')) {
-    console.error('This script must be ran from a mission-control project')
+    console.error(colors.red('This script must be ran from a mission-control project'))
     process.exit(1)
 }
 
@@ -23,7 +25,7 @@ if (!fs.existsSync('package.json')) {
 let packageFile = JSON.parse(fs.readFileSync('package.json').toString())
 
 if (packageFile.name !== 'mission-control') {
-    console.error('This script must be ran from a mission-control project')
+    console.error(colors.red('This script must be ran from a mission-control project'))
     process.exit(1)
 }
 

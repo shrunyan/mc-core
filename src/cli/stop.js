@@ -2,13 +2,14 @@
 
 var pm2 = require('pm2');
 let devProcesses = require('./processes/processes-dev')
+let colors = require('colors/safe')
 
 module.exports = (args) => {
 
     let hammerTime = (args.length > 1 && args[1] === '--hammer-time');
 
     if (hammerTime) {
-        console.log(require('./content/stop-hammer-time-art'))
+        console.log(colors.rainbow(require('./content/hammer-time-art')))
     }
 
     // Connect or launch PM2
@@ -43,7 +44,7 @@ module.exports = (args) => {
             // Disconnect to PM2
             pm2.disconnect(function() {
 
-                console.log('Mission Control Processes stopped.')
+                console.log(colors.green('✓ Mission Control Processes stopped'))
                 process.exit(0)
 
             })
@@ -53,4 +54,3 @@ module.exports = (args) => {
     })
 
 }
-

@@ -1,10 +1,11 @@
 'use strict'
 
-let pm2 = require('pm2');
+let pm2 = require('pm2')
+let colors = require('colors/safe')
 
 module.exports = (args) => {
 
-    let devMode = (args.length > 1 && args[1] === '--dev');
+    let devMode = (args.length > 1 && args[1] === '--dev')
     let processes = (devMode) ? require('./processes/processes-dev') : require('./processes/processes')
 
     // Connect or launch PM2
@@ -16,7 +17,8 @@ module.exports = (args) => {
 
             // Disconnect to PM2 (and exit this script after)
             pm2.disconnect(function() {
-                console.log('Mission Control Processes running.')
+                console.log(colors.green('✓ Mission Control Processes running'))
+
                 process.exit(0)
             });
 
@@ -25,4 +27,3 @@ module.exports = (args) => {
     })
 
 }
-
