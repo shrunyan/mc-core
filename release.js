@@ -109,6 +109,9 @@ console.log(colors.green('✓ Version set in package.json'))
 console.log(colors.red('Script implementation not finished. Exiting.'))
 process.exit(1)
 
+// Commit the version change from package.json
+execSync('git add -A && git commit -m "Updating package.json to new version"')
+
 // lock package versions
 execSync('npm shrinkwrap')
 
