@@ -31,6 +31,11 @@ module.exports = {
 
   login: function (req, res) {
 
+    // must have a secret key set
+    if (!process.env.SECRET_KEY) {
+      logger.error('Missing SECRET_KEY from your env')
+    }
+
     // validate request
     if (!req.body.email || !req.body.password) {
 
