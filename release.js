@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 'use strict'
 
-let execSync = require('child_process').execSync;
-let fs = require('fs')
-let colors = require('colors/safe')
-
+//###################################################################################################
+// About
+//###################################################################################################
+//
+//    This script is for project admins to release a version to the main repo and to npm.
+//
 //###################################################################################################
 // Usage
 //###################################################################################################
@@ -19,6 +21,10 @@ let colors = require('colors/safe')
 //###################################################################################################
 // Validate Environment, User, Git Repo condition before do any actual work
 //###################################################################################################
+
+let execSync = require('child_process').execSync;
+let fs = require('fs')
+let colors = require('colors/safe')
 
 
 // Exit if no argument (version) was passed
