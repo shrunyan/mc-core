@@ -10,10 +10,10 @@ if (!process.version.startsWith('v5')) {
 
 let fs = require('fs')
 let commands = {
-    help: require('./src/cli/help'),
-    setup: require('./src/cli/setup'),
-    start: require('./src/cli/start'),
-    stop: require('./src/cli/stop')
+    help: require('./commands/help'),
+    setup: require('./commands/setup'),
+    start: require('./commands/start'),
+    stop: require('./commands/stop')
 }
 
 if (!fs.existsSync('package.json')) {

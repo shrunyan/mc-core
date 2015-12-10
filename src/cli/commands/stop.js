@@ -1,7 +1,7 @@
 'use strict'
 
 var pm2 = require('pm2');
-let devProcesses = require('./processes/processes-dev')
+let devProcesses = require('../processes/processes-dev')
 let colors = require('colors/safe')
 
 module.exports = (args) => {
@@ -9,7 +9,7 @@ module.exports = (args) => {
     let hammerTime = (args.length > 1 && args[1] === '--hammer-time');
 
     if (hammerTime) {
-        console.log(colors.rainbow(require('./content/hammer-time-art')))
+        console.log(colors.rainbow(require('../content/hammer-time-art')))
     }
 
     // Connect or launch PM2
