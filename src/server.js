@@ -25,8 +25,10 @@ app.use(bodyParser.urlencoded({
 // Load routes
 routes(app)
 
-app.listen(port, () => {
+let server = app.listen(port, () => {
 
   console.log('Mission Control listening at http://%s:%s', host, port)
 
 })
+
+module.exports = server
