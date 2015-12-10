@@ -112,6 +112,9 @@ process.exit(1)
 // Commit the version change from package.json
 execSync('git add -A && git commit -m "Updating package.json to new version"')
 
+// Prune unused packages
+execSync('npm prune')
+
 // lock package versions
 execSync('npm shrinkwrap')
 
