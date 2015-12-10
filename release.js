@@ -135,4 +135,4 @@ execSync('git tag ' + newVersion)
 execSync('git push --tags')
 
 // Publish the package
-execSync('npm publish --tag ' + newVersion)
+execSync('npm publish')
