@@ -1,23 +1,15 @@
 'use strict'
 
 let fs = require('fs')
+let dotenv = require('dotenv')
 let express = require('express')
 let session = require('express-session')
 let cookieParser = require('cookie-parser')
 let bodyParser = require('body-parser')
 let morgan = require('morgan')
 let routes = require('./api/routes')
-let dotenv = require('dotenv')
 
-// Load environment variables from .env file
-try {
-  fs.accessSync('.env')
-  dotenv.load()
-} catch (err) {
-  // allow for .env file to not exist
-  // - for A) testing purposes,
-  // - or B) if the user wants to provide env variables a different way
-}
+dotenv.config({silent: true})
 
 let port = process.env.PORT || 3000
 let host = process.env.HOST || 'localhost'
