@@ -1,6 +1,9 @@
 'use strict'
 
+let dotenv = require('dotenv')
 let knex = require('knex')
+
+dotenv.config({silent: true})
 
 let connection
 
