@@ -3,6 +3,7 @@
 
 let execSync = require('child_process').execSync;
 let fs = require('fs')
+let colors = require('colors/safe')
 
 //###################################################################################################
 // Usage
@@ -27,6 +28,8 @@ if (process.argv.length !== 3) {
 }
 
 let newVersion = process.argv[2]
+
+console.log(colors.green('New version provided: '+ newVersion))
 
 // TODO: consider validating the version number
 
@@ -66,7 +69,7 @@ packageJson.version = newVersion
 fs.writeFileSync('package.json', JSON.stringify(packageJson, null, '  ')+"\n")
 
 // EXIT THE SCRIPT SINCE IT IS INCOMPLETE
-console.log('Script implementation not finished. Exiting.')
+console.log(colors.red('Script implementation not finished. Exiting.'))
 process.exit(1)
 
 // lock package versions
