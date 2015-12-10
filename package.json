@@ -7,7 +7,7 @@
     "url": "https://github.com/space-race/mc-core.git"
   },
   "bin": {
-    "mc": "./index.js"
+    "mc": "./src/cli/index.js"
   },
   "keywords": [
     "Continuous Integration",
