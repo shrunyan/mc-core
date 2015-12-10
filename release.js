@@ -136,3 +136,6 @@ execSync('git push --tags')
 
 // Publish the package
 execSync('npm publish')
+
+// Check out develop branch again (to avoid accidently continuing work on stable)
+execSync('git checkout develop')
