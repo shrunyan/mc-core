@@ -70,27 +70,62 @@ class PipelineExecutor {
    * @returns {Promise}
    */
   executeStages() {
-    // TODO: emit event for pipeline_execution update
     return new Promise(resolve => {
 
-      this.config.stages.forEach((stage) => {
-        connection('pipeline_stage_executions')
-          .insert({
-            pipeline_execution_id: this.executionId,
-            stage_id: stage.id,
-            status: 'succeeded',
-            created_at: new Date(),
-            updated_at: new Date(),
-            started_at: new Date(),
-            finished_at: new Date()
-          }).catch(err => {
-            logger.error(err)
-          })
-      })
+      // TODO: emit event for pipeline_execution update
 
-      resolve()
+      // Clone the stages, so we can pick them off one at a time
+      this.stagesRemaining = this.config.stages.slice(0)
+
+      this.runNextStage(() => {
+        resolve()
+      })
     })
 
+  }
+
+  runNextStage(callback) {
+    if (this.stagesRemaining.length > 0) {
+      let stage = arr.shift()
+      this.executeStage(stage)
+      this.markStageAsStarted(stage.id, () => {
+        this.runNextStage(callback)
+      })
+    } else {
+      callback()
+    }
+  }
+
+  markStageAsStarted(stageId) {
+    return connection('pipeline_stage_executions')
+      .insert({
+        pipeline_execution_id: this.executionId,
+        stage_id: stageId,
+        status: 'running',
+        created_at: new Date(),
+        updated_at: new Date(),
+        started_at: new Date()
+      }).catch(err => {
+        logger.error(err)
+      })
+  }
+
+  /**
+   * @todo
+   */
+  markStageAsSuccessful() {
+    //return connection('pipeline_stage_executions')
+    //  .update({
+    //    pipeline_execution_id: this.executionId,
+    //    stage_id: stage.id,
+    //    status: 'succeeded',
+    //    created_at: new Date(),
+    //    updated_at: new Date(),
+    //    started_at: new Date(),
+    //    finished_at: new Date()
+    //  }).catch(err => {
+    //  logger.error(err)
+    //})
   }
 
   /**
