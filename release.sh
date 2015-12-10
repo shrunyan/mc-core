@@ -49,6 +49,10 @@ fi
 # Start Actual Work
 ####################################################################################################
 
+# EXIT THE SCRIPT SINCE IT IS INCOMPLETE
+echo "Script implementation not finished. Exiting before any destructive changes."
+exit
+
 # lock package versions
 npm shrinkwrap
 
