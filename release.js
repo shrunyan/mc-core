@@ -125,7 +125,7 @@ execSync('git add -A && git commit -m "Automatically updating shrinkwrap file"')
 execSync('git checkout stable')
 
 // Merge in the latest from develop
-execSync('git merge develop')
+execSync('git merge --no-edit develop')
 
 // Push the changes
 execSync('git push')
