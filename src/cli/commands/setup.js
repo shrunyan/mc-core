@@ -41,6 +41,9 @@ module.exports = () => {
 
 
 // Check options
+    if (!process.env.SECRET_KEY) {
+        console.log(colors.red('Your .env file is missing a SECRET_KEY. This is used to sign JWT issued to Mission Control users.'))
+    }
     if (!process.env.DB_USER) {
         console.log(colors.yellow('Your .env file is missing the MySQL DB_USER'))
     }
