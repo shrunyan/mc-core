@@ -9,7 +9,8 @@ let controllers = {
   pipelines: require('./controllers/pipelines'),
   pipelineExecutions: require('./controllers/pipeline-executions'),
   projects: require('./controllers/projects'),
-  user: require('./controllers/user')
+  user: require('./controllers/user'),
+  checks: require('./controllers/checks')
 }
 
 module.exports = function (app) {
@@ -46,6 +47,10 @@ module.exports = function (app) {
   // Pipeline Stage Executions
 
   // Pipeline Execution Logs
+
+  // Health Checks
+  app.get('/api/checks', controllers.checks.getAll)
+  app.post('/api/check', controllers.checks.create)
 
   // Static files
   app.use(express.static('./node_modules/mc-core/ui-build/'))
