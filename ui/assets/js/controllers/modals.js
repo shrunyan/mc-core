@@ -1,18 +1,28 @@
-import createProjectModalController from './create-project-modal'
 
-export default ['$rootScope', '$uibModal', function ($rootScope, $uibModal) {
+import createPipelineModal from './modals/create-pipeline'
+import createProjectModal from './modals/create-project'
 
-  $rootScope.modal = {}
+export default ['$rootScope', '$uibModal', ($rootScope, $uibModal) => {
 
-  $rootScope.modal.createProject = function createProject (callback) {
+  $rootScope.modal = {
 
-    var modalInstance = $uibModal.open({
-      templateUrl: '/assets/js/templates/create-project-modal.html',
-      controller: createProjectModalController
-    })
+    createProject: function createProject (cb) {
+      let modal = $uibModal.open({
+        templateUrl: '/assets/js/templates/modals/create-project.html',
+        controller: createProjectModal
+      })
 
-    modalInstance.result.then(callback)
+      modal.result.then(cb)
+    },
+
+    createPipeline: function createPipeline (cb) {
+      let modal = $uibModal.open({
+        templateUrl: '/assets/js/templates/modals/create-pipeline.html',
+        controller: createPipelineModal
+      })
+
+      modal.result.then(cb)
+    }
 
   }
-
 }]
