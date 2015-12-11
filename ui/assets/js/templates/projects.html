@@ -18,7 +18,9 @@
       <div class="panel panel-default">
         <div class="panel-heading"><i class="fa fa-code"></i> {{ project.name }}</div>
         <div class="list-group">
-          <a href="#" class="list-group-item"><i class="fa fa-chevron-right pull-right"></i><i class="fa fa-tasks"></i> {{ 2 * $index + 1 }} pipelines</a>
+          <a href="#" class="list-group-item">
+            <i class="fa fa-tasks"></i> {{ project.pipelines.length }} pipelines<i class="fa fa-chevron-right pull-right"></i>
+          </a>
           <a href="#" class="list-group-item"><i class="fa fa-chevron-right pull-right"></i><i class="fa fa-heartbeat"></i> {{ 3 * $index }} checks</a>
           <a href="#" class="list-group-item"><i class="fa fa-chevron-right pull-right"></i><i class="fa fa-file"></i> {{ 4 * $index + 1 }} files</a>
         </div>
