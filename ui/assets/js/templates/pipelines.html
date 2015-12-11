@@ -65,8 +65,12 @@
                     </td>
                 </tr>
                 <tr ng-if="project.pipelines.length === 0">
-                   <td colspan="2" class="text-center" style="line-height: 30px; padding: 20px 10px"><em class="text-muted">No pipelines have been created for this project yet.</em>
-                       <br><a href="#" class="btn btn-default btn-xs"><i class="fa fa-plus text-muted"></i> Create New Pipeline</a>
+                   <td colspan="2" class="text-center" style="line-height: 30px; padding: 20px 10px">
+                      <em class="text-muted">No pipelines have been created for this project yet.</em>
+                      <br>
+                      <a ng-click="modal.createPipeline(refresh)" class="btn btn-default btn-xs">
+                        <i class="fa fa-plus text-muted"></i> Create New Pipeline
+                      </a>
                    </td>
                 </tr>
 
