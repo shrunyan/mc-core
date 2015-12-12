@@ -96,6 +96,14 @@ class PipelineExecutor {
     }
   }
 
+  executeStage(stage) {
+
+    // state we pass must contain, stage options, pipeline variables, etc
+    let stageExecution = new StageApi(currentPipelineState)
+    // stage.type = 'mc.core.stage.pause'
+    extensionRegistry.getStageType(stage.type).execute(stageExecution)
+  }
+
   markStageAsStarted(stageId) {
     return connection('pipeline_stage_executions')
       .insert({
