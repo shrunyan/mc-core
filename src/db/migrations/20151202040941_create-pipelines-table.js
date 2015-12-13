@@ -2,7 +2,7 @@
 
 exports.up = function (knex, Promise) {
 
-  return knex.schema.createTable('pipelines', function (table) {
+  return knex.schema.createTable('pipeline_configs', function (table) {
     table.increments()
     table.integer('project_id')
     table.string('name')
