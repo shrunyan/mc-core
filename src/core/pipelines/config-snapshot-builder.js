@@ -24,7 +24,7 @@ module.exports = function(pipelineId, callback) {
   // Load pipeline
   promises.push(new Promise((resolve, reject) => {
 
-    connection.first().where('id', pipelineId).from('pipelines').then((pipeline) => {
+    connection.first().where('id', pipelineId).from('pipeline_configs').then((pipeline) => {
       snapshot.pipeline = pipeline
       resolve()
     }).catch(err => {

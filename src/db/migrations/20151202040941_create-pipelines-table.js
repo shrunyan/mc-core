@@ -14,6 +14,6 @@ exports.up = function (knex, Promise) {
 
 exports.down = function (knex, Promise) {
 
-  return knex.schema.dropTable('pipelines')
+  return knex.schema.dropTable('pipeline_configs')
 
 }

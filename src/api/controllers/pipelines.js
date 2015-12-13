@@ -12,7 +12,7 @@ module.exports = {
    * @param res
    */
   getList: (req, res) => {
-    basic.getList(req, res, 'pipelines')
+    basic.getList(req, res, 'pipeline_configs')
   },
 
   /**
@@ -22,7 +22,7 @@ module.exports = {
    * @param res
    */
   createPipeline: (req, res) => {
-    basic.insertRespond(req, res, 'pipelines')
+    basic.insertRespond(req, res, 'pipeline_configs')
   },
 
   /**
