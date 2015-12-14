@@ -91,6 +91,8 @@ class PipelineExecutor {
 
   runNextStage(callback) {
 
+    // TODO: emit event for pipeline_execution update
+
     if (this.stagesRemaining.length > 0) {
       let stageConfig = this.stagesRemaining.shift()
 
