@@ -3,6 +3,7 @@
 let connection = require('../../db/connection')
 let logger = require('tracer').colorConsole()
 let extensionRegistry = require('../../extensions/registry')
+let Stage = require('./stage')
 
 /**
  * @prop {int|string} executionId
@@ -97,12 +98,40 @@ class PipelineExecutor {
     }
   }
 
-  executeStage(stage) {
+  executeStage(stageConfig) {
+
+    let successCallback = () => {
+
+    }
+
+    let failureCallback = () => {
+
+    }
 
     // state we pass must contain, stage options, pipeline variables, etc
-    let stageExecution = new StageApi(currentPipelineState)
-    // stage.type = 'mc.core.stage.pause'
-    extensionRegistry.getStageType(stage.type).execute(stageExecution)
+    let stage = new Stage(successCallback, failureCallback) // TODO: pass state
+
+    // stage.type == 'mc.basics.stages.pause_execution_for_x_seconds'
+    //extensionRegistry.getStageType(stageConfig.type).execute(stage)
+
+    let fakeStageType = {
+      execute: function(stage) {
+
+        stage.log('Starting pause for 2 seconds')
+
+        setTimeout(() => {
+          stage.log('Completed pause for 2 seconds')
+          stage.succeed()
+        }, 2000)
+      }
+    }
+
+    try {
+      fakeStageType.execute(stage)
+    } catch (err) {
+      stage.fail()
+    }
+
   }
 
   markStageAsStarted(stageId) {
@@ -117,24 +146,6 @@ class PipelineExecutor {
       }).catch(err => {
         logger.error(err)
       })
-  }
-
-  /**
-   * @todo
-   */
-  markStageAsSuccessful() {
-    //return connection('pipeline_stage_executions')
-    //  .update({
-    //    pipeline_execution_id: this.executionId,
-    //    stage_id: stage.id,
-    //    status: 'succeeded',
-    //    created_at: new Date(),
-    //    updated_at: new Date(),
-    //    started_at: new Date(),
-    //    finished_at: new Date()
-    //  }).catch(err => {
-    //  logger.error(err)
-    //})
   }
 
   /**
