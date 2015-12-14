@@ -20,15 +20,29 @@ let registry = {
     })
   },
 
-  validate: (ext) => {
+  validate: (ext, onValid, onInvalid) => {
     validator.validateIndex(ext, (errors, warnings) => {
-
+      if (errors.length === 0) {
+        onValid(warnings)
+      } else {
+        onInvalid(errors, warnings)
+      }
     })
   },
 
   register: (ext, file) => {
-    this.validate(ext, () => {
-        this._registeredExtensions[ext.vendor][ext.name] = ext
+    this.validate(ext, (warnings) => {
+
+      // Register extension index (top level, without the stages, innards)
+      this._registeredExtensions[ext.vendor][ext.name] = ext
+
+      // TODO: validate and register individual stages, logs, etc
+
+    }, (errors, warnings) => {
+
+      logger.error('Extension not loaded.')
+      // TODO: output errors, warnings
+
     })
   },
 
