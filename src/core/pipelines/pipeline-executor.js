@@ -206,54 +206,27 @@ class PipelineExecutor {
       }).then(callback)
   }
 
+  /**
+   * Mark the pipeline execution as complete
+   */
   markPipelineAsComplete() {
 
-    let statusUpdateAction
+    let status = (this.anyStageHasFailed) ? 'failed' : 'succeeded'
 
-    if (this.anyStageHasFailed) {
-      statusUpdateAction = this.markPipelineAsFailed()
-    } else {
-      statusUpdateAction = this.markPipelineAsSuccessful()
-    }
-
-    statusUpdateAction.then(() => {
-
-      // TODO: emit event for pipeline_execution update
-
-    })
-
-  }
-
-  /**
-   * Mark the pipeline_execution as successful
-   *
-   * @returns {Promise}
-   */
-  markPipelineAsSuccessful() {
-    return connection('pipeline_executions')
+    connection('pipeline_executions')
       .where('id', this.executionId)
       .update({
-        status: 'succeeded',
+        status: status,
         finished_at: new Date(),
         updated_at: new Date()
-      }).catch(err => logger.error(err))
-  }
+      })
+      .catch(err => logger.error(err))
+      .then(() => {
+        // TODO: emit event for pipeline_execution update
+      })
 
-  /**
-   * Mark the pipeline_execution as successful
-   *
-   * @returns {Promise}
-   */
-  markPipelineAsFailed() {
-    return connection('pipeline_executions')
-      .where('id', this.executionId)
-      .update({
-        status: 'failed',
-        finished_at: new Date(),
-        updated_at: new Date()
-      }).catch(err => logger.error(err))
   }
-
+  
 }
 
 module.exports = PipelineExecutor
