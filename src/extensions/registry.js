@@ -1,53 +1,48 @@
 'use strict'
 
-let fs = require('fs')
-let logger = require('tracer').colorConsole()
+// let logger = require('tracer').colorConsole()
 let validator = require('mc-extension-validator')
+let glob = require('glob')
 
-let registry = {
+const EXT_PATH = process.cwd() + '/node_modules/mc-ext-*'
 
-  _registeredExtensions: {},
+module.exports = {
 
-  loadFrom: (dir) => {
-    // Loop through extensions found in node_modules/ (anything starting with mc-ext-)
-    fs.readdirSync(dir, (err, files) => {
-      files.forEach((file) => {
-        if (file.startsWith('mc-ext-')) {
-          let extensionToRegister = require(file)
-          this.register(extensionToRegister, file)
-        }
-      })
+  _extensions: [],
+
+  load: function load () {
+    this.resolve(EXT_PATH)
+    return this._extensions.map(this.validate)
+  },
+
+  /**
+   * [resolve all `mc-ext-*` modules]
+   * @param  {[string]} dir [path mission control extensions]
+   */
+  resolve: function resolve (dir) {
+    let modules = glob.sync(dir)
+    modules.forEach(module => {
+      this._extensions.push(require(module))
     })
   },
 
-  validate: (ext, onValid, onInvalid) => {
-    validator.validateIndex(ext, (errors, warnings) => {
-      if (errors.length === 0) {
-        onValid(warnings)
-      } else {
-        onInvalid(errors, warnings)
-      }
+  /**
+   * [validate a single module]
+   * @param  {[Object]} ext [Object instance of loaded module]
+   * @return {[Object]}     [Validated module]
+   */
+  validate: function validate (ext) {
+
+    // TODO validate
+    validator.validateIndex(ext, (err) => {
+      console.log('validated?', err)
     })
+
+    return ext
   },
 
-  register: (ext, file) => {
-    this.validate(ext, (warnings) => {
-
-      // Register extension index (top level, without the stages, innards)
-      this._registeredExtensions[ext.vendor][ext.name] = ext
-
-      // TODO: validate and register individual stages, logs, etc
-
-    }, (errors, warnings) => {
-
-      logger.error('Extension not loaded.')
-      // TODO: output errors, warnings
-
-    })
-  },
-
-  getType: (extensionItemPath) => {
-    let parts = extensionItemPath.split('.')
+  getType: function getType (registeredName) {
+    let parts = registeredName.split('.')
     let path = {
       vendor: parts[0],
       name: parts[1],
@@ -55,34 +50,11 @@ let registry = {
       typeName: parts[3]
     }
 
-    return this._registeredExtensions[path.vendor][path.name][path.type][path.typeName]
+    // TODO: what is the intent of this function?
+    return this._extensions[path.vendor][path.name][path.type][path.typeName]
   }
 
 }
-
-registry.loadFrom('node_modules')
-
-//registry.getType('mc.core.stage.pause-for-x-seconds')
-
-module.exports = registry
-
-
-
-// Loop through node_modules directory
-// Look for some sort of indicator that a node_module is a mission control extension
-// - mc-extension.js
-// - package.json have a custom value in a mission_control property
-// - mc-extension.json (in addition to index.js)
-// - package is named mc-ext-*
-
-
-
-// If it is an mc extension, "load it"
-//let ext = require('module')
-//
-//registerExtension(ext)
-
-
 
 // During pipeline execution
 //registry.get('mc.core.stage.pause')
@@ -92,15 +64,3 @@ module.exports = registry
 // TODO: need to register extensions on startup
 // TODO: routes for available stages
 // TODO: routes to get stage instances for a pipeline
-
-
-
-// OLD IDEAS:
-
-// extension-registry
-
-// Registering...
-// Loop through ../../node_modules...
-// Find any ones with mc-extension.js
-// If so newExt = ../../node_modules/example/mc-extension
-// registry[newExt.vendor][newExt.name] = newExt
