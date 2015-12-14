@@ -2,6 +2,7 @@
 
 let connection = require('../../db/connection')
 let logger = require('tracer').colorConsole()
+let extensionRegistry = require('../../extensions/registry')
 
 /**
  * @prop {int|string} executionId
