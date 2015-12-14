@@ -2,7 +2,7 @@
 
 let fs = require('fs')
 let logger = require('tracer').colorConsole()
-let validator = require('mc-extension-validar')
+let validator = require('mc-extension-validator')
 
 let registry = {
 
