@@ -59,6 +59,7 @@
     "jshint": "^2.9.1-rc1",
     "jsonwebtoken": "^5.4.1",
     "knex": "0.9.0",
+    "mc-extension-validator": "*",
     "morgan": "1.6.1",
     "mysql2": "^0.15.8",
     "pm2": "0.15.10",
