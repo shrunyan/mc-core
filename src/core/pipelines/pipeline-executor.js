@@ -175,6 +175,12 @@ class PipelineExecutor {
 
   }
 
+  /**
+   * Record that a stage was started
+   *
+   * @param stageConfigId
+   * @param callback
+   */
   createStageAsStarted(stageConfigId, callback) {
     connection('pipeline_stage_executions')
       .insert({
@@ -189,6 +195,12 @@ class PipelineExecutor {
       }).then(callback)
   }
 
+  /**
+   * Record that a stage was skipped
+   *
+   * @param stageConfigId
+   * @param callback
+   */
   createStageAsSkipped(stageConfigId, callback) {
     connection('pipeline_stage_executions')
       .insert({
@@ -223,7 +235,7 @@ class PipelineExecutor {
       })
 
   }
-  
+
 }
 
 module.exports = PipelineExecutor
