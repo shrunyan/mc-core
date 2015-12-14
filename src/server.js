@@ -8,6 +8,7 @@ let cookieParser = require('cookie-parser')
 let bodyParser = require('body-parser')
 let morgan = require('morgan')
 let routes = require('./api/routes')
+let extensions = require('./extensions/registry')
 
 dotenv.config({silent: true})
 
@@ -22,12 +23,15 @@ app.use(bodyParser.urlencoded({
   extended: true
 }))
 
+app.locals.ext = extensions.load()
+
 // Load routes
 routes(app)
 
 let server = app.listen(port, () => {
 
   console.log('Mission Control listening at http://%s:%s', host, port)
+  console.log('app locals', app.locals.ext)
 
 })
 
