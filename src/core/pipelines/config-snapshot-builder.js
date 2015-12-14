@@ -37,7 +37,7 @@ module.exports = function(pipelineId, callback) {
   // Load stages
   promises.push(new Promise((resolve, reject) => {
 
-    connection.select().where('pipeline_id', pipelineId).from('pipeline_stage_configs').then((rows) => {
+    connection.select().where('pipeline_config_id', pipelineId).from('pipeline_stage_configs').then((rows) => {
       snapshot.stages = rows
       resolve()
     }).catch(err => {

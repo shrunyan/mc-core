@@ -22,7 +22,7 @@ module.exports = (pipelineId, input, callback) => {
   snapshotBuilder(pipelineId, (snapshot) => {
 
     let newExecutionData = {
-      pipeline_id: pipelineId,
+      pipeline_config_id: pipelineId,
       status: 'created',
       created_at: new Date(),
       updated_at: new Date(),
