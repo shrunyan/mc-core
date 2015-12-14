@@ -22,8 +22,17 @@ module.exports = {
   resolve: function resolve (dir) {
     let modules = glob.sync(dir)
     modules.forEach(module => {
-      this._extensions.push(require(module))
+      this.register(require(module))
     })
+  },
+
+  /**
+   * [register provided module]
+   * @param  {[Object]} module [Module instance]
+   * @return {[type]}        [description]
+   */
+  register: function register (module) {
+    this._extensions.push(module)
   },
 
   /**
@@ -39,6 +48,10 @@ module.exports = {
     })
 
     return ext
+  },
+
+  get: function get (name) {
+    return this._extensions.find(ext => ext.name === name)
   },
 
   getType: function getType (registeredName) {
