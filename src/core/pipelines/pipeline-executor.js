@@ -81,8 +81,6 @@ class PipelineExecutor {
 
       // Clone the stages, so we can pick them off one at a time
       this.stagesRemaining = this.config.stages.slice(0)
-      logger.debug('stagesRemaining')
-      logger.debug(this.stagesRemaining)
 
       this.runNextStage(() => {
         resolve()
@@ -92,7 +90,6 @@ class PipelineExecutor {
   }
 
   runNextStage(callback) {
-    logger.debug('runNextStage running')
 
     if (this.stagesRemaining.length > 0) {
       let stageConfig = this.stagesRemaining.shift()
