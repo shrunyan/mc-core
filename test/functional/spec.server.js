@@ -1,6 +1,6 @@
 'use strict'
 
-let request = require('supertest');
+let request = require('supertest')
 let test = require('tape')
 let app = require('../../src/api/app')
 

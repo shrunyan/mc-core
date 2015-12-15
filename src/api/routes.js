@@ -12,7 +12,7 @@ let controllers = {
   user: require('./controllers/user')
 }
 
-module.exports = function (app) {
+module.exports = function(app) {
 
   // Authentication Verification middleware
   app.use('/api/*', middleware.auth)

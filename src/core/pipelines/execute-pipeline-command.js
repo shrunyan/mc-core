@@ -16,8 +16,7 @@ module.exports = (pipelineId, input, callback) => {
 
   let pipelineRsmq = require('../../queueing/pipeline-queue')
 
-  input = input || []
-
+  input = input || {}
 
   // build pipeline configuration snapshot
   snapshotBuilder(pipelineId, (snapshot) => {
@@ -27,7 +26,7 @@ module.exports = (pipelineId, input, callback) => {
       status: 'created',
       created_at: new Date(),
       updated_at: new Date(),
-      initial_values: JSON.stringify(input),
+      initial_values: JSON.stringify(input), // TODO: rename or merge input with defaults
       config_snapshot: JSON.stringify(snapshot)
     }
 
@@ -42,7 +41,7 @@ module.exports = (pipelineId, input, callback) => {
       let message = JSON.stringify({
         pipeline_execution_id: newExecutionId
       })
-      pipelineRsmq.sendMessage({qname: 'pipeline_executions', message: message}, function (err, resp) {
+      pipelineRsmq.sendMessage({qname: 'pipeline_executions', message: message}, function(err, resp) {
 
         if (resp) {
           console.log('Message sent. ID:', resp)
@@ -68,6 +67,5 @@ module.exports = (pipelineId, input, callback) => {
     })
 
   })
-
 
 }

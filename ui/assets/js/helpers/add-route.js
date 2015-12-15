@@ -1,9 +1,9 @@
-export default function (app) {
+export default function(app) {
 
-  return function (name, url, templateUrl, controller) {
+  return function(name, url, templateUrl, controller) {
 
     // Add the route to ui-router
-    app.config(['$stateProvider', function ($stateProvider) {
+    app.config(['$stateProvider', function($stateProvider) {
 
       var opts = {
         url: url,

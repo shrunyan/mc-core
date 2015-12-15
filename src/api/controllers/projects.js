@@ -46,7 +46,7 @@ module.exports = {
         projects[index].pipelines = pipelinesByProjectId[project.id] || []
       })
 
-      res.send({data:projects})
+      res.send({data: projects})
 
     }).catch(err => {
       logger.error(err)

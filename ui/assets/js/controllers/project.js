@@ -1,6 +1,4 @@
-export default ['$scope', '$http', function ($scope, $http) {
-
-  console.log(project)
+export default ['$scope', '$http', function($scope, $http) {
 
   // TODO: provide project id?
   // $http.get('/api/project/{ID}').then(function (response) {

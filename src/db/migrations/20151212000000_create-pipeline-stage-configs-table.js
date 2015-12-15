@@ -1,8 +1,8 @@
 'use strict'
 
-exports.up = function (knex, Promise) {
+exports.up = function(knex, Promise) {
 
-  return knex.schema.createTable('pipeline_stage_configs', function (table) {
+  return knex.schema.createTable('pipeline_stage_configs', function(table) {
     table.increments()
     table.integer('pipeline_config_id')
     table.integer('sort')
@@ -14,7 +14,7 @@ exports.up = function (knex, Promise) {
 
 }
 
-exports.down = function (knex, Promise) {
+exports.down = function(knex, Promise) {
 
   return knex.schema.dropTable('pipeline_stage_configs')
 

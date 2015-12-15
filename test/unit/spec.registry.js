@@ -7,7 +7,7 @@ const MODULE_STUB = {
   name: 'test'
 }
 
-test('load()', function (t) {
+test('load()', function(t) {
   var spy = sinon.spy(extensions, 'resolve')
 
   extensions.load()
@@ -16,7 +16,7 @@ test('load()', function (t) {
   t.end()
 })
 
-test('resolve()', function (t) {
+test('resolve()', function(t) {
   var spy = sinon.spy(extensions, 'register')
 
   extensions.resolve(process.cwd() + '/node_modules/sinon')
@@ -28,7 +28,7 @@ test('resolve()', function (t) {
   t.end()
 })
 
-test('register() ', function (t) {
+test('register() ', function(t) {
   extensions._extensions = {}
   extensions.register(MODULE_STUB)
 
@@ -36,12 +36,12 @@ test('register() ', function (t) {
   t.end()
 })
 
-test('validate()', function (t) {
+test('validate()', function(t) {
   t.skip(false, 'uses validator module')
   t.end()
 })
 
-test('get()', function (t) {
+test('get()', function(t) {
   t.ok(extensions.get('test.test'), 'resolves extension path')
   t.throws(() => {
     extensions.get('wrong.test')

@@ -1,5 +1,5 @@
-export default ['$scope', '$http', function ($scope, $http) {
-  $http.get('/api/projects').then(function (response) {
+export default ['$scope', '$http', function($scope, $http) {
+  $http.get('/api/projects').then(function(response) {
 
     // TODO: Get response from api
     $scope.pipeline = {
