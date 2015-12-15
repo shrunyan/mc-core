@@ -1,22 +1,24 @@
 'use strict'
 
-let request = require('supertest');
+var test = require('tape')
+var request = require('request')
+var app = require('../src/server')
 
-describe('basic server tests', function () {
-  var server;
+test('404', function (t) {
+  t.plan(1)
 
-  beforeEach(function () {
-    server = require('../src/server');
-  });
+  var server = app.listen(3000)
 
-  afterEach(function () {
-    server.close();
-  });
+  request('http://localhost:3000/non-existent/url/path', (err, res, body) => {
 
-  it('404 for non-existent paths', function testPath(done) {
-    request(server)
-      .get('/non-existent/url/path')
-      .expect(404, done);
-  });
+    if (err) {
+      t.fail(err)
+    }
+    else if (404 === res.statusCode) {
+      t.pass('Cool beans')
+    }
 
-});
+    // server.close(() => process.exit(0))
+  })
+
+})

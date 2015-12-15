@@ -29,11 +29,11 @@ test('register() ', function (t) {
   t.end()
 })
 
-test('validate()', function (t) {
-  t.plan(1)
-  // t.ok(false, 'calls vaildator')
-  t.end()
-})
+// test('validate()', function (t) {
+//   t.plan(1)
+//   // t.ok(false, 'calls vaildator')
+//   t.end()
+// })
 
 test('get()', function (t) {
   extensions.register({
@@ -45,8 +45,8 @@ test('get()', function (t) {
   t.end()
 })
 
-test('getType()', function (t) {
-  t.plan(1)
-  // t.ok(false, 'returns type')
-  t.end()
-})
+// test('getType()', function (t) {
+//   t.plan(1)
+//   // t.ok(false, 'returns type')
+//   t.end()
+// })
