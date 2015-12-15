@@ -30,11 +30,13 @@ module.exports = {
   getOneWithDetails: (req, res) => {
 
     let p1 = connection.first().where('id', req.params.id).from('pipeline_executions')
-    //let p2 = connection.select().orderBy('name', 'ASC').from('pipeline_stage_executions')
-    //let p3 = connection.select().orderBy('name', 'ASC').from('pipeline_execution_logs')
+    let p2 = connection.select().where('pipeline_execution_id', req.params.id).orderBy('name', 'ASC').from('pipeline_stage_executions')
+    let p3 = connection.select().where('pipeline_execution_id', req.params.id).orderBy('name', 'ASC').from('pipeline_execution_logs')
 
-    Promise.all([p1]).then((values) => {
+    Promise.all([p1, p2, p3]).then((values) => {
       let execution = values[0]
+      let stageExecutions = values[1]
+      let logs = values[2]
 
       // Append owner
       execution.owner = {
@@ -44,10 +46,10 @@ module.exports = {
       }
 
       // Append stage executions
-      execution.stageExecutions = []
+      execution.stageExecutions = stageExecutions
 
       // Append logs
-      execution.logs = []
+      execution.logs = logs
 
       res.send({data: execution})
 
