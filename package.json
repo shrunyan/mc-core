@@ -20,7 +20,7 @@
   "main": "build/server.js",
   "scripts": {
     "lint": "./node_modules/.bin/eslint .; exit 0",
-    "test": "NODE_ENV=test ./node_modules/.bin/mocha",
+    "test": "NODE_ENV=test ./node_modules/.bin/tape test/**",
     "postinstall": "node_modules/.bin/gulp"
   },
   "author": "Andy Fleming <andy@zesty.io>",
