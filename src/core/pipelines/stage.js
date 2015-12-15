@@ -8,13 +8,14 @@ module.exports.Stage = class Stage {
   /**
    *
    */
-  constructor(successCallback, failureCallback, stageConfig, pipelineExecutionId, stageExecutionId) {
+  constructor(successCallback, failureCallback, stageConfig, pipelineExecutionId, stageExecutionId, stageNum) {
     this.successCallback = successCallback
     this.failureCallback = failureCallback
     this.stageConfig = stageConfig
     this.stageConfig.options = JSON.parse(this.stageConfig.options)
     this.pipelineExecutionId = pipelineExecutionId
     this.stageExecutionId = stageExecutionId
+    this.stageNum = stageNum
   }
 
   /**
@@ -55,6 +56,8 @@ module.exports.Stage = class Stage {
     let data = {
       pipeline_execution_id: this.pipelineExecutionId,
       stage_execution_id: this.stageExecutionId,
+      stage_num: this.stageNum,
+      logged_at: new Date(),
       type: log.type || null,
       title: log.title,
       data: log.data ? JSON.stringify(log.data) : null

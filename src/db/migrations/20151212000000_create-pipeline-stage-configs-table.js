@@ -7,6 +7,7 @@ exports.up = function(knex, Promise) {
     table.integer('pipeline_config_id')
     table.integer('sort')
     table.string('type')
+    table.string('name')
     table.timestamp('options').nullable()
     table.timestamp('created_at').nullable()
     table.timestamp('updated_at').nullable()

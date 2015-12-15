@@ -27,6 +27,8 @@ class PipelineExecutor {
     // Assume no stage has failed until we find out otherwise
     this.anyStageHasFailed = false
 
+    this.currentStageNumber = 0
+
     this.loadPipelineExecution()
       .then(this.markPipelineExecutionAsRunning.bind(this))
       .then(this.executeStages.bind(this))
@@ -80,7 +82,7 @@ class PipelineExecutor {
       // TODO: emit event for pipeline_execution update
 
       // Clone the stages, so we can pick them off one at a time
-      this.stagesRemaining = this.config.stages.slice(0)
+      this.stagesRemaining = this.config.stageConfigs.slice(0)
 
       this.runNextStage(() => {
         resolve()
@@ -95,6 +97,8 @@ class PipelineExecutor {
 
     if (this.stagesRemaining.length > 0) {
       let stageConfig = this.stagesRemaining.shift()
+
+      this.currentStageNumber++
 
       if (this.anyStageHasFailed) {
 
@@ -152,7 +156,7 @@ class PipelineExecutor {
     }
 
     // state we pass must contain, stage options, pipeline variables, etc
-    let stage = new Stage(successCallback, failureCallback, stageConfig, this.executionId, stageExecutionId)
+    let stage = new Stage(successCallback, failureCallback, stageConfig, this.executionId, stageExecutionId, this.currentStageNumber)
 
     // stage.type == 'mc.basics.stages.pause_execution_for_x_seconds'
     let stageType = extensionRegistry.get(stageConfig.type)
@@ -181,6 +185,7 @@ class PipelineExecutor {
       .insert({
         pipeline_execution_id: this.executionId,
         stage_config_id: stageConfigId,
+        stage_num: this.currentStageNumber,
         status: 'running',
         created_at: new Date(),
         updated_at: new Date(),
@@ -201,6 +206,7 @@ class PipelineExecutor {
       .insert({
         pipeline_execution_id: this.executionId,
         stage_config_id: stageConfigId,
+        stage_num: this.currentStageNumber,
         status: 'skipped',
         created_at: new Date(),
         updated_at: new Date(),

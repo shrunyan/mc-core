@@ -29,34 +29,47 @@ module.exports = {
    */
   getOneWithDetails: (req, res) => {
 
-    let p1 = connection.first().where('id', req.params.id).from('pipeline_executions')
-    let p2 = connection.select().where('pipeline_execution_id', req.params.id).from('pipeline_stage_executions')
-    let p3 = connection.select().where('pipeline_execution_id', req.params.id).from('pipeline_execution_logs')
+    let pipelineExecution = connection.first().where('id', req.params.id).from('pipeline_executions')
 
-    Promise.all([p1, p2, p3]).then((values) => {
-      let execution = values[0]
-      let stageExecutions = values[1]
-      let logs = values[2]
+    pipelineExecution.then((execution) => {
 
-      // Append owner
-      execution.owner = {
-        id: 1,
-        first_name: 'Andy',
-        last_name: 'Fleming'
-      }
+      execution.config_snapshot = JSON.parse(execution.config_snapshot)
+      execution.stageConfigs = execution.config_snapshot.stageConfigs
 
-      // Append stage executions
-      execution.stageExecutions = stageExecutions
+      let p1 = connection.first().where('id', execution.owner_id).from('users')
+      let p2 = connection.select().where('pipeline_execution_id', req.params.id).from('pipeline_stage_executions')
+      let p3 = connection.select().where('pipeline_execution_id', req.params.id).from('pipeline_execution_logs')
 
-      // Append logs
-      execution.logs = logs
+      Promise.all([p1, p2, p3]).then((values) => {
+        let owner = values[0]
+        let stageExecutions = values[1]
+        let logs = values[2]
 
-      res.send({data: execution})
+        // Append a copy of the stageConfigs arranged by ID
+        execution.stageConfigsById = {}
+        execution.stageConfigs.forEach(config => {
+          execution.stageConfigsById[config.id] = config
+        })
 
-    }).catch(err => {
-      logger.error(err)
-      res.status(500).send({message: 'An error occurred.'})
+
+        // Append owner
+        execution.owner = owner
+
+        // Append stage executions
+        execution.stageExecutions = stageExecutions
+
+        // Append logs
+        execution.logs = logs
+
+        res.send({data: execution})
+
+      }).catch(err => {
+        logger.error(err)
+        res.status(500).send({message: 'An error occurred.'})
+      })
+
     })
+
   }
 
 }
