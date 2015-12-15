@@ -12,6 +12,7 @@ module.exports.Stage = class Stage {
     this.successCallback = successCallback
     this.failureCallback = failureCallback
     this.stageConfig = stageConfig
+    this.stageConfig.options = JSON.parse(this.stageConfig.options)
   }
 
   /**
@@ -32,7 +33,7 @@ module.exports.Stage = class Stage {
    * Get an option that the user configured for this stage instance
    */
   option(key) {
-    return this.stageConfig.data[key]
+    return this.stageConfig.options[key]
   }
 
   /**
