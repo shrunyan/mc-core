@@ -1,13 +1,15 @@
 import angular from 'angular'
 import 'angular-ui-bootstrap'
 import 'angular-ui-router'
+import 'angular-moment'
 import routerAdder from './helpers/add-route'
 import authInterceptor from './helpers/auth-interceptor'
 import controllers from './controllers'
 
 const app = angular.module('mission-control', [
   'ui.router',
-  'ui.bootstrap'
+  'ui.bootstrap',
+  'angularMoment'
 ])
 const addRoute = routerAdder(app)
 
