@@ -27,7 +27,7 @@ module.exports = (pipelineId, input, callback) => {
       status: 'created',
       created_at: new Date(),
       updated_at: new Date(),
-      initial_values: JSON.stringify(input),
+      initial_values: JSON.stringify(input), // TODO: rename or merge input with defaults
       config_snapshot: JSON.stringify(snapshot)
     }
 
