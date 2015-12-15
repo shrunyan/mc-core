@@ -49,7 +49,7 @@ module.exports = {
       // Append logs
       execution.logs = []
 
-      res.send({data:execution})
+      res.send({data: execution})
 
     }).catch(err => {
       logger.error(err)

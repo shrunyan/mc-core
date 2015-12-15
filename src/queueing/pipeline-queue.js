@@ -3,7 +3,7 @@
 let RedisSMQ = require('rsmq')
 let rsmq = new RedisSMQ({host: process.env.REDIS_HOST, port: process.env.REDIS_PORT, ns: 'mission_control'})
 
-rsmq.createQueue({qname: 'pipeline_executions'}, function (err, resp) {
+rsmq.createQueue({qname: 'pipeline_executions'}, function(err, resp) {
 
   // Queue is successfully created if resp === 1
 

@@ -128,8 +128,8 @@ class PipelineExecutor {
           updated_at: new Date()
         })
         .then(() => {
-        onComplete()
-      })
+          onComplete()
+        })
     }
 
     let failureCallback = () => {

@@ -18,7 +18,6 @@ module.exports = (pipelineId, input, callback) => {
 
   input = input || {}
 
-
   // build pipeline configuration snapshot
   snapshotBuilder(pipelineId, (snapshot) => {
 
@@ -42,7 +41,7 @@ module.exports = (pipelineId, input, callback) => {
       let message = JSON.stringify({
         pipeline_execution_id: newExecutionId
       })
-      pipelineRsmq.sendMessage({qname: 'pipeline_executions', message: message}, function (err, resp) {
+      pipelineRsmq.sendMessage({qname: 'pipeline_executions', message: message}, function(err, resp) {
 
         if (resp) {
           console.log('Message sent. ID:', resp)
@@ -68,6 +67,5 @@ module.exports = (pipelineId, input, callback) => {
     })
 
   })
-
 
 }

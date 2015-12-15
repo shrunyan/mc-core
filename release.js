@@ -22,10 +22,9 @@
 // Validate Environment, User, Git Repo condition before do any actual work
 //###################################################################################################
 
-let execSync = require('child_process').execSync;
+let execSync = require('child_process').execSync
 let fs = require('fs')
 let colors = require('colors/safe')
-
 
 // Exit if no argument (version) was passed
 if (process.argv.length !== 3) {
@@ -35,15 +34,14 @@ if (process.argv.length !== 3) {
 
 let newVersion = process.argv[2]
 
-console.log(colors.green('New version provided: '+ newVersion))
-console.log("\nPre-flighting release...")
-
+console.log(colors.green('New version provided: ' + newVersion))
+console.log('\nPre-flighting release...')
 
 // TODO: consider validating the version number
 
 // Check that the npm user logged in
 try {
-  let npmUser = execSync("npm whoami").toString().trim();
+  let npmUser = execSync('npm whoami').toString().trim()
   let authenticatedUsers = ['andyfleming', 'shrunyan']
 
   if (authenticatedUsers.indexOf(npmUser) === -1) {
@@ -59,7 +57,7 @@ try {
 }
 
 // Ensure our remote is the main repo
-let gitRemoteUrl = execSync("git config --get remote.origin.url").toString().trim();
+let gitRemoteUrl = execSync('git config --get remote.origin.url').toString().trim()
 
 if (gitRemoteUrl !== 'git@github.com:space-race/mc-core.git') {
   console.log(colors.red('You should not be releasing from a fork.'))
@@ -68,10 +66,9 @@ if (gitRemoteUrl !== 'git@github.com:space-race/mc-core.git') {
 
 console.log(colors.green('✓ Remote origin URL is correct'))
 
-
 // Exit if there are any uncommitted changes
 try {
-  execSync("git diff --exit-code --quiet")
+  execSync('git diff --exit-code --quiet')
   console.log(colors.green('✓ There are no uncommitted changes'))
 
 } catch (err) {
@@ -80,7 +77,7 @@ try {
 }
 
 // Ensure we are on the develop branch
-let branch = execSync("git rev-parse --abbrev-ref HEAD").toString().trim();
+let branch = execSync('git rev-parse --abbrev-ref HEAD').toString().trim()
 
 if (branch !== 'develop') {
   console.log(colors.red('You should be on the "develop" branch.'))
@@ -89,19 +86,18 @@ if (branch !== 'develop') {
 
 console.log(colors.green('✓ The "develop" branch is checked out'))
 
-
 // TODO: Ensure the tag for this release hasn't already been tagged in the git repo
 
 //###################################################################################################
 // Start Actual Work
 //###################################################################################################
 
-console.log("\nRunning release steps...")
+console.log('\nRunning release steps...')
 
 // change package.json version to the new one provided
 let packageJson = require('./package.json')
 packageJson.version = newVersion
-fs.writeFileSync('package.json', JSON.stringify(packageJson, null, '  ')+"\n")
+fs.writeFileSync('package.json', JSON.stringify(packageJson, null, '  ') + '\n')
 
 console.log(colors.green('✓ Version set in package.json'))
 
