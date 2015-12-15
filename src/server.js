@@ -8,6 +8,7 @@ let host = process.env.HOST || 'localhost'
 let server = app.listen(port, () => {
 
   console.log('Mission Control listening at http://%s:%s', host, port)
+  console.log('app locals', app.locals.ext)
 
 })
 
