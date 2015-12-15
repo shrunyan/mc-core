@@ -18,15 +18,15 @@ let worker = new RSMQWorker('pipeline_executions', {
 worker.on('message', jobHandler)
 
 // optional error listeners
-worker.on('error', function (err, msg) {
+worker.on('error', function(err, msg) {
   logger.error('ERROR', err, msg.id)
 })
 
-worker.on('exceeded', function (msg) {
+worker.on('exceeded', function(msg) {
   logger.error('EXCEEDED', msg.id)
 })
 
-worker.on('timeout', function (msg) {
+worker.on('timeout', function(msg) {
   logger.error('TIMEOUT', msg.id, msg.rc)
 })
 

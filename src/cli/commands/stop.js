@@ -1,19 +1,24 @@
 'use strict'
 
-var pm2 = require('pm2');
+var pm2 = require('pm2')
 let devProcesses = require('../processes/processes-dev')
 let colors = require('colors/safe')
 
 module.exports = (args) => {
 
-  let hammerTime = (args.length > 1 && args[1] === '--hammer-time');
+  let hammerTime = (args.length > 1 && args[1] === '--hammer-time')
 
   if (hammerTime) {
     console.log(colors.rainbow(require('../content/hammer-time-art')))
   }
 
   // Connect or launch PM2
-  pm2.connect(function (err) {
+  pm2.connect(function(err) {
+
+    if (err) {
+      console.log('could not connect to pm2')
+      console.log(err)
+    }
 
     let promises = []
 
@@ -23,7 +28,7 @@ module.exports = (args) => {
 
       promises.push(new Promise((resolve, reject) => {
 
-        pm2.delete(config.name, function (err, proc) {
+        pm2.delete(config.name, function(err, proc) {
           if (err) {
             if (err.msg !== 'process name not found') {
               console.error(err)
@@ -42,7 +47,7 @@ module.exports = (args) => {
     Promise.all(promises).then(() => {
 
       // Disconnect to PM2
-      pm2.disconnect(function () {
+      pm2.disconnect(function() {
 
         console.log(colors.green('✓ Mission Control Processes stopped'))
         process.exit(0)

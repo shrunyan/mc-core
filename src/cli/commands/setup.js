@@ -39,7 +39,6 @@ module.exports = () => {
     path: ENV_FILE_PATH
   })
 
-
 // Check options
   if (!process.env.SECRET_KEY) {
     console.log(colors.red('Your .env file is missing a SECRET_KEY. This is used to sign JWT issued to Mission Control users.'))
@@ -205,6 +204,10 @@ module.exports = () => {
   function createMysqlUserRecord() {
     return new Promise((resolve) => {
       promptly.confirm('Setup new user? [y/n]', (err, value) => {
+        if (err) {
+          console.log(err)
+        }
+
         if (value) {
 
           let promise = enterEmail()

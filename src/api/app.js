@@ -1,9 +1,7 @@
 'use strict'
 
-let fs = require('fs')
 let dotenv = require('dotenv')
 let express = require('express')
-let session = require('express-session')
 let cookieParser = require('cookie-parser')
 let bodyParser = require('body-parser')
 let morgan = require('morgan')

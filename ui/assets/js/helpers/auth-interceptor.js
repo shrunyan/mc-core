@@ -1,8 +1,8 @@
-export default ['$q', '$rootScope', function ($q, $rootScope) {
+export default ['$q', '$rootScope', function($q, $rootScope) {
 
   return {
 
-    'responseError': function (response) {
+    'responseError': function(response) {
 
       // If this is a login attempt, return the response for login controller to handle
       if (response.config.url === '/login') {

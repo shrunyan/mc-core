@@ -47,7 +47,6 @@ module.exports = function(pipelineId, callback) {
 
   }))
 
-
   // inject initial variables value
 
   // TODO: inject stages (with config)
