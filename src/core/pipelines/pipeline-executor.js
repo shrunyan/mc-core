@@ -159,7 +159,7 @@ class PipelineExecutor {
 
     // stage.type == 'mc.basics.stages.pause_execution_for_x_seconds'
     console.log('attempting to load ' + stageConfig.type + ' from registry')
-    let stageType = extensionRegistry.getType(stageConfig.type)
+    let stageType = extensionRegistry.get(stageConfig.type)
 
     console.log('stageType returned value = ', stageType)
 
