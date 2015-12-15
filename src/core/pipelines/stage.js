@@ -8,9 +8,10 @@ module.exports.Stage = class Stage {
   /**
    *
    */
-  constructor(successCallback, failureCallback) {
+  constructor(successCallback, failureCallback, stageConfig) {
     this.successCallback = successCallback
     this.failureCallback = failureCallback
+    this.stageConfig = stageConfig
   }
 
   /**
@@ -30,8 +31,8 @@ module.exports.Stage = class Stage {
   /**
    * Get an option that the user configured for this stage instance
    */
-  option() {
-    // TODO: implement
+  option(key) {
+    return this.stageConfig.data[key]
   }
 
   /**

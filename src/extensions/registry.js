@@ -6,21 +6,24 @@ let glob = require('glob')
 
 const EXT_PATH = process.cwd() + '/node_modules/mc-ext-*'
 
-module.exports = {
+let registry = {
 
-  _extensions: [],
+  _extensions: {},
 
   load: function load () {
     this.resolve(EXT_PATH)
-    return this._extensions.map(this.validate)
+    //return this._extensions.map(this.validate)
   },
 
   /**
    * [resolve all `mc-ext-*` modules]
-   * @param  {[string]} dir [path mission control extensions]
+   * @param  {string} dir [path mission control extensions]
    */
   resolve: function resolve (dir) {
     let modules = glob.sync(dir)
+    console.log('modules')
+    console.log(modules)
+
     modules.forEach(module => {
       this.register(require(module))
     })
@@ -32,7 +35,15 @@ module.exports = {
    * @return {[type]}        [description]
    */
   register: function register (module) {
-    this._extensions.push(module)
+
+    if (typeof this._extensions[module.vendor] !== "object") {
+      this._extensions[module.vendor] = {}
+    }
+
+    // TODO: validate stage types
+    // TODO: validate log types
+
+    this._extensions[module.vendor][module.name] = module
   },
 
   /**
@@ -43,9 +54,9 @@ module.exports = {
   validate: function validate (ext) {
 
     // TODO validate
-    validator.validateIndex(ext, (err) => {
-      console.log('validated?', err)
-    })
+    //validator.validateIndex(ext, (err) => {
+    //  console.log('validated?', err)
+    //})
 
     return ext
   },
@@ -55,6 +66,7 @@ module.exports = {
   },
 
   getType: function getType (registeredName) {
+    console.log('getType called for: ' + registeredName)
     let parts = registeredName.split('.')
     let path = {
       vendor: parts[0],
@@ -68,6 +80,12 @@ module.exports = {
   }
 
 }
+
+// Initially load extensions
+registry.load()
+
+
+module.exports = registry
 
 // During pipeline execution
 //registry.get('mc.core.stage.pause')

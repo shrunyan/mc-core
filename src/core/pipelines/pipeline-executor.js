@@ -152,29 +152,46 @@ class PipelineExecutor {
     }
 
     // state we pass must contain, stage options, pipeline variables, etc
-    let stage = new Stage(successCallback, failureCallback) // TODO: pass state
+    let stage = new Stage(successCallback, failureCallback, stageConfig) // TODO: pass state
+
+    logger.debug('available types')
+    logger.debug(extensionRegistry._extensions)
 
     // stage.type == 'mc.basics.stages.pause_execution_for_x_seconds'
-    //extensionRegistry.getStageType(stageConfig.type).execute(stage)
+    console.log('attempting to load ' + stageConfig.type + ' from registry')
+    let stageType = extensionRegistry.getType(stageConfig.type)
 
-    let fakeStageType = {
-      execute: function(stage) {
+    console.log('stageType returned value = ', stageType)
 
-        stage.log('Starting pause for 2 seconds')
-
-        setTimeout(() => {
-          stage.log('Completed pause for 2 seconds')
-          stage.succeed()
-        }, 2000)
+    if (!stageType) {
+      stage.log('Stage type: ' + stageConfig.type + ' not found.')
+      stage.fail()
+    } else {
+      try {
+        stageType.execute(stage)
+      } catch (err) {
+        stage.fail()
       }
     }
 
-    try {
-      fakeStageType.execute(stage)
-    } catch (err) {
-      stage.fail()
-    }
-
+    //let fakeStageType = {
+    //  execute: function(stage) {
+    //
+    //    stage.log('Starting pause for 2 seconds')
+    //
+    //    setTimeout(() => {
+    //      stage.log('Completed pause for 2 seconds')
+    //      stage.succeed()
+    //    }, 2000)
+    //  }
+    //}
+    //
+    //try {
+    //  fakeStageType.execute(stage)
+    //} catch (err) {
+    //  stage.fail()
+    //}
+    //
   }
 
   /**
