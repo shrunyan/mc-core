@@ -30,8 +30,8 @@ module.exports = {
   getOneWithDetails: (req, res) => {
 
     let p1 = connection.first().where('id', req.params.id).from('pipeline_executions')
-    let p2 = connection.select().where('pipeline_execution_id', req.params.id).orderBy('name', 'ASC').from('pipeline_stage_executions')
-    let p3 = connection.select().where('pipeline_execution_id', req.params.id).orderBy('name', 'ASC').from('pipeline_execution_logs')
+    let p2 = connection.select().where('pipeline_execution_id', req.params.id).from('pipeline_stage_executions')
+    let p3 = connection.select().where('pipeline_execution_id', req.params.id).from('pipeline_execution_logs')
 
     Promise.all([p1, p2, p3]).then((values) => {
       let execution = values[0]
