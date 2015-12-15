@@ -1,22 +1,18 @@
 'use strict'
 
 let request = require('supertest');
+let test = require('tape')
+let app = require('../src/api/app')
 
-describe('basic server tests', function () {
-  var server;
+test('server should handle non-existent path with 404', function(t) {
 
-  beforeEach(function () {
-    server = require('../src/server');
-  });
+  t.plan(1)
 
-  afterEach(function () {
-    server.close();
-  });
+  request(app)
+  .get('/non-existent/url/path')
+  .expect(404)
+  .end((err, res) => {
+    t.error(err, 'No error');
+  })
 
-  it('404 for non-existent paths', function testPath(done) {
-    request(server)
-      .get('/non-existent/url/path')
-      .expect(404, done);
-  });
-
-});
+})
