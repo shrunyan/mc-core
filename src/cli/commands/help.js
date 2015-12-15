@@ -2,6 +2,6 @@
 
 module.exports = () => {
 
-    console.log(require('../content/help-content'))
+  console.log(require('../content/help-content'))
 
 }
