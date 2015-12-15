@@ -2,7 +2,7 @@
 
 let request = require('supertest');
 let test = require('tape')
-let app = require('../src/api/app')
+let app = require('../../src/api/app')
 
 test('server should handle non-existent path with 404', function(t) {
 

@@ -20,7 +20,7 @@
   "main": "build/server.js",
   "scripts": {
     "lint": "./node_modules/.bin/eslint .; exit 0",
-    "test": "NODE_ENV=test ./node_modules/.bin/tape test/** | ./node_modules/.bin/tap-spec",
+    "test": "NODE_ENV=test ./node_modules/.bin/tape test/**/spec*.js | ./node_modules/.bin/tap-spec",
     "postinstall": "node_modules/.bin/gulp"
   },
   "author": "Andy Fleming <andy@zesty.io>",
@@ -69,7 +69,6 @@
     "redis": "2.4.2",
     "rsmq": "^0.4.0",
     "rsmq-worker": "^0.3.7",
-    "sinon": "1.17.2",
     "standard": "5.4.1",
     "tracer": "0.8.2",
     "vinyl-buffer": "^1.0.0",
@@ -77,6 +76,7 @@
     "watchify": "^3.6.1"
   },
   "devDependencies": {
+    "sinon": "1.17.2",
     "supertest": "1.1.0",
     "tap-spec": "4.1.1",
     "tape": "4.2.2"

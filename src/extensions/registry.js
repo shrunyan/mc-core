@@ -1,6 +1,5 @@
 'use strict'
 
-// let logger = require('tracer').colorConsole()
 let validator = require('mc-extension-validator')
 let glob = require('glob')
 
@@ -32,7 +31,6 @@ let registry = {
   /**
    * [register provided module]
    * @param  {[Object]} module [Module instance]
-   * @return {[type]}        [description]
    */
   register: function register (module) {
 
@@ -61,22 +59,21 @@ let registry = {
     return ext
   },
 
+  /**
+   * [get any path depth from the extensions object]
+   * @param  {[string]} name [dot syntax path]
+   * @return {[object]}      [resolved extension path]
+   */
   get: function get (name) {
-    return this._extensions.find(ext => ext.name === name)
-  },
+    let obj = this._extensions
+    let paths = name.split('.')
 
-  getType: function getType (registeredName) {
-    console.log('getType called for: ' + registeredName)
-    let parts = registeredName.split('.')
-    let path = {
-      vendor: parts[0],
-      name: parts[1],
-      type: parts[2],
-      typeName: parts[3]
-    }
+    paths.forEach(path => {
+      if (!obj[path]) throw 'Undefined extensions path: ' + path;
+      obj = obj[path]
+    })
 
-    // TODO: what is the intent of this function?
-    return this._extensions[path.vendor][path.name][path.type][path.typeName]
+    return obj
   }
 
 }
