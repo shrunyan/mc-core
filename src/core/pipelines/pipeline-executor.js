@@ -104,8 +104,8 @@ class PipelineExecutor {
         })
       } else {
 
-        this.createStageAsStarted(stageConfig.id, () => {
-          this.executeStage(stageConfig, () => {
+        this.createStageAsStarted(stageConfig.id, (stageExecutionId) => {
+          this.executeStage(stageConfig, stageExecutionId, () => {
             this.runNextStage(callback)
           })
         })
@@ -116,7 +116,7 @@ class PipelineExecutor {
     }
   }
 
-  executeStage(stageConfig, onComplete) {
+  executeStage(stageConfig, stageExecutionId, onComplete) {
 
     let successCallback = () => {
       connection('pipeline_stage_executions')
@@ -152,7 +152,7 @@ class PipelineExecutor {
     }
 
     // state we pass must contain, stage options, pipeline variables, etc
-    let stage = new Stage(successCallback, failureCallback, stageConfig) // TODO: pass state
+    let stage = new Stage(successCallback, failureCallback, stageConfig, this.executionId, stageExecutionId)
 
     logger.debug('available types')
     logger.debug(extensionRegistry._extensions)
