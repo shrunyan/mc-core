@@ -20,8 +20,6 @@ let registry = {
    */
   resolve: function resolve(dir) {
     let modules = glob.sync(dir)
-    console.log('modules')
-    console.log(modules)
 
     modules.forEach(module => {
       this.register(require(module))

@@ -153,15 +153,9 @@ class PipelineExecutor {
 
     // state we pass must contain, stage options, pipeline variables, etc
     let stage = new Stage(successCallback, failureCallback, stageConfig, this.executionId, stageExecutionId)
-
-    logger.debug('available types')
-    logger.debug(extensionRegistry._extensions)
-
+    
     // stage.type == 'mc.basics.stages.pause_execution_for_x_seconds'
-    console.log('attempting to load ' + stageConfig.type + ' from registry')
     let stageType = extensionRegistry.get(stageConfig.type)
-
-    console.log('stageType returned value = ', stageType)
 
     if (!stageType) {
       stage.log('Stage type: ' + stageConfig.type + ' not found.')
