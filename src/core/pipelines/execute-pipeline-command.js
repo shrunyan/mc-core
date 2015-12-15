@@ -16,7 +16,7 @@ module.exports = (pipelineId, input, callback) => {
 
   let pipelineRsmq = require('../../queueing/pipeline-queue')
 
-  input = input || []
+  input = input || {}
 
 
   // build pipeline configuration snapshot
