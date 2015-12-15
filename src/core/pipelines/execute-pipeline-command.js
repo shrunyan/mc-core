@@ -2,7 +2,6 @@
 
 let connection = require('../../db/connection')
 let logger = require('tracer').colorConsole()
-let pipelineRsmq = require('../../queueing/pipeline-queue')
 let snapshotBuilder = require('./config-snapshot-builder')
 
 /**
@@ -14,6 +13,8 @@ let snapshotBuilder = require('./config-snapshot-builder')
  * @param callback
  */
 module.exports = (pipelineId, input, callback) => {
+
+  let pipelineRsmq = require('../../queueing/pipeline-queue')
 
   input = input || []
 
