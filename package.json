@@ -69,6 +69,8 @@
     "rsmq": "^0.4.0",
     "rsmq-worker": "^0.3.7",
     "standard": "5.4.1",
+    "supertest": "^1.1.0",
+    "tape": "^4.2.2",
     "tracer": "0.8.2",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
