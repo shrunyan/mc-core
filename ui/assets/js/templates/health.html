@@ -1,8 +1,19 @@
-<h1>Project Health Checks</h1>
+<section class="container-fluid">
 
-<hr>
+  <div class="row">
+    <div class="col-md-8">
+      <h1>Project Health Checks</h1>
+    </div>
+    <div class="col-md-4">
+      <a ng-click="modal.open('check', refresh)" class="pull-right btn btn-success">
+        <i class="fa fa-plus"></i> Create Health Check
+      </a>
+    </div>
+  </div>
 
-<div class="row">
+  <hr>
+
+  <div class="row">
     <div class="col-md-6" ng-repeat="projectHalf in projectHalves">
         <div class="panel panel-default" ng-repeat="project in projectHalf">
             <div class="panel-heading"><i class="fa fa-code"></i> {{ project.name }}</div>
@@ -42,7 +53,9 @@
                     <td class="text-muted">2 minutes ago</td>
                 </tr>
 
-            </table>
-        </div>
-    </div>
-</div>
+              </table>
+          </div>
+      </div>
+  </div>
+
+</section>
