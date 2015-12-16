@@ -15,7 +15,7 @@ let snapshotBuilder = require('./config-snapshot-builder')
  */
 module.exports = (pipelineId, input, userId, callback) => {
 
-  let pipelineRsmq = require('../../queueing/pipeline-queue')
+  let pipelineRsmq = require('../../queueing/pipeline-executions-queue')
 
   input = input || {}
 
