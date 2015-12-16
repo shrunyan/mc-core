@@ -1,6 +1,5 @@
 'use strict'
 
-let logger = require('tracer').colorConsole()
 let basic = require('./basic-response-helper')
 
 module.exports = {

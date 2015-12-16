@@ -6,14 +6,14 @@ export default ['$rootScope', '$uibModal', ($rootScope, $uibModal) => {
 
   $rootScope.modal = {
 
-    open: function open (modal, cb) {
+    open: function open(modal, cb) {
       $uibModal
         .open(this.getConfig(modal))
         .result
         .then(cb)
     },
 
-    getConfig: function getConfig (modal) {
+    getConfig: function getConfig(modal) {
       switch (modal) {
         case 'project':
           return {

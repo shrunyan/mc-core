@@ -1,4 +1,4 @@
-export default ['$scope', '$http', '$uibModalInstance', function ($scope, $http, $uibModalInstance) {
+export default ['$scope', '$http', '$uibModalInstance', function($scope, $http, $uibModalInstance) {
 
   $scope.ok = () => {
     $http
