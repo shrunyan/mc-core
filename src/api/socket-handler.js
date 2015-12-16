@@ -88,13 +88,10 @@ module.exports = (server) => {
   io = require('socket.io')(server)
 
   // As a test, we'll emit an event to only authorized users every 5 seconds
-  setInterval(() => {
-    io.to('authorized').emit('client_side_log', {message: 'only authorized users should see this'})
-  }, 5000)
-
-  setInterval(() => {
-    io.emit('client_side_log', {message: 'all users should see this'})
-  }, 7000)
+  //setInterval(() => {
+  //  io.emit('client_side_log', {message: 'all users should see this'})
+  //  io.to('authorized').emit('client_side_log', {message: 'only authorized users should see this'})
+  //}, 5000)
 
   io.on('connection', (socket) => {
 
