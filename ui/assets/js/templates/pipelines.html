@@ -102,7 +102,7 @@
                         <a href="/jobs/106"><i class="fa fa-circle text-danger"></i></a>&nbsp;
 
                     </td>
-                    <td><!--<a class="btn btn-xs btn-default"><i class="fa fa-list-ul"></i> View All</a> <a class="btn btn-xs btn-default"><i class="fa fa-gear"></i> Configure</a> --><a class="btn btn-xs btn-primary"><i class="fa fa-play"></i> Execute</a></td>
+                    <td><!--<a class="btn btn-xs btn-default"><i class="fa fa-list-ul"></i> View All</a> <a class="btn btn-xs btn-default"><i class="fa fa-gear"></i> Configure</a> --><a class="btn btn-xs btn-primary" ng-click="execute(pipeline.id)"><i class="fa fa-play"></i> Execute</a></td>
                 </tr>
                 <tr ng-if="project.pipelines.length === 0">
                    <td colspan="3" class="text-center" style="line-height: 30px; padding: 20px 10px">
