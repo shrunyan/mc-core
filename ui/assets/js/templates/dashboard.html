@@ -46,7 +46,7 @@
                         <i class="fa fa-circle text-danger" ng-if="pe.status === 'failed'"></i>
                         <i class="fa fa-circle text-success" ng-if="pe.status === 'succeeded'"></i>
                     </td>
-                    <td><a ui-sref="pipeline-execution-details({id: pe.id})">Execution #{{ pe.id }}<span ng-if="pe.status === 'awaiting_confirmation'"> &ndash; Awaiting Confirmation</span></a><br><small class="text-muted">MC Test</small></td>
+                    <td><a ui-sref="pipeline-execution-details({id: pe.id})">Execution #{{ pe.id }}<span ng-if="pe.status === 'awaiting_confirmation'"> &ndash; Awaiting Confirmation</span></a><br><small class="text-muted">{{ pe.pipeline_config_name }}</small></td>
                 </tr>
                 <tr>
                     <td colspan="2">
