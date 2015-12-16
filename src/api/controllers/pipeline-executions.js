@@ -22,6 +22,20 @@ module.exports = {
   },
 
   /**
+   *
+   * @param req
+   * @param res
+   */
+  getListForPipeline: (req, res) => {
+    basic.getListCustom(req, res, 'pipeline_executions', (query) => {
+      return query
+        .where('pipeline_config_id', req.params.id)
+        .whereNotNull('finished_at')
+        .orderBy('created_at', 'desc')
+    })
+  },
+
+  /**
    * Gets a single execution with its key details
    *
    * @param req
