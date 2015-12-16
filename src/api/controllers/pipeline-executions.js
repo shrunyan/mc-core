@@ -28,10 +28,17 @@ module.exports = {
    */
   getListForPipeline: (req, res) => {
     basic.getListCustom(req, res, 'pipeline_executions', (query) => {
-      return query
+
+      query
         .where('pipeline_config_id', req.params.id)
         .whereNotNull('finished_at')
         .orderBy('created_at', 'desc')
+
+      if (req.query.limit) {
+        query.limit(req.query.limit)
+      }
+
+      return query
     })
   },
 
