@@ -2,6 +2,7 @@
 
 let cookie = require('cookie')
 let jwt = require('jsonwebtoken')
+let connection = require('../db/connection')
 let io
 
 /**
@@ -56,21 +57,30 @@ let authenticateSocketUser = (socket) => {
 
 }
 
-let getActivePipelines = () => {
+let getActivePipelines = (callback) => {
 
-  // ....
-  return {
-    this_is: 'fake active pipelines data'
-  }
+  connection.select()
+    .orderBy('finished_at', 'desc')
+    .whereNull('finished_at')
+    .from('pipeline_executions')
+    .then((rows) => {
+      callback(rows)
+    })
 
 }
 
 let emitActivePipelinesToSpecificSocket = (socketId) => {
-  io.sockets.connected[socketId].emit('update_active_pipelines', getActivePipelines())
+
+  getActivePipelines((data) => {
+    io.sockets.connected[socketId].emit('update_active_pipelines', data)
+  })
+
 }
 
 let emitActivePipelinesToAllAuthorizedSockets = () => {
-  io.sockets.in('authorized').emit('update_active_pipelines', getActivePipelines());
+  getActivePipelines((data) => {
+    io.sockets.in('authorized').emit('update_active_pipelines', data)
+  })
 }
 
 // On update_active_pipelines rsmq event, publish ws event
