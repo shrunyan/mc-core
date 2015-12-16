@@ -3,6 +3,7 @@ export default ['$scope', '$http', '$stateParams', function($scope, $http, $stat
   $http.get('/api/pipeline-executions/' + $stateParams.id + '/with-details').then(function(response) {
 
     $scope.execution = response.data.data
+    console.log(response.data.data)
 
   })
 

@@ -38,18 +38,17 @@ module.exports = function(pipelineId, callback) {
   promises.push(new Promise((resolve, reject) => {
 
     connection.select().where('pipeline_config_id', pipelineId).from('pipeline_stage_configs').then((rows) => {
-      snapshot.stages = rows
+
+      snapshot.stageConfigs = rows
+
       resolve()
+
     }).catch(err => {
       logger.error(err)
       reject()
     })
 
   }))
-
-  // inject initial variables value
-
-  // TODO: inject stages (with config)
 
   Promise.all(promises).then(() => {
     callback(snapshot)
