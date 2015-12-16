@@ -4,7 +4,12 @@ let cookie = require('cookie')
 let jwt = require('jsonwebtoken')
 let io
 
-// Tests whether the user is authorized and in the authorized room
+/**
+ * Tests whether the user is authorized and in the authorized room
+ *
+ * @param socketId
+ * @returns {boolean}
+ */
 let userIsInAuthorizedRoom = (socketId) => {
 
   // If the room doesn't even exist, return false
