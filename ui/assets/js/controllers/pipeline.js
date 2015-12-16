@@ -9,4 +9,8 @@ export default ['$scope', '$http', '$stateParams', function($scope, $http, $stat
 
   })
 
+  $http.get('/api/pipelines/' + $stateParams.id + '/executions').then(response => {
+    $scope.pipelineExecutions = response.data.data
+  })
+
 }]
