@@ -1,8 +1,8 @@
 'use strict'
 
-let pipelineUpdatesQueue = require('./pipeline-updates-queue')
-
 module.exports = () => {
+
+  let pipelineUpdatesQueue = require('./pipeline-updates-queue')
 
   // TODO: consider buffering/grouping this event so we don't flood event updates unnecessarily
 
