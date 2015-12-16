@@ -26,6 +26,7 @@ module.exports = function(app) {
 
   // Projects
   app.get('/api/projects', controllers.projects.getProjects)
+  app.get('/api/projects/:id', controllers.projects.getProject)
   app.post('/api/projects', controllers.projects.createProject)
   app.get('/api/projects/with-pipelines', controllers.projects.getProjectsWithPipelines)
 
