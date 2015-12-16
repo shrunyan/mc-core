@@ -2,6 +2,17 @@
   "root": true,
   "extends": "standard",
   "rules": {
-    "padded-blocks": 0
+
+    // Pad at your own discretion using no more than 1 line
+    "padded-blocks": 0,
+
+    // We recommend a space before an actual comment, but no space before code that is commented out
+    "spaced-comment": 0,
+
+    // Only warn about space
+    "space-before-function-paren": [1, "never"],
+
+    // Allowing "new" keyword without saving the instance returned
+    "no-new": 0
   }
 }

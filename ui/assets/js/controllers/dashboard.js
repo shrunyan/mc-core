@@ -1,12 +1,7 @@
-export default ['$scope', '$http', function ($scope, $http) {
+export default ['$scope', '$http', 'socket', function($scope, $http, socket) {
 
-  $scope.example = 'Woot!'
-
-  $http.get('/api/user').then(function (response) {
-
-    console.log('got user response:')
-    console.log(response)
-
+  $http.get('/api/pipeline-executions/recent').then(response => {
+    $scope.pipelineExecutions = response.data.data.slice(0, 5)
   })
 
 }]

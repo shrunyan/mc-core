@@ -1,5 +1,6 @@
 import modals from './modals'
 import helpers from './helpers'
+import socketManager from './socket-manager'
 import dashboard from './dashboard'
 import login from './login'
 import pipelines from './pipelines'
@@ -21,6 +22,7 @@ import user from './user'
 export default {
   modals,
   helpers,
+  socketManager,
   dashboard,
   login,
   projects,

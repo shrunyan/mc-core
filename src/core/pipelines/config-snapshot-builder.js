@@ -24,7 +24,7 @@ module.exports = function(pipelineId, callback) {
   // Load pipeline
   promises.push(new Promise((resolve, reject) => {
 
-    connection.first().where('id', pipelineId).from('pipelines').then((pipeline) => {
+    connection.first().where('id', pipelineId).from('pipeline_configs').then((pipeline) => {
       snapshot.pipeline = pipeline
       resolve()
     }).catch(err => {
@@ -37,20 +37,18 @@ module.exports = function(pipelineId, callback) {
   // Load stages
   promises.push(new Promise((resolve, reject) => {
 
-    connection.select().where('pipeline_id', pipelineId).from('pipeline_stages').then((rows) => {
-      snapshot.stages = rows
+    connection.select().where('pipeline_config_id', pipelineId).orderBy('sort').from('pipeline_stage_configs').then((rows) => {
+
+      snapshot.stageConfigs = rows
+
       resolve()
+
     }).catch(err => {
       logger.error(err)
       reject()
     })
 
   }))
-
-
-  // inject initial variables value
-
-  // TODO: inject stages (with config)
 
   Promise.all(promises).then(() => {
     callback(snapshot)

@@ -1,4 +1,4 @@
-export default ['$scope', '$http', function ($scope, $http) {
+export default ['$scope', '$http', function($scope, $http) {
 
   $http
     .get('/api/checks')

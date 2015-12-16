@@ -8,7 +8,7 @@ let respondUnauthorized = (res) => {
   res.status(401).send({message: 'Unauthorized'})
 }
 
-module.exports = function authMiddleware (req, res, next) {
+module.exports = function authMiddleware(req, res, next) {
 
   // check for JWT token, if none, respond that the user is unauthorized
   if (!req.cookies.mc_jwt) {

@@ -33,7 +33,7 @@ export default ['$rootScope', '$uibModal', ($rootScope, $uibModal) => {
       }
     },
 
-    createProject: function createProject (cb) {
+    createProject: function createProject(cb) {
       let modal = $uibModal.open({
         templateUrl: '/assets/js/templates/modals/create-project.html',
         controller: createProjectModal
@@ -42,7 +42,7 @@ export default ['$rootScope', '$uibModal', ($rootScope, $uibModal) => {
       modal.result.then(cb)
     },
 
-    createPipeline: function createPipeline (cb) {
+    createPipeline: function createPipeline(cb) {
       let modal = $uibModal.open({
         templateUrl: '/assets/js/templates/modals/create-pipeline.html',
         controller: createPipelineModal

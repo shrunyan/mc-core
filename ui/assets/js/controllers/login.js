@@ -1,4 +1,4 @@
-export default ['$rootScope', '$http', '$q', function ($rootScope, $http, $q) {
+export default ['$rootScope', '$http', '$q', 'socket', function($rootScope, $http, $q, socket) {
 
   $rootScope.showLoginError = false
   $rootScope.loginForm = {
@@ -6,7 +6,7 @@ export default ['$rootScope', '$http', '$q', function ($rootScope, $http, $q) {
     password: ''
   }
 
-  $rootScope.showLogin = function showLogin (originalResponse) {
+  $rootScope.showLogin = function showLogin(originalResponse) {
 
     jQuery('#login').fadeIn()
 
@@ -18,7 +18,7 @@ export default ['$rootScope', '$http', '$q', function ($rootScope, $http, $q) {
 
   }
 
-  $rootScope.attemptLogin = function attemptLogin () {
+  $rootScope.attemptLogin = function attemptLogin() {
 
     $http.post('/login', $rootScope.loginForm).then((response) => {
 
@@ -36,6 +36,10 @@ export default ['$rootScope', '$http', '$q', function ($rootScope, $http, $q) {
       // Load/reload user details
       $rootScope.loadAuthenticatedUser()
 
+      // Reconnect to socket.io
+      socket.disconnect()
+      socket.connect()
+
       // Reset the form
       $rootScope.loginForm = {
         email: '',
@@ -50,7 +54,7 @@ export default ['$rootScope', '$http', '$q', function ($rootScope, $http, $q) {
 
   }
 
-  $rootScope.logout = function logout () {
+  $rootScope.logout = function logout() {
     $http.post('/logout').then(() => {
       $rootScope.showLogin()
     })

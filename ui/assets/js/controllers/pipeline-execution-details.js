@@ -1,8 +1,9 @@
-export default ['$scope', '$http', '$stateParams', function ($scope, $http, $stateParams) {
+export default ['$scope', '$http', '$stateParams', function($scope, $http, $stateParams) {
 
-  $http.get('/api/pipeline-executions/' + $stateParams.id + '/with-details').then(function (response) {
+  $http.get('/api/pipeline-executions/' + $stateParams.id + '/with-details').then(function(response) {
 
     $scope.execution = response.data.data
+    console.log(response.data.data)
 
   })
 

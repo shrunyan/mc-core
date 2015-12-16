@@ -22,7 +22,7 @@ var options = {
   ]
 }
 
-var bundle = function bundle () {
+var bundle = function bundle() {
   var b = browserify(watchify.args)
   b.add(options.APP_ENTRY)
   b.transform(babelify)
@@ -39,24 +39,24 @@ var bundle = function bundle () {
 
 gulp.task('bundle', bundle)
 
-gulp.task('watch-bundle', function () {
+gulp.task('watch-bundle', function() {
   var w = watchify(bundle())
 
   // Watch and rebundle
-  w.on('update', function () {
+  w.on('update', function() {
     w.bundle()
       .pipe(source('app.min.js'))
       .pipe(buffer())
       .pipe(gulp.dest(options.DEST + '/assets/js'))
   })
-  w.on('log', function (msg) {
+  w.on('log', function(msg) {
     console.log(msg)
   })
 
   return w
 })
 
-gulp.task('less', function () {
+gulp.task('less', function() {
   gulp.src(options.LESS)
     .pipe(plumber())
     .pipe(less())
@@ -67,16 +67,16 @@ gulp.task('less', function () {
     .pipe(gulp.dest(options.DEST + '/assets/css'))
 })
 
-gulp.task('html', function () {
+gulp.task('html', function() {
   gulp.src('ui/**/*.html')
-      .pipe(gulp.dest(options.DEST))
+    .pipe(gulp.dest(options.DEST))
 })
 
-gulp.task('watch-less', function () {
+gulp.task('watch-less', function() {
   gulp.watch(options.LESS, ['less'])
 })
 
-gulp.task('watch-html', function () {
+gulp.task('watch-html', function() {
   gulp.watch(options.HTML, ['html'])
 })
 

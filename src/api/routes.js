@@ -13,7 +13,7 @@ let controllers = {
   checks: require('./controllers/checks')
 }
 
-module.exports = function (app) {
+module.exports = function(app) {
 
   // Authentication Verification middleware
   app.use('/api/*', middleware.auth)
