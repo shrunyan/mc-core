@@ -34,7 +34,7 @@ app.config(['$httpProvider', ($httpProvider) => {
 }])
 
 // Configure socket-io
-app.factory('socket', function (socketFactory) {
+app.factory('socket', function(socketFactory) {
   return socketFactory()
 })
 

@@ -13,8 +13,8 @@ let server = app.listen(port, () => {
 
 })
 
-let io = require('socket.io')(server);
+let io = require('socket.io')(server)
 
-io.on('connection', socketHandler);
+io.on('connection', socketHandler)
 
 module.exports = server
