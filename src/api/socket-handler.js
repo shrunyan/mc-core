@@ -92,6 +92,7 @@ let worker = new RSMQWorker('pipeline_updates', {
 })
 
 worker.on('message', emitActivePipelinesToAllAuthorizedSockets)
+worker.start()
 
 module.exports = (server) => {
 
