@@ -14,10 +14,16 @@ export default ['$rootScope', '$uibModal', ($rootScope, $uibModal) => {
       modal.result.then(cb)
     },
 
-    createPipeline: function createPipeline(cb) {
+    createPipeline: function createPipeline(cb, dataToPrefill) {
       let modal = $uibModal.open({
         templateUrl: '/assets/js/templates/modals/create-pipeline.html',
-        controller: createPipelineModal
+        controller: createPipelineModal,
+        resolve: {
+          prefillData: () => {
+            return dataToPrefill
+          }
+
+        }
       })
 
       modal.result.then(cb)

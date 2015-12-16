@@ -5,7 +5,7 @@
         </button>
         <ul class="dropdown-menu pull-right">
             <li><a ng-click="modal.createProject(refresh)"><i class="fa fa-code"></i> Project</a></li>
-            <li><a href="javascript:console.error('not implemented')"><i class="fa fa-tasks"></i> Pipeline</a></li>
+            <li><a ng-click="modal.createPipeline(refresh)"><i class="fa fa-tasks"></i> Pipeline</a></li>
         </ul>
     </div>
 </div>
@@ -108,7 +108,7 @@
                    <td colspan="3" class="text-center" style="line-height: 30px; padding: 20px 10px">
                       <em class="text-muted">No pipelines have been created for this project yet.</em>
                       <br>
-                      <a ng-click="modal.createPipeline(refresh)" class="btn btn-default btn-xs">
+                      <a ng-click="modal.createPipeline(refresh, {project_id: project.id})" class="btn btn-default btn-xs">
                         <i class="fa fa-plus text-muted"></i> Create New Pipeline
                       </a>
                    </td>
