@@ -4,6 +4,7 @@ let connection = require('../../db/connection')
 let logger = require('tracer').colorConsole()
 let extensionRegistry = require('../../extensions/registry')
 let Stage = require('./stage').Stage
+let publishPipelineUpdate = require('../../queueing/publish-pipeline-update-event')
 
 /**
  * @prop {int|string} executionId
@@ -68,7 +69,11 @@ class PipelineExecutor {
         status: 'running',
         started_at: new Date(),
         updated_at: new Date()
-      }).catch(err => logger.error(err))
+      })
+      .catch(err => logger.error(err))
+      .then(() => {
+        publishPipelineUpdate()
+      })
   }
 
   /**
@@ -78,8 +83,6 @@ class PipelineExecutor {
    */
   executeStages() {
     return new Promise(resolve => {
-
-      // TODO: emit event for pipeline_execution update
 
       // Clone the stages, so we can pick them off one at a time
       this.stagesRemaining = this.config.stageConfigs.slice(0)
@@ -92,8 +95,6 @@ class PipelineExecutor {
   }
 
   runNextStage(callback) {
-
-    // TODO: emit event for pipeline_execution update
 
     if (this.stagesRemaining.length > 0) {
       let stageConfig = this.stagesRemaining.shift()
@@ -213,6 +214,8 @@ class PipelineExecutor {
         skipped_at: new Date()
       }).catch(err => {
         logger.error(err)
+      }).then(() => {
+        publishPipelineUpdate()
       }).then(callback)
   }
 
@@ -232,7 +235,7 @@ class PipelineExecutor {
       })
       .catch(err => logger.error(err))
       .then(() => {
-        // TODO: emit event for pipeline_execution update
+        publishPipelineUpdate()
       })
 
   }

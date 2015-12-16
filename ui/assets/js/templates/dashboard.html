@@ -9,9 +9,29 @@
                 Active Pipeline Executions
             </div>
             <table class="table">
+                <tr ng-if="activePipelines.length === 0">
+                    <td class="text-center"><em class="text-muted">No active pipeline executions</em></td>
+                </tr>
+                <tr ng-repeat="pe in activePipelines">
+                    <td>
+                        <a ui-sref="pipeline-execution-details({id: pe.id})">Project Name » {{ pe.config_snapshot.pipeline.name }} » #{{ pe.id }}</a>
+                        <br><small class="text-muted"></small>
+                        <table class="stage-bar">
+                            <tbody>
+                            <tr>
+                                <td ng-repeat="stage in pe.stages" ng-class="{'running pulse':stage.status === 'running', successful: stage.status === 'succeeded', failure: stage.status === 'failed'}">&nbsp;</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <small class="text-muted"><span ng-if="!pe.current_stage_num">Starting</span><span ng-if="pe.current_stage_num">Stage {{ pe.current_stage_num }} of {{ pe.stages.length }} &ndash; {{ pe.current_stage_name }}</span></small>
+                    </td>
+                </tr>
+
+
+                <!-- example -->
+                <!--
                 <tr>
                     <td>
-                        <!-- Group Name » Pipeline Name » Execution ID -->
                         <a href="#">Example Service » Run Tests » #142</a>
                         <br><small class="text-muted"></small>
                         <table class="stage-bar">
@@ -28,8 +48,11 @@
                         <small class="text-muted">Stage 3/5 &ndash; Doing example thing</small>
                     </td>
                 </tr>
+                -->
             </table>
         </div>
+
+        <!--<pre>{{ activePipelines | json }}</pre>-->
 
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -66,11 +89,11 @@
             </div>
             <table class="table">
                 <tr>
-                <td class="text-center"><em class="text-muted">No alerts</em></td>
+                    <td class="text-center"><em class="text-muted">No alerts</em></td>
                 </tr>
                 <tr>
                     <td class="text-center">
-                      <a ui-sref="health">View All Checks</a>
+                        <a ui-sref="health">View All Checks</a>
                     </td>
                 </tr>
             </table>

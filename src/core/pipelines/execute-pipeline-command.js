@@ -3,6 +3,7 @@
 let connection = require('../../db/connection')
 let logger = require('tracer').colorConsole()
 let snapshotBuilder = require('./config-snapshot-builder')
+let publishPipelineUpdate = require('../../queueing/publish-pipeline-update-event')
 
 /**
  * Execute Pipeline Command - Creates a new pipeline execution, and queues it for processing.
@@ -10,11 +11,12 @@ let snapshotBuilder = require('./config-snapshot-builder')
  *
  * @param pipelineId
  * @param input
+ * @param userId
  * @param callback
  */
 module.exports = (pipelineId, input, userId, callback) => {
 
-  let pipelineRsmq = require('../../queueing/pipeline-queue')
+  let pipelineRsmq = require('../../queueing/pipeline-executions-queue')
 
   input = input || {}
 
@@ -41,6 +43,9 @@ module.exports = (pipelineId, input, userId, callback) => {
 
         callback(newExecutionId)
 
+        // Publish a pipeline update event
+        publishPipelineUpdate()
+
         // Send message to queue to handle new execution
         let message = JSON.stringify({
           pipeline_execution_id: newExecutionId
@@ -55,6 +60,9 @@ module.exports = (pipelineId, input, userId, callback) => {
               .update('status', 'queued').catch(err => {
                 logger.error(err)
               })
+
+            // Publish a pipeline update event
+            publishPipelineUpdate()
 
           }
 
