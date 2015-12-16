@@ -34,11 +34,11 @@ app.config(['$httpProvider', ($httpProvider) => {
 }])
 
 // Configure socket-io
-app.factory('socket', function(socketFactory) {
+app.factory('socket', ['socketFactory', function(socketFactory) {
   return socketFactory({
     ioSocket: io.connect() // using this syntax here in case we need to set options for socket.io later
   })
-})
+}])
 
 app.run(controllers.socketManager)
 app.run(controllers.user)
