@@ -2,20 +2,55 @@
 
 let cookie = require('cookie')
 let jwt = require('jsonwebtoken')
+let io
+
+// Tests whether the user is authorized and in the authorized room
+let userIsInAuthorizedRoom = (socketId) => {
+
+  // If the room doesn't even exist, return false
+  if (typeof io.sockets.adapter.rooms['authorized'] === 'undefined') {
+    return false
+  }
+  return (typeof io.sockets.adapter.rooms['authorized'][socketId] !== 'undefined')
+}
+
+/**
+ * Attempts to authenticate a socket connection via a JWT cookie
+ * @param socket
+ */
+let authenticateSocketUser = (socket) => {
+  try {
+
+    let parsedCookies = cookie.parse(socket.handshake.headers['cookie'])
+
+    if (typeof parsedCookies.mc_jwt !== 'undefined') {
+
+      let decoded = jwt.verify(parsedCookies.mc_jwt, process.env.SECRET_KEY)
+
+      if (typeof decoded.user_id !== 'undefined') {
+
+        console.log('jwt found and validated')
+
+        // Join them to the authorized room (unless they are already in there)
+        if (!userIsInAuthorizedRoom(socket.id)) {
+          console.log('user is not already in the authorized room, joining them to it now')
+          socket.join('authorized')
+        } else {
+          console.log('user is already in the authorized room')
+        }
+      }
+
+    }
+
+  } catch (err) {
+    console.log(err)
+  }
+
+}
 
 module.exports = (server) => {
 
-  let io = require('socket.io')(server)
-
-  // Tests whether the user is authorized and in the authorized room
-  let userIsInAuthorizedRoom = (socketId) => {
-
-    // If the room doesn't even exist, return false
-    if (typeof io.sockets.adapter.rooms['authorized'] === 'undefined') {
-      return false
-    }
-    return (typeof io.sockets.adapter.rooms['authorized'][socketId] !== 'undefined')
-  }
+  io = require('socket.io')(server)
 
   // As a test, we'll emit an event to only authorized users every 5 seconds
   setInterval(function() {
@@ -26,33 +61,8 @@ module.exports = (server) => {
 
     console.log('SIO: User Connected: ' + socket.id)
 
-    // Attempt to validate JWT
-    try {
-
-      let parsedCookies = cookie.parse(socket.handshake.headers['cookie'])
-
-      if (typeof parsedCookies.mc_jwt !== 'undefined') {
-
-        let decoded = jwt.verify(parsedCookies.mc_jwt, process.env.SECRET_KEY)
-
-        if (typeof decoded.user_id !== 'undefined') {
-
-          console.log('jwt found and validated')
-
-          // Join them to the authorized room (unless they are already in there)
-          if (!userIsInAuthorizedRoom(socket.id)) {
-            console.log('user is not already in the authorized room, joining them to it now')
-            socket.join('authorized')
-          } else {
-            console.log('user is already in the authorized room')
-          }
-        }
-
-      }
-
-    } catch (err) {
-      console.log(err)
-    }
+    // Attempt to authenticate the user on connection (via their JWT)
+    authenticateSocketUser(socket)
 
     socket.on('ping', function(data) {
       console.log('received ping, sending pong')
