@@ -11,11 +11,11 @@ export default ['$scope', '$http', '$uibModalInstance', 'prefillData', function(
     if (typeof prefillData !== 'undefined' && typeof prefillData.project_id !== 'undefined') {
       $scope.form.project_id = prefillData.project_id.toString()
 
-    } else {
+    } /*else {
 
       // Otherwise, use the first project as the selected one
       $scope.form.project_id = $scope.projects[0].id.toString()
-    }
+    }*/
 
   })
 

@@ -85,24 +85,7 @@
                 <tr ng-repeat="pipeline in project.pipelines">
                     <td><a ui-sref="pipeline({id: pipeline.id})"><strong><i class="fa fa-tasks"></i> {{ pipeline.name }}</strong></a></td>
                     <td>
-                        <a ng-repeat="pe in pipeline.executions"><i class="fa fa-circle" ng-class="{'text-success':pe.status === 'succeeded', 'text-danger':pe.status === 'failed'}"></i></a>
-
-
-                        <!--<a href="/jobs/113"><i class="fa fa-circle text-success"></i></a>&nbsp;-->
-
-                        <!--<a href="/jobs/112"><i class="fa fa-circle text-danger"></i></a>&nbsp;-->
-
-                        <!--<a href="/jobs/111"><i class="fa fa-circle text-danger"></i></a>&nbsp;-->
-
-                        <!--<a href="/jobs/110"><i class="fa fa-circle text-danger"></i></a>&nbsp;-->
-
-                        <!--<a href="/jobs/109"><i class="fa fa-circle text-danger"></i></a>&nbsp;-->
-
-                        <!--<a href="/jobs/108"><i class="fa fa-circle text-danger"></i></a>&nbsp;-->
-
-                        <!--<a href="/jobs/107"><i class="fa fa-circle text-danger"></i></a>&nbsp;-->
-
-                        <!--<a href="/jobs/106"><i class="fa fa-circle text-danger"></i></a>&nbsp;-->
+                        <a ng-repeat="pe in pipeline.executions" ui-sref="pipeline-execution-details({id: pe.id})"><i class="fa fa-circle" ng-class="{'text-success':pe.status === 'succeeded', 'text-danger':pe.status === 'failed'}" style="padding-right: 5px"></i></a>
 
                     </td>
                     <td><!--<a class="btn btn-xs btn-default"><i class="fa fa-list-ul"></i> View All</a> <a class="btn btn-xs btn-default"><i class="fa fa-gear"></i> Configure</a> --><a class="btn btn-xs btn-primary" ng-click="execute(pipeline.id)"><i class="fa fa-play"></i> Execute</a></td>
