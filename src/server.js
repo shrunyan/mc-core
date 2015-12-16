@@ -12,4 +12,7 @@ let server = app.listen(port, () => {
 
 })
 
+// Set up socket handling
+require('./api/socket-handler')(server)
+
 module.exports = server
