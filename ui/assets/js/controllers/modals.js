@@ -31,24 +31,6 @@ export default ['$rootScope', '$uibModal', ($rootScope, $uibModal) => {
             controller: createCheckModal
           }
       }
-    },
-
-    createProject: function createProject(cb) {
-      let modal = $uibModal.open({
-        templateUrl: '/assets/js/templates/modals/create-project.html',
-        controller: createProjectModal
-      })
-
-      modal.result.then(cb)
-    },
-
-    createPipeline: function createPipeline(cb) {
-      let modal = $uibModal.open({
-        templateUrl: '/assets/js/templates/modals/create-pipeline.html',
-        controller: createPipelineModal
-      })
-
-      modal.result.then(cb)
     }
 
   }
