@@ -1,15 +1,53 @@
-<h1>Project Health Checks</h1>
+<section class="container-fluid">
 
-<hr>
+  <div class="row">
+    <div class="col-md-8">
+      <h1>Project Health Checks</h1>
+    </div>
+    <div class="col-md-4">
+      <a ng-click="modal.open('check', refresh)" class="pull-right btn btn-success">
+        <i class="fa fa-plus"></i> Create Health Check
+      </a>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <table class="table">
+      <thead>
+        <tr>
+          <td>Name</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-if="checks.length === 0">
+            <td class="text-center">
+              <p><em class="text-muted">No checks configured.</em></p>
+              <a ng-click="modal.open('check', refresh)" class="btn btn-default btn-xs">
+                <i class="fa fa-plus text-muted"></i> Create New Health Check
+              </a>
+            </td>
+        </tr>
+        <tr ng-repeat="check in checks">
+          <td>{{ check.name }}</td>
+        </tr>
+      </tbody>
+      <tfoot></tfoot>
+    </table>
+  </div>
 
-<div class="row">
+
+<!--   <div class="row">
     <div class="col-md-6" ng-repeat="projectHalf in projectHalves">
         <div class="panel panel-default" ng-repeat="project in projectHalf">
             <div class="panel-heading"><i class="fa fa-code"></i> {{ project.name }}</div>
             <table class="table">
                 <tr ng-if="project.id !== 9 && project.id !== 11">
-                    <td class="text-center" style="line-height: 30px; padding: 20px 10px"><em class="text-muted">No checks configured.</em>
-                        <br><a href="#" class="btn btn-default btn-xs"><i class="fa fa-plus text-muted"></i> Create New Health Check</a>
+                    <td class="text-center" style="line-height: 30px; padding: 20px 10px">
+                      <em class="text-muted">No checks configured.</em>
+                      <br>
+                      <a ng-click="modal.open('check', refresh)" class="btn btn-default btn-xs">
+                        <i class="fa fa-plus text-muted"></i> Create New Health Check
+                      </a>
                     </td>
                 </tr>
                 <tr ng-if="project.id === 9 || project.id === 11">
@@ -38,7 +76,9 @@
                     <td class="text-muted">2 minutes ago</td>
                 </tr>
 
-            </table>
-        </div>
-    </div>
-</div>
+              </table>
+          </div>
+      </div>
+  </div> -->
+
+</section>
