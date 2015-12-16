@@ -76,7 +76,8 @@ let emitActivePipelinesToAllAuthorizedSockets = () => {
 let worker = new RSMQWorker('pipeline_updates', {
   redisPrefix: 'mission_control',
   host: process.env.REDIS_HOST,
-  port: process.env.REDIS_PORT
+  port: process.env.REDIS_PORT,
+  interval: [1, 2, 3] // using a more aggressive polling rate
 })
 
 worker.on('message', emitActivePipelinesToAllAuthorizedSockets)
