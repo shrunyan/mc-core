@@ -4,7 +4,7 @@ export default ['$rootScope', 'socket', function($rootScope, socket) {
 
   // When we receive a test authorized_event, log it
   socket.on('client_side_log', function(data) {
-    console.log('Socket log: ' + data.message )
+    console.log('Socket log: ' + data.message)
   })
 
   // When we received an update active pipelines event, update it in our root scope

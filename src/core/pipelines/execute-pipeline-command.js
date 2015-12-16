@@ -46,7 +46,6 @@ module.exports = (pipelineId, input, userId, callback) => {
         // Publish a pipeline update event
         publishPipelineUpdate()
 
-
         // Send message to queue to handle new execution
         let message = JSON.stringify({
           pipeline_execution_id: newExecutionId
