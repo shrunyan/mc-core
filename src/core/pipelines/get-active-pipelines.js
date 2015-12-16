@@ -63,7 +63,6 @@ module.exports = (callback) => {
 
       // When all the data munging is done, call the callback with the data
       Promise.all(promises).then(() => {
-        console.log('all promises resolved')
         callback(pipelineExecutions)
       })
     })

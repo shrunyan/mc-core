@@ -28,10 +28,13 @@ module.exports = function(app) {
   app.get('/api/projects', controllers.projects.getProjects)
   app.post('/api/projects', controllers.projects.createProject)
   app.get('/api/projects/with-pipelines', controllers.projects.getProjectsWithPipelines)
+  app.get('/api/projects/:id', controllers.projects.getProject)
 
   // Pipelines
   app.get('/api/pipelines', controllers.pipelines.getList)
   app.post('/api/pipelines', controllers.pipelines.createPipeline)
+  app.get('/api/pipelines/:id', controllers.pipelines.getPipeline)
+  app.get('/api/pipelines/:id/executions', controllers.pipelineExecutions.getListForPipeline)
   app.post('/api/pipelines/:id/execute', controllers.pipelines.executePipeline)
 
   // Pipeline Stages

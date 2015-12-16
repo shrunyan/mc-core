@@ -8,4 +8,8 @@ export default ['$scope', '$http', function($scope, $http) {
     $scope.projects = response.data.data
   })
 
+  $scope.execute = function execute(pipelineConfigId) {
+    $http.post('/api/pipelines/' + pipelineConfigId + '/execute', {})
+  }
+
 }]

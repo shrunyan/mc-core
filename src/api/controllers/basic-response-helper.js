@@ -22,6 +22,26 @@ module.exports = {
   },
 
   /**
+   * Get a single item
+   *
+   * @param req
+   * @param res
+   * @param table
+   */
+  getOne: (req, res, table) => {
+    connection.first()
+      .where('id', req.params.id)
+      .from(table)
+      .then((item) => {
+        res.send({data: item})
+      })
+      .catch(err => {
+        logger.error(err)
+        res.status(500).send({message: 'An error occurred.'})
+      })
+  },
+
+  /**
    * A basic lookup with extra query builder modifications
    *
    * @param {object} req

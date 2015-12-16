@@ -1,12 +1,16 @@
-export default ['$scope', '$http', function($scope, $http) {
-  $http.get('/api/projects').then(function(response) {
+export default ['$scope', '$http', '$stateParams', function($scope, $http, $stateParams) {
 
-    // TODO: Get response from api
-    $scope.pipeline = {
-      id: 1,
-      name: 'Pipeline one',
-      path: 'pipeline-one'
-    }
+  $http.get('/api/pipelines/' + $stateParams.id).then(response => {
+    $scope.pipeline = response.data.data
+
+    $http.get('/api/projects/' + response.data.data.project_id).then(response => {
+      $scope.project = response.data.data
+    })
 
   })
+
+  $http.get('/api/pipelines/' + $stateParams.id + '/executions').then(response => {
+    $scope.pipelineExecutions = response.data.data
+  })
+
 }]

@@ -19,6 +19,16 @@ module.exports = {
   },
 
   /**
+   * Get one project
+   *
+   * @param req
+   * @param res
+   */
+  getProject: (req, res) => {
+    basic.getOne(req, res, 'projects')
+  },
+
+  /**
    * Get projects with nested properties nested in each
    *
    * @param req

@@ -1,9 +1,47 @@
+<div class="pull-right" style="display:inline-block">
+    <div class="btn-group">
+        <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-plus"></i> Create New <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu pull-right">
+            <li><a ng-click="modal.createProject(refresh)"><i class="fa fa-code"></i> Project</a></li>
+            <li><a href="javascript:console.error('not implemented')"><i class="fa fa-tasks"></i> Pipeline</a></li>
+        </ul>
+    </div>
+</div>
+
 <h1>Pipelines</h1>
 
 <hr>
 
 <div class="row">
     <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Active Pipeline Executions
+            </div>
+            <table class="table">
+                <tr ng-if="activePipelines.length === 0">
+                    <td class="text-center"><em class="text-muted">No active pipeline executions</em></td>
+                </tr>
+                <tr ng-repeat="pe in activePipelines">
+                    <td>
+                        <a ui-sref="pipeline-execution-details({id: pe.id})">Project Name » {{ pe.config_snapshot.pipeline.name }} » #{{ pe.id }}</a>
+                        <br><small class="text-muted"></small>
+                        <table class="stage-bar">
+                            <tbody>
+                            <tr>
+                                <td ng-repeat="stage in pe.stages" ng-class="{'running pulse':stage.status === 'running', successful: stage.status === 'succeeded', failure: stage.status === 'failed'}">&nbsp;</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <small class="text-muted"><span ng-if="!pe.current_stage_num">Starting</span><span ng-if="pe.current_stage_num">Stage {{ pe.current_stage_num }} of {{ pe.stages.length }} &ndash; {{ pe.current_stage_name }}</span></small>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+
         <div class="panel panel-default">
             <div class="panel-heading">
                 Recently Completed Executions
@@ -40,11 +78,12 @@
                 <tr>
                     <th>Type</th>
                     <th>Recent Executions</th>
+                    <th>Options</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr ng-repeat="pipeline in project.pipelines">
-                    <td><a href="/jobs/configurations/1"><strong><i class="fa fa-tasks"></i> {{ pipeline.name }}</strong></a></td>
+                    <td><a ui-sref="pipeline({id: pipeline.id})"><strong><i class="fa fa-tasks"></i> {{ pipeline.name }}</strong></a></td>
                     <td>
                         <a href="/jobs/113"><i class="fa fa-circle text-success"></i></a>&nbsp;
 
@@ -63,9 +102,10 @@
                         <a href="/jobs/106"><i class="fa fa-circle text-danger"></i></a>&nbsp;
 
                     </td>
+                    <td><!--<a class="btn btn-xs btn-default"><i class="fa fa-list-ul"></i> View All</a> <a class="btn btn-xs btn-default"><i class="fa fa-gear"></i> Configure</a> --><a class="btn btn-xs btn-primary" ng-click="execute(pipeline.id)"><i class="fa fa-play"></i> Execute</a></td>
                 </tr>
                 <tr ng-if="project.pipelines.length === 0">
-                   <td colspan="2" class="text-center" style="line-height: 30px; padding: 20px 10px">
+                   <td colspan="3" class="text-center" style="line-height: 30px; padding: 20px 10px">
                       <em class="text-muted">No pipelines have been created for this project yet.</em>
                       <br>
                       <a ng-click="modal.createPipeline(refresh)" class="btn btn-default btn-xs">
@@ -77,4 +117,5 @@
                 </tbody>
             </table>
         </div>
-    </div></div>
+    </div>
+</div>
