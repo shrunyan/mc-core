@@ -2,8 +2,8 @@
 
 let cookie = require('cookie')
 let jwt = require('jsonwebtoken')
-let connection = require('../db/connection')
 let RSMQWorker = require('rsmq-worker')
+let getActivePipelines = require('../core/pipelines/get-active-pipelines')
 let io
 
 /**
@@ -55,18 +55,6 @@ let authenticateSocketUser = (socket) => {
   } catch (err) {
     console.log(err)
   }
-
-}
-
-let getActivePipelines = (callback) => {
-
-  connection.select()
-    .orderBy('finished_at', 'desc')
-    .whereNull('finished_at')
-    .from('pipeline_executions')
-    .then((rows) => {
-      callback(rows)
-    })
 
 }
 
