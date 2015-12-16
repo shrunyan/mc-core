@@ -10,6 +10,7 @@ let snapshotBuilder = require('./config-snapshot-builder')
  *
  * @param pipelineId
  * @param input
+ * @param userId
  * @param callback
  */
 module.exports = (pipelineId, input, userId, callback) => {
