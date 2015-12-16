@@ -57,7 +57,7 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="pipeline in project.pipelines">
-                    <td><a href="/jobs/configurations/1"><strong><i class="fa fa-tasks"></i> {{ pipeline.name }}</strong></a></td>
+                    <td><a ui-sref="pipeline({id: pipeline.id})"><strong><i class="fa fa-tasks"></i> {{ pipeline.name }}</strong></a></td>
                     <td>
                         <a href="/jobs/113"><i class="fa fa-circle text-success"></i></a>&nbsp;
 
