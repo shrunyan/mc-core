@@ -3,6 +3,7 @@
 let cookie = require('cookie')
 let jwt = require('jsonwebtoken')
 let connection = require('../db/connection')
+let RSMQWorker = require('rsmq-worker')
 let io
 
 /**
@@ -84,10 +85,13 @@ let emitActivePipelinesToAllAuthorizedSockets = () => {
 }
 
 // On update_active_pipelines rsmq event, publish ws event
-//worker.on('message')
-//
-setInterval(emitActivePipelinesToAllAuthorizedSockets, 6000)
+let worker = new RSMQWorker('pipeline_updates', {
+  redisPrefix: 'mission_control',
+  host: process.env.REDIS_HOST,
+  port: process.env.REDIS_PORT
+})
 
+worker.on('message', emitActivePipelinesToAllAuthorizedSockets)
 
 module.exports = (server) => {
 
