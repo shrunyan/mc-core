@@ -43,6 +43,9 @@ let authenticateSocketUser = (socket) => {
         } else {
           console.log('user is already in the authorized room')
         }
+
+        // Either way, if we made it here, broadcast the initial (pipeline) data
+        emitActivePipelinesToSpecificSocket(socket.id)
       }
 
     }
@@ -53,14 +56,41 @@ let authenticateSocketUser = (socket) => {
 
 }
 
+let getActivePipelines = () => {
+
+  // ....
+  return {
+    this_is: 'fake active pipelines data'
+  }
+
+}
+
+let emitActivePipelinesToSpecificSocket = (socketId) => {
+  io.sockets.connected[socketId].emit('update_active_pipelines', getActivePipelines())
+}
+
+let emitActivePipelinesToAllAuthorizedSockets = () => {
+  io.sockets.in('authorized').emit('update_active_pipelines', getActivePipelines());
+}
+
+// On update_active_pipelines rsmq event, publish ws event
+//worker.on('message')
+//
+setInterval(emitActivePipelinesToAllAuthorizedSockets, 6000)
+
+
 module.exports = (server) => {
 
   io = require('socket.io')(server)
 
   // As a test, we'll emit an event to only authorized users every 5 seconds
-  setInterval(function() {
-    io.to('authorized').emit('authorized_event', {message: 'only authorized users should see this'})
+  setInterval(() => {
+    io.to('authorized').emit('client_side_log', {message: 'only authorized users should see this'})
   }, 5000)
+
+  setInterval(() => {
+    io.emit('client_side_log', {message: 'all users should see this'})
+  }, 7000)
 
   io.on('connection', (socket) => {
 
@@ -68,20 +98,6 @@ module.exports = (server) => {
 
     // Attempt to authenticate the user on connection (via their JWT)
     authenticateSocketUser(socket)
-
-    socket.on('ping', function(data) {
-      console.log('received ping, sending pong')
-      socket.emit('pong', {server_data: 'nothing'})
-    })
-
-    socket.on('get_active_pipelines', function() {
-
-      // If the socket.id is in the room 'authorized', emit an event back to them
-      if (userIsInAuthorizedRoom(socket.id)) {
-        io.sockets.socket(socket.id).emit('update_active_pipelines', {})
-      }
-
-    })
 
     socket.on('disconnect', function() {
       console.log('SIO: User Disconnected: ' + socket.id)
