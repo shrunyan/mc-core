@@ -10,10 +10,33 @@
       </a>
     </div>
   </div>
-
   <hr>
-
   <div class="row">
+    <table class="table">
+      <thead>
+        <tr>
+          <td>Name</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-if="checks.length === 0">
+            <td class="text-center">
+              <p><em class="text-muted">No checks configured.</em></p>
+              <a ng-click="modal.open('check', refresh)" class="btn btn-default btn-xs">
+                <i class="fa fa-plus text-muted"></i> Create New Health Check
+              </a>
+            </td>
+        </tr>
+        <tr ng-repeat="check in checks">
+          <td>{{ check.name }}</td>
+        </tr>
+      </tbody>
+      <tfoot></tfoot>
+    </table>
+  </div>
+
+
+<!--   <div class="row">
     <div class="col-md-6" ng-repeat="projectHalf in projectHalves">
         <div class="panel panel-default" ng-repeat="project in projectHalf">
             <div class="panel-heading"><i class="fa fa-code"></i> {{ project.name }}</div>
@@ -56,6 +79,6 @@
               </table>
           </div>
       </div>
-  </div>
+  </div> -->
 
 </section>
