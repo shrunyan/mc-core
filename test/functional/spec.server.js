@@ -10,6 +10,6 @@ test('404 response', function(t) {
   request(app)
     .get('/non-existent/url/path')
     .end((err, res) => {
-      t.error(err, 'No error');
+      t.error(err, 'No error')
     })
 })
