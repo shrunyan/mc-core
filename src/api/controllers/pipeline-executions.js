@@ -51,7 +51,6 @@ module.exports = {
           execution.stageConfigsById[config.id] = config
         })
 
-
         // Append owner
         execution.owner = owner
 
