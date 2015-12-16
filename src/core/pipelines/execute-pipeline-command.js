@@ -12,7 +12,7 @@ let snapshotBuilder = require('./config-snapshot-builder')
  * @param input
  * @param callback
  */
-module.exports = (pipelineId, input, callback) => {
+module.exports = (pipelineId, input, userId, callback) => {
 
   let pipelineRsmq = require('../../queueing/pipeline-queue')
 
@@ -23,6 +23,7 @@ module.exports = (pipelineId, input, callback) => {
 
     let newExecutionData = {
       pipeline_config_id: pipelineId,
+      owner_id: userId,
       status: 'created',
       created_at: new Date(),
       updated_at: new Date(),

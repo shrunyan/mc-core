@@ -33,7 +33,7 @@ module.exports = {
    */
   executePipeline: (req, res) => {
     try {
-      executePipelineCommand(req.params.id, req.body, (id) => {
+      executePipelineCommand(req.params.id, req.body, req.user.id, (id) => {
 
         res.status(200).send({
           data: {
