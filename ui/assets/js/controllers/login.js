@@ -1,4 +1,4 @@
-export default ['$rootScope', '$http', '$q', function($rootScope, $http, $q) {
+export default ['$rootScope', '$http', '$q', 'socket', function($rootScope, $http, $q, socket) {
 
   $rootScope.showLoginError = false
   $rootScope.loginForm = {
@@ -35,6 +35,10 @@ export default ['$rootScope', '$http', '$q', function($rootScope, $http, $q) {
 
       // Load/reload user details
       $rootScope.loadAuthenticatedUser()
+
+      // Reconnect to socket.io
+      socket.disconnect()
+      socket.connect()
 
       // Reset the form
       $rootScope.loginForm = {
