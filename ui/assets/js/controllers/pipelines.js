@@ -9,7 +9,7 @@ export default ['$scope', '$http', function($scope, $http) {
   })
 
   $scope.execute = function execute(pipelineConfigId) {
-    $http.post('/api/pipelines/'+ pipelineConfigId + '/execute', {})
+    $http.post('/api/pipelines/' + pipelineConfigId + '/execute', {})
   }
 
 }]
