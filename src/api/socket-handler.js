@@ -20,7 +20,7 @@ module.exports = (server) => {
   // As a test, we'll emit an event to only authorized users every 5 seconds
   setInterval(function() {
     io.to('authorized').emit('authorized_event', {message: 'only authorized users should see this'})
-  },5000)
+  }, 5000)
 
   io.on('connection', (socket) => {
 
@@ -42,7 +42,7 @@ module.exports = (server) => {
           // Join them to the authorized room (unless they are already in there)
           if (!userIsInAuthorizedRoom(socket.id)) {
             console.log('user is not already in the authorized room, joining them to it now')
-            socket.join('authorized');
+            socket.join('authorized')
           } else {
             console.log('user is already in the authorized room')
           }
@@ -50,8 +50,7 @@ module.exports = (server) => {
 
       }
 
-
-      } catch (err) {
+    } catch (err) {
       console.log(err)
     }
 
@@ -64,7 +63,7 @@ module.exports = (server) => {
 
       // If the socket.id is in the room 'authorized', emit an event back to them
       if (userIsInAuthorizedRoom(socket.id)) {
-        io.sockets.socket(socket.id).emit('update_active_pipelines', {});
+        io.sockets.socket(socket.id).emit('update_active_pipelines', {})
       }
 
     })
@@ -74,6 +73,5 @@ module.exports = (server) => {
     })
 
   })
-
 
 }
