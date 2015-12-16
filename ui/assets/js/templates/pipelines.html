@@ -1,6 +1,20 @@
-<a ng-click="modal.createProject(refresh)" class="pull-right btn btn-success">
-    <i class="fa fa-plus"></i> Create New Project
-</a>
+<div class="pull-right" style="display:inline-block">
+    <!--<a ng-click="modal.createProject(refresh)" class="btn btn-success">-->
+        <!--<i class="fa fa-plus"></i> <i class="fa fa-code"></i> Create Project-->
+    <!--</a>-->
+    <!--<a href="javascript:console.error('not implemented')" class="btn btn-success">-->
+        <!--<i class="fa fa-plus"></i> Pipeline-->
+    <!--</a>-->
+    <div class="btn-group">
+        <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-plus"></i> Create New <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu pull-right">
+            <li><a ng-click="modal.createProject(refresh)"><i class="fa fa-code"></i> Project</a></li>
+            <li><a href="javascript:console.error('not implemented')"><i class="fa fa-tasks"></i> Pipeline</a></li>
+        </ul>
+    </div>
+</div>
 
 <h1>Pipelines</h1>
 
@@ -44,6 +58,7 @@
                 <tr>
                     <th>Type</th>
                     <th>Recent Executions</th>
+                    <th>Options</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -67,9 +82,10 @@
                         <a href="/jobs/106"><i class="fa fa-circle text-danger"></i></a>&nbsp;
 
                     </td>
+                    <td><!--<a class="btn btn-xs btn-default"><i class="fa fa-list-ul"></i> View All</a> <a class="btn btn-xs btn-default"><i class="fa fa-gear"></i> Configure</a> --><a class="btn btn-xs btn-primary"><i class="fa fa-play"></i> Execute</a></td>
                 </tr>
                 <tr ng-if="project.pipelines.length === 0">
-                   <td colspan="2" class="text-center" style="line-height: 30px; padding: 20px 10px">
+                   <td colspan="3" class="text-center" style="line-height: 30px; padding: 20px 10px">
                       <em class="text-muted">No pipelines have been created for this project yet.</em>
                       <br>
                       <a ng-click="modal.createPipeline(refresh)" class="btn btn-default btn-xs">
