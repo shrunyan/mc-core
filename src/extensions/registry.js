@@ -11,7 +11,7 @@ let registry = {
 
   load: function load() {
     this.resolve(EXT_PATH)
-    //return this._extensions.map(this.validate)
+    return this._extensions
   },
 
   /**
@@ -31,7 +31,6 @@ let registry = {
    * @param  {[Object]} module [Module instance]
    */
   register: function register(module) {
-
     if (typeof this._extensions[module.vendor] !== 'object') {
       this._extensions[module.vendor] = {}
     }
