@@ -10,10 +10,13 @@ let controllers = {
   pipelineExecutions: require('./controllers/pipeline-executions'),
   projects: require('./controllers/projects'),
   user: require('./controllers/user'),
-  checks: require('./controllers/checks')
+  checks: require('./controllers/checks'),
+  stages: require('./controllers/stages')
 }
 
 module.exports = function(app) {
+
+  console.log(app.locals)
 
   // Authentication Verification middleware
   app.use('/api/*', middleware.auth)
@@ -39,7 +42,7 @@ module.exports = function(app) {
   app.post('/api/pipelines/:id/execute', controllers.pipelines.executePipeline)
 
   // Pipeline Stages
-  // TODO: /api/pipelines
+  app.get('/api/stages', controllers.stages.getAvailableTypes)
 
   // Pipeline Executions
   // TODO: GET /api/pipeline-executions
