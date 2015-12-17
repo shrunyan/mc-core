@@ -1,9 +1,17 @@
 'use strict'
 
-// let basic = require('./basic-response-helper')
+let pkgs = require('../../extensions/registry').load()
 
 module.exports = {
-  getAvailableTypes: () => {
-    // console.log(app)
+  getAvailableTypes: function getAvailableTypes(req, res) {
+    let stages = []
+
+    for (let pkg in pkgs) {
+      for (let stage in pkgs[pkg]) {
+        stages.push(stage)
+      }
+    }
+
+    res.status(201).send({data: stages})
   }
 }
