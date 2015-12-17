@@ -1,4 +1,4 @@
-export default ['$scope', '$http', '$uibModalInstance', 'prefillData', function($scope, $http, $uibModalInstance, prefillData) {
+export default ['$scope', '$http', '$uibModalInstance', 'data', function($scope, $http, $uibModalInstance, data) {
 
   $scope.form = {
     name: ''
@@ -8,8 +8,8 @@ export default ['$scope', '$http', '$uibModalInstance', 'prefillData', function(
     $scope.projects = response.data.data
 
     // If there was pre-filled data provided, use the project_id
-    if (typeof prefillData !== 'undefined' && typeof prefillData.project_id !== 'undefined') {
-      $scope.form.project_id = prefillData.project_id.toString()
+    if (typeof data !== 'undefined' && typeof data.project_id !== 'undefined') {
+      $scope.form.project_id = data.project_id.toString()
 
     } /*else {
 

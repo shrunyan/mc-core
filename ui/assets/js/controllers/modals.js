@@ -1,32 +1,48 @@
 import createPipelineModal from './modals/create-pipeline'
 import createProjectModal from './modals/create-project'
+import createCheckModal from './modals/create-check'
 
 export default ['$rootScope', '$uibModal', ($rootScope, $uibModal) => {
 
   $rootScope.modal = {
 
-    createProject: function createProject(cb) {
-      let modal = $uibModal.open({
-        templateUrl: '/assets/js/templates/modals/create-project.html',
-        controller: createProjectModal
-      })
+    open: function open(modal, cb, dataToPass) {
 
-      modal.result.then(cb)
+      cb = cb || function() {}
+      dataToPass = dataToPass || {}
+
+      $uibModal
+        .open(this.getConfig(modal, dataToPass))
+        .result
+        .then(cb)
     },
 
-    createPipeline: function createPipeline(cb, dataToPrefill) {
-      let modal = $uibModal.open({
-        templateUrl: '/assets/js/templates/modals/create-pipeline.html',
-        controller: createPipelineModal,
-        resolve: {
-          prefillData: () => {
-            return dataToPrefill
+    getConfig: function getConfig(modal, dataToPass) {
+      switch (modal) {
+        case 'project':
+          return {
+            templateUrl: '/assets/js/templates/modals/create-project.html',
+            controller: createProjectModal
           }
 
-        }
-      })
+        case 'pipeline':
+          return {
+            templateUrl: '/assets/js/templates/modals/create-pipeline.html',
+            controller: createPipelineModal,
+            resolve: {
+              data: () => {
+                return dataToPass
+              }
+            }
+          }
 
-      modal.result.then(cb)
+        case 'check':
+          return {
+            templateUrl: '/assets/js/templates/modals/create-check.html',
+            controller: createCheckModal
+          }
+
+      }
     }
 
   }
