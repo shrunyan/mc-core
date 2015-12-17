@@ -5,6 +5,10 @@ export default ['$scope', '$http', '$stateParams', function($scope, $http, $stat
     $scope.execution = response.data.data
     console.log(response.data.data)
 
+    $http.get('/api/projects/' + response.data.data.config_snapshot.pipeline.project_id).then(response => {
+      $scope.project = response.data.data
+    })
+
   })
 
 }]
