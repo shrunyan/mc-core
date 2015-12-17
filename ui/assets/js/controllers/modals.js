@@ -6,30 +6,42 @@ export default ['$rootScope', '$uibModal', ($rootScope, $uibModal) => {
 
   $rootScope.modal = {
 
-    open: function open(modal, cb) {
+    open: function open(modal, cb, dataToPass) {
+
+      cb = cb || function() {}
+      dataToPass = dataToPass || {}
+
       $uibModal
-        .open(this.getConfig(modal))
+        .open(this.getConfig(modal, dataToPass))
         .result
         .then(cb)
     },
 
-    getConfig: function getConfig(modal) {
+    getConfig: function getConfig(modal, dataToPass) {
       switch (modal) {
         case 'project':
           return {
             templateUrl: '/assets/js/templates/modals/create-project.html',
             controller: createProjectModal
           }
+
         case 'pipeline':
           return {
             templateUrl: '/assets/js/templates/modals/create-pipeline.html',
-            controller: createPipelineModal
+            controller: createPipelineModal,
+            resolve: {
+              data: () => {
+                return dataToPass
+              }
+            }
           }
+
         case 'check':
           return {
             templateUrl: '/assets/js/templates/modals/create-check.html',
             controller: createCheckModal
           }
+
       }
     }
 

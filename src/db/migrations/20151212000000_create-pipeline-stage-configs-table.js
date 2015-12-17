@@ -8,7 +8,7 @@ exports.up = function(knex, Promise) {
     table.integer('sort')
     table.string('type')
     table.string('name')
-    table.timestamp('options').nullable()
+    table.text('options')
     table.timestamp('created_at').nullable()
     table.timestamp('updated_at').nullable()
   })
