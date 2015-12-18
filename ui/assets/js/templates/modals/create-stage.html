@@ -6,7 +6,7 @@
     <div class="form-group">
         <label>Available Stage Types</label>
         <select class="form-control" ng-model="stageType">
-          <option ng-repeat="stage in stages" value="{{ stage }}">{{ stage }}</option>
+          <option ng-repeat="stage in stages" value="{{ stage.id }}">{{ stage.name }}</option>
         </select>
     </div>
 </div>
