@@ -16,8 +16,6 @@ let controllers = {
 
 module.exports = function(app) {
 
-  console.log(app.locals)
-
   // Authentication Verification middleware
   app.use('/api/*', middleware.auth)
 
