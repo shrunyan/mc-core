@@ -41,6 +41,7 @@ module.exports = function(app) {
 
   // Pipeline Stages
   app.get('/api/stages', controllers.stages.getAvailableTypes)
+  app.post('/api/stages', controllers.stages.createStageConfig)
 
   // Pipeline Executions
   // TODO: GET /api/pipeline-executions
