@@ -1,12 +1,21 @@
 export default ['$scope', '$http', '$uibModalInstance', function($scope, $http, $uibModalInstance) {
 
+  console.log('scope', $scope)
+
   $http
     .get('/api/stages')
     .then(res => $scope.stages = res.data.data)
 
   $scope.ok = () => {
-    // submit stage config
-    // $uibModalInstance.close()
+    $http
+      .post('api/stages/', {
+        stage_id: $scope.stage_id
+      })
+      .then(res => {
+        console.log('res', res)
+      })
+
+    $uibModalInstance.close()
   }
 
   $scope.cancel = () => {
