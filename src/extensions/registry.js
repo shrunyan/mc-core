@@ -20,7 +20,6 @@ let registry = {
    */
   resolve: function resolve(dir) {
     let modules = glob.sync(dir)
-
     modules.forEach(module => {
       this.register(require(module))
     })
@@ -31,14 +30,18 @@ let registry = {
    * @param  {[Object]} module [Module instance]
    */
   register: function register(module) {
-    if (typeof this._extensions[module.vendor] !== 'object') {
+    // TODO: validate stage types
+    // TODO: validate log types
+    if (!this._extensions[module.vendor]) {
       this._extensions[module.vendor] = {}
     }
 
-    // TODO: validate stage types
-    // TODO: validate log types
-
-    this._extensions[module.vendor][module.name] = module
+    this._extensions[module.vendor][module.name] = {
+      name: module.name,
+      description: module.description,
+      stages: module.stages,
+      logs: module.logs
+    }
   },
 
   /**
@@ -47,7 +50,6 @@ let registry = {
    * @return {[Object]}     [Validated module]
    */
   validate: function validate(ext) {
-
     // TODO validate
     //validator.validateIndex(ext, (err) => {
     //  console.log('validated?', err)
@@ -62,18 +64,17 @@ let registry = {
    * @return {[object]}      [resolved extension path]
    */
   get: function get(name) {
-    let obj = this._extensions
     let paths = name.split('.')
-
-    paths.forEach(path => {
-      if (!obj[path]) {
-        let err = 'Undefined extensions path: ' + path
-        throw err
+    return paths.reduce((prev, path) => {
+      switch(path) {
+        case 'stages':
+          return prev.stages
+        case 'logs':
+          return prev.logs
+        default:
+          return prev[path]
       }
-      obj = obj[path]
-    })
-
-    return obj
+    }, this._extensions)
   }
 
 }
