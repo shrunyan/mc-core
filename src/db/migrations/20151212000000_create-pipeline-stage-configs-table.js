@@ -20,4 +20,3 @@ exports.down = function(knex, Promise) {
   return knex.schema.dropTable('pipeline_stage_configs')
 
 }
-
