@@ -3,8 +3,6 @@
 let registry = require('../../extensions/registry')
 let basic = require('./basic-response-helper')
 
-registry.load()
-
 module.exports = {
 
   getAvailableTypes: function getAvailableTypes(req, res) {
