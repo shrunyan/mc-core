@@ -25,6 +25,20 @@ let registry = {
   },
 
   /**
+   * Reload all extensions
+   */
+  reload: function reload() {
+
+    // Reset all of our internal registry pieces
+    this._extensions = {}
+    this._stageTypes = []
+    this._typesByFqids = {}
+
+    // Reload the modules
+    this.resolve(EXT_PATH)
+  },
+
+  /**
    * [register provided module]
    * @param  {Object} module [Module instance]
    */
