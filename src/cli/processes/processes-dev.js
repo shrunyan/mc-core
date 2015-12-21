@@ -10,6 +10,8 @@ module.exports = [
       '.git',
       '.idea',
       'node_modules/mc-core/.idea',
+      'node_modules/mc-core/ui',
+      'node_modules/mc-core/ui-build',
       'node_modules/mc-core/node_modules/mc-extension-validator/.idea',
       'node_modules/mc-core/.git',
       'node_modules/mc-core/node_modules'
@@ -23,6 +25,8 @@ module.exports = [
       '.git',
       '.idea',
       'node_modules/mc-core/.idea',
+      'node_modules/mc-core/ui',
+      'node_modules/mc-core/ui-build',
       'node_modules/mc-core/node_modules/mc-extension-validator/.idea',
       'node_modules/mc-core/.git',
       'node_modules/mc-core/node_modules'

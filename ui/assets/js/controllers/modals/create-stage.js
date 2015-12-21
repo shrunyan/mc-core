@@ -3,7 +3,7 @@ export default ['$scope', '$http', '$uibModalInstance', function($scope, $http, 
   console.log('scope', $scope)
 
   $http
-    .get('/api/stages')
+    .get('/api/stage-types')
     .then(res => $scope.stages = res.data.data)
 
   $scope.ok = () => {
