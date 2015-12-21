@@ -5,7 +5,6 @@ let express = require('express')
 let cookieParser = require('cookie-parser')
 let bodyParser = require('body-parser')
 let morgan = require('morgan')
-let extensions = require('../extensions/registry')
 let routes = require('./routes')
 
 dotenv.config({silent: true})
