@@ -11,6 +11,16 @@ export default ['$scope', '$http', '$stateParams', function($scope, $http, $stat
 
   $http.get('api/pipelines/' + $stateParams.id + '/stages').then(response => {
     $scope.stages = response.data.data
+
+    setTimeout(function() {
+      $(function() {
+        $('.pipeline-stage a.configure').on('click', function() {
+          console.log('clicked');
+          $(this).parent().parent().find('.panel-body').slideToggle(200);
+        });
+      });
+
+    }, 1);
   })
 
 }]
