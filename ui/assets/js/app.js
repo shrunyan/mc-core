@@ -55,6 +55,7 @@ addRoute('projects', '/projects', 'projects.html', controllers.projects)
 addRoute('pipelines', '/pipelines', 'pipelines.html', controllers.pipelines)
 addRoute('pipeline-execution-details', '/pipelines/executions/{id}', 'pipeline-execution-details.html', controllers.pipelineExecutionDetails)
 addRoute('pipeline', '/pipelines/{id}', 'pipeline.html', controllers.pipeline)
+addRoute('configure-pipeline', '/pipelines/{id}/configure', 'configure-pipeline.html', controllers.configurePipeline)
 
 addRoute('health', '/health', 'health.html', controllers.health)
 

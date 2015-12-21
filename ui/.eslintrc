@@ -1,6 +1,7 @@
 {
   "globals": {
     "jQuery": true,
+    "$": true,
     "io": true
   }
 }

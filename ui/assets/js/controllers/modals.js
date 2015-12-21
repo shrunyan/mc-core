@@ -1,6 +1,7 @@
 import createPipelineModal from './modals/create-pipeline'
 import createProjectModal from './modals/create-project'
 import createCheckModal from './modals/create-check'
+import createStageModal from './modals/create-stage'
 
 export default ['$rootScope', '$uibModal', ($rootScope, $uibModal) => {
 
@@ -42,6 +43,11 @@ export default ['$rootScope', '$uibModal', ($rootScope, $uibModal) => {
             controller: createCheckModal
           }
 
+        case 'stage':
+          return {
+            templateUrl: '/assets/js/templates/modals/create-stage.html',
+            controller: createStageModal
+          }
       }
     }
 

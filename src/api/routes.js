@@ -10,7 +10,8 @@ let controllers = {
   pipelineExecutions: require('./controllers/pipeline-executions'),
   projects: require('./controllers/projects'),
   user: require('./controllers/user'),
-  checks: require('./controllers/checks')
+  checks: require('./controllers/checks'),
+  stages: require('./controllers/stages')
 }
 
 module.exports = function(app) {
@@ -39,7 +40,8 @@ module.exports = function(app) {
   app.post('/api/pipelines/:id/execute', controllers.pipelines.executePipeline)
 
   // Pipeline Stages
-  // TODO: /api/pipelines
+  app.get('/api/pipelines/:id/stages', controllers.stages.getListForPipeline)
+  app.get('/api/stage-types', controllers.stages.getAvailableTypes)
 
   // Pipeline Executions
   // TODO: GET /api/pipeline-executions

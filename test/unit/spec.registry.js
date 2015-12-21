@@ -4,17 +4,11 @@ var extensions = require('../../src/extensions/registry')
 
 const MODULE_STUB = {
   vendor: 'test',
-  name: 'test'
+  id: 'test',
+  stages: [
+    {id: 'wow'}
+  ]
 }
-
-test('load()', function(t) {
-  var spy = sinon.spy(extensions, 'resolve')
-
-  extensions.load()
-
-  t.ok(spy.calledOnce, 'invokes resolve()')
-  t.end()
-})
 
 test('resolve()', function(t) {
   var spy = sinon.spy(extensions, 'register')
@@ -42,7 +36,7 @@ test('validate()', function(t) {
 })
 
 test('get()', function(t) {
-  t.ok(extensions.get('test.test'), 'resolves extension path')
+  t.ok(extensions.get('test.test.stages.wow'), 'resolves extension path')
   t.throws(() => {
     extensions.get('wrong.test')
   }, 'throws path error for undefined extension paths')

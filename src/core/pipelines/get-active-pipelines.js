@@ -32,7 +32,6 @@ module.exports = (callback) => {
               console.log(pe.config_snapshot.stageConfigs)
 
               pe.config_snapshot.stageConfigs.forEach(sc => {
-                console.log('creating new stage')
 
                 let newStage = {
                   name: sc.name,
@@ -50,7 +49,6 @@ module.exports = (callback) => {
                   }
                 })
 
-                console.log('pushing new stage', newStage)
                 pe.stages.push(newStage)
               })
 
