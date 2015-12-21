@@ -15,12 +15,12 @@ export default ['$scope', '$http', '$stateParams', function($scope, $http, $stat
     setTimeout(function() {
       $(function() {
         $('.pipeline-stage a.configure').on('click', function() {
-          console.log('clicked');
-          $(this).parent().parent().find('.panel-body').slideToggle(200);
-        });
-      });
+          console.log('clicked')
+          $(this).parent().parent().find('.panel-body').slideToggle(200)
+        })
+      })
 
-    }, 1);
+    }, 1)
   })
 
 }]
