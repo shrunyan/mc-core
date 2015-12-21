@@ -45,6 +45,10 @@ code {
     }
 }
 
+textarea {
+    max-width: 100%;
+}
+
 .btn-default {
     color: #3D344E;
     background-color: #FCFAFF;
@@ -238,26 +242,19 @@ tr.off-white {
             font-size: 42px;
         }
 
-        // Icon stack
-        span.icon {
-            .icon-bg {
-                color: @mission-control-dark;
-            }
-
-            .icon-mg { /*<i class="fa fa-globe fa-stack-2x icon-mg"></i>*/
-                color: rgba(255, 255, 255, 0.2);
-            }
-
-            .icon-fg {
-                color: white;
-            }
-        }
-
-        //.step-num {
-        //    color: #d4d4d4;
-        //    font-size: 18px;
-        //    float: right;
-        //    font-weight: bold;
+        //// Icon stack
+        //span.icon {
+        //    .icon-bg {
+        //        color: @mission-control-dark;
+        //    }
+        //
+        //    .icon-mg { /*<i class="fa fa-globe fa-stack-2x icon-mg"></i>*/
+        //        color: rgba(255, 255, 255, 0.2);
+        //    }
+        //
+        //    .icon-fg {
+        //        color: white;
+        //    }
         //}
 
         a.configure {
@@ -279,6 +276,27 @@ tr.off-white {
         display: none; // hide until opened
         background: #F8F6FD;
         border-top: solid 1px #C5BDD4;
+        padding: 15px 15px 13px 15px;
+
+        .row {
+            &:nth-child(n+2) {
+                margin-top: 12px;
+                border-top: solid 1px #E1DBEC;
+                padding-top: 15px;
+            }
+
+            h4 {
+                margin-top: 0;
+                margin-bottom: 3px;
+            }
+
+            p {
+                font-size: 13px;
+                margin-bottom: 0px;
+            }
+
+        }
+
     }
 }
 
