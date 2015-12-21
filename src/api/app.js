@@ -19,8 +19,6 @@ app.use(bodyParser.urlencoded({
   extended: true
 }))
 
-app.locals.extensions = extensions.load()
-
 // Load routes
 routes(app)
 
