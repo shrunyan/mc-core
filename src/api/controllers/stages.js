@@ -1,28 +1,44 @@
 'use strict'
 
 let registry = require('../../extensions/registry')
+let helper = require('./basic-response-helper')
+
+const PKGS = registry.load()
 
 module.exports = {
-  createStageConfig: function createStageConfig(req, res) {
+  create: function create(req, res) {
     const STAGE_ID = req.body.stage_id
     const STAGE = registry.get(STAGE_ID)
 
-    console.log('stage', STAGE)
+    console.log('create stage', STAGE)
+
+    helper.insertRespond(req, res, 'pipeline_stage_configs')
 
   },
+  getAll: function getAll(req, res) {
+    let stages = []
+    for (let vendor in PKGS) {
+      for (let ext in PKGS[vendor]) {
+        for (let stage in PKGS[vendor][ext].stages) {
+          stages.push(PKGS[vendor][ext].stages[stage])
+        }
+      }
+    }
+
+    res.status(201).send({data: stages})
+  },
+  getExecutions: function getExecutions(req, res) {
+    // body...
+  },
   getAvailableTypes: function getAvailableTypes(req, res) {
-    let pkgs = registry.load()
+    let PKGS = registry.load()
     let stages = []
 
-    for (let vendor in pkgs) {
-      for (let ext in pkgs[vendor]) {
-        for (let stage in pkgs[vendor][ext].stages) {
-          let vendorName = pkgs[vendor][ext].vendor
-          let extName = pkgs[vendor][ext].name
-          let stageName = pkgs[vendor][ext].stages[stage].name
-
+    for (let vendor in PKGS) {
+      for (let ext in PKGS[vendor]) {
+        for (let stage in PKGS[vendor][ext].stages) {
           stages.push({
-            id: [vendorName, extName, stageName].join('.'),
+            id: [vendor, ext, 'stages', stage].join('.'),
             name: stage
           })
         }
