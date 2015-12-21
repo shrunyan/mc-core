@@ -8,7 +8,28 @@
 <h4 style="margin-top: 0;color: #aaa;font-weight: normal;margin-bottom: 30px;"><i class="fa fa-code"></i> {{ project.name }}</h4>
 
 <div class="row">
-    <div class="col-md-3"></div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">Pipeline Settings</div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label>Pipeline Name</label>
+                    <div>
+                        <a href="javascript:void(0);" class="btn btn-xs btn-default pull-right"><i class="fa fa-pencil"></i></a>
+                        {{ pipeline.name }}
+                    </div>
+                </div>
+                <hr>
+                <div class="form-group">
+                    <label><i class="fa fa-code"></i> Project</label>
+                    <div>
+                        <a href="javascript:void(0);" class="btn btn-xs btn-default pull-right"><i class="fa fa-pencil"></i></a>
+                        {{ project.name }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="col-md-9">
         <div class="panel panel-default pipeline-stage" ng-repeat="stage in stages">
             <div class="title-block">
