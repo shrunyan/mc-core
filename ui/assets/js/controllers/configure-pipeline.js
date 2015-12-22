@@ -10,7 +10,7 @@ export default ['$q', '$scope', '$http', '$stateParams', function($q, $scope, $h
   })
 
   let stageTypes = $http.get('/api/stage-types')
-  let stageConfigs= $http.get('api/pipelines/' + $stateParams.id + '/stages')
+  let stageConfigs = $http.get('api/pipelines/' + $stateParams.id + '/stages')
 
   $q.all([stageTypes, stageConfigs])
     .then(args => {
