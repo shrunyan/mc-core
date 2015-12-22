@@ -1,14 +1,16 @@
 export default ['$scope', '$http', '$uibModalInstance', function($scope, $http, $uibModalInstance) {
 
-  // get stages in parent controller
-  console.log('create-stage scope', $scope.$parent.$stages)
-
   $http
     .get('/api/stage-types')
     .then(res => $scope.stages = res.data.data)
 
   $scope.ok = () => {
-
+    let stage = $scope.stages.find(stage => {
+      // $scope.stage_id is the user selected stage
+      if (stage.id === $scope.stage_id) {
+        return stage
+      }
+    })
     let sort = $scope.$parent.$stages
       ? $scope.$parent.$stages.length + 1
       : 0
@@ -16,8 +18,9 @@ export default ['$scope', '$http', '$uibModalInstance', function($scope, $http, 
     $http
       .post('/api/stage/config', {
         pipeline_config_id: $scope.$parent.$id,
-        type: $scope.stage_id,
-        sort: sort
+        type: stage.fqid,
+        sort: sort,
+        name: stage.name
         // options: {}
       })
       .then(res => {
