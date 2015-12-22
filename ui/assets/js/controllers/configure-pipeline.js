@@ -26,9 +26,6 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
         if (type) {
           stage.schema = type
         }
-        if (stage.options) {
-          stage.options = JSON.parse(stage.options)
-        }
         return stage
       })
 
