@@ -42,18 +42,18 @@
                 <small class="text-muted">Extension Name › {{ stage.schema.name }}</small>
             </div>
             <div class="panel-body">
-                <div class="row" ng-repeat="option in stage.schema.options">
+                <div class="row" ng-repeat="(key, option) in stage.schema.options">
                     <div class="col-md-4">
                         <h4>{{ option.name }}</h4>
                         <p>{{ option.description }}</p>
                     </div>
                     <div class="col-md-8" ng-switch="option.type">
-                        <textarea ng-switch-when="textarea" class="form-control"></textarea>
-                        <input ng-switch-default type="text" class="form-control" />
+                        <textarea ng-switch-when="textarea" ng-model="form[key]" class="form-control"></textarea>
+                        <input ng-switch-default ng-model="form[key]" type="text" class="form-control" />
                     </div>
                 </div>
                 <hr>
-                <h3>Output</h3>
+                <!-- <h3>Output</h3>
                 <div class="row">
                     <div class="col-md-4">
                         <code>example_something</code>
@@ -79,11 +79,11 @@
                         </div>
                         <input type="text" class="form-control" ng-show="check2">
                     </div>
-                </div>
+                </div> -->
                 <div class="row">
                   <div class="col-md-12">
                     <button class="btn btn-danger pull-left" ng-click="remove(stage.id)">Delete Stage</button>
-                    <button class="btn btn-success pull-right" ng-click="">Save Stage Options</button>
+                    <button class="btn btn-success pull-right" ng-click="save(stage.id)">Save Stage Options</button>
                   </div>
                 </div>
             </div>
