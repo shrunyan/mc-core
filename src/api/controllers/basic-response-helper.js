@@ -65,6 +65,25 @@ module.exports = {
     })
   },
 
+  patchRespond: (req, res, table) => {
+    if (req.params.id) {
+      connection
+        .table(table)
+        .where('id', req.params.id)
+        .update(req.body)
+        .then(item => {
+          logger.log(item)
+          res.status(200).send({message: 'Updated: ' + req.params.id})
+        })
+        .catch(err => {
+          logger.error(err)
+          res.status(500)
+        })
+    } else {
+      res.status(400).send({message: 'No ID specified.'})
+    }
+  },
+
   /**
    * Delete's ID from post body in specified table
    * @param  {Object} req   Express request
@@ -84,6 +103,10 @@ module.exports = {
           } else {
             res.status(404).send({message: 'No record for: ' + req.params.id})
           }
+        })
+        .catch(err => {
+          logger.error(err)
+          res.status(500)
         })
     } else {
       res.status(400).send({message: 'No ID specified.'})

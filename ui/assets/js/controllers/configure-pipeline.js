@@ -1,5 +1,9 @@
 export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, $scope, $http, $stateParams, $state) {
 
+  // This must be predefined for ng-model
+  // values as objects
+  $scope.form = {}
+
   $http.get('/api/pipelines/' + $stateParams.id).then(response => {
     $scope.pipeline = response.data.data
 
@@ -40,6 +44,13 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
   $scope.remove = (id) => {
     $http.delete('/api/stage/' + id)
     $state.go($state.$current, null, { reload: true })
+  }
+
+  // Save stage options
+  $scope.save = (id) => {
+    $http.patch('/api/stage/' + id, {
+      options: JSON.stringify($scope.form)
+    })
   }
 
 }]
