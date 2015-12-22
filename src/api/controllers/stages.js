@@ -10,7 +10,11 @@ module.exports = {
     basic.insertRespond(req, res, 'pipeline_stage_configs')
   },
 
-  deleteStageConfig: function setStageConfig(req, res) {
+  updateStageConfig: function updateStageConfig(req, res) {
+    basic.patchRespond(req, res, 'pipeline_stage_configs')
+  },
+
+  deleteStageConfig: function deleteStageConfig(req, res) {
     basic.deleteRespond(req, res, 'pipeline_stage_configs')
   },
 
