@@ -44,6 +44,7 @@ module.exports = function(app) {
   app.get('/api/stage-types', controllers.stages.getAvailableTypes)
 
   app.post('/api/stage/config', controllers.stages.setStageConfig)
+  app.patch('/api/stage/:id', controllers.stages.updateStageConfig)
   app.delete('/api/stage/:id', controllers.stages.deleteStageConfig)
 
   // Pipeline Executions
