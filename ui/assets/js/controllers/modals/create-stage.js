@@ -20,7 +20,7 @@ export default ['$scope', '$http', '$uibModalInstance', function($scope, $http, 
         pipeline_config_id: $scope.$parent.$id,
         type: stage.fqid,
         sort: sort,
-        name: stage.name
+        name: $scope.name || stage.name
         // options: {}
       })
       .then(res => {
