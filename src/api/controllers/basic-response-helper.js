@@ -66,6 +66,31 @@ module.exports = {
   },
 
   /**
+   * Delete's ID from post body in specified table
+   * @param  {Object} req   Express request
+   * @param  {Object} res   Express response
+   * @param  {String} table Name of table to delete record from
+   * @return {Object}       Response body
+   */
+  deleteRespond: (req, res, table) => {
+    if (req.params.id) {
+      connection
+        .table(table)
+        .where('id', req.params.id)
+        .del()
+        .then(item => {
+          if (item) {
+            res.status(200).send({message: 'Deleted: ' + req.params.id})
+          } else {
+            res.status(404).send({message: 'No record for: ' + req.params.id})
+          }
+        })
+    } else {
+      res.status(400).send({message: 'No ID specified.'})
+    }
+  },
+
+  /**
    * Basic insert and returns the new object
    *
    * @param req

@@ -10,6 +10,10 @@ module.exports = {
     basic.insertRespond(req, res, 'pipeline_stage_configs')
   },
 
+  deleteStageConfig: function setStageConfig(req, res) {
+    basic.deleteRespond(req, res, 'pipeline_stage_configs')
+  },
+
   getAvailableTypes: function getAvailableTypes(req, res) {
     res.status(201).send({data: registry.getStageTypes()})
   },
