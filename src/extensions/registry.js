@@ -101,8 +101,8 @@ let registry = {
     for (let fqid in this._typesByFqids) {
       // Shallow clone so we don't mutate the stage object
       let stage = Object.assign({}, this._typesByFqids[fqid])
-        stage.fqid = fqid
-        stages.push(stage)
+      stage.fqid = fqid
+      stages.push(stage)
     }
 
     return stages
