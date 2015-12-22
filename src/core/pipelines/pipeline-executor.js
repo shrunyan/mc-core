@@ -47,9 +47,9 @@ class PipelineExecutor {
    * @returns {Promise}
    */
   loadPipelineExecution() {
-    return connection.first()
+    return connection('pipeline_executions')
       .where('id', this.executionId)
-      .from('pipeline_executions')
+      .first()
       .catch(err => logger.error(err))
       .then((execution) => {
         this.execution = execution
@@ -71,9 +71,7 @@ class PipelineExecutor {
         updated_at: new Date()
       })
       .catch(err => logger.error(err))
-      .then(() => {
-        publishPipelineUpdate()
-      })
+      .then(() => publishPipelineUpdate())
   }
 
   /**
