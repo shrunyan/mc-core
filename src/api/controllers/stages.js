@@ -1,8 +1,9 @@
 'use strict'
 
-// let logger = require('tracer').colorConsole()
+let logger = require('tracer').colorConsole()
 let registry = require('../../extensions/registry')
 let basic = require('./basic-response-helper')
+let connection = require('../../db/connection')
 
 module.exports = {
 
@@ -29,11 +30,18 @@ module.exports = {
    * @param res
    */
   getListForPipeline: function getListForPipeline(req, res) {
-
-    basic.getListCustom(req, res, 'pipeline_stage_configs', query => {
-      return query.where('pipeline_config_id', req.params.id)
-    })
-
+    connection
+      .table('pipeline_stage_configs')
+      .where('pipeline_config_id', req.params.id)
+      .then(items => {
+        res.status(200).send({
+          data: items.map(item => {
+            item.options = JSON.parse(item.options)
+            return item
+          })
+        })
+      })
+      .catch(err => logger.error(err))
   }
 
 }

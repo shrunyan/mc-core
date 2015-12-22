@@ -3,6 +3,20 @@
 let connection = require('../../db/connection')
 let logger = require('tracer').colorConsole()
 
+/**
+ * Stringify's all parameters that are objects
+ * @param  {Object} params Request body
+ * @return {Object}      Process request parameters
+ */
+function parseParams(params) {
+  for (let param in params) {
+    if (typeof params === 'object') {
+      params[param] = JSON.stringify(params[param])
+    }
+  }
+  return params
+}
+
 module.exports = {
 
   /**
@@ -88,7 +102,7 @@ module.exports = {
       connection
         .table(table)
         .where('id', req.params.id)
-        .update(changes)
+        .update(parseParams(changes))
         .then(item => {
           logger.log(item)
           res.status(200).send({message: 'Updated: ' + req.params.id})
