@@ -65,12 +65,30 @@ module.exports = {
     })
   },
 
+  /**
+   * Patch a (single) record in a table
+   *
+   * @param req
+   * @param res
+   * @param table
+   */
   patchRespond: (req, res, table) => {
+
+    let changes = req.body
+
+    // Don't allow ID to be changed
+    if (typeof changes.id !== 'undefined') {
+      delete changes.id
+    }
+
+    // Append a updated_at date
+    changes.updated_at = new Date()
+
     if (req.params.id) {
       connection
         .table(table)
         .where('id', req.params.id)
-        .update(req.body)
+        .update(changes)
         .then(item => {
           logger.log(item)
           res.status(200).send({message: 'Updated: ' + req.params.id})
