@@ -34,28 +34,22 @@
         <div class="panel panel-default pipeline-stage" ng-repeat="stage in stages">
             <div class="title-block">
                 <i class="fa fa-check-square-o icon"></i>
-                <a class="btn btn-default configure"><i class="fa fa-sliders text-muted"></i> Options</a>
+                <a class="btn btn-default configure">
+                  <i class="fa fa-sliders text-muted"></i> Options
+                </a>
 
                 <h3>{{ $index + 1 }}. {{ stage.name }}</h3>
-                <small class="text-muted">Extension Name › Stage Type Name</small>
+                <small class="text-muted">Extension Name › {{ stage.schema.name }}</small>
             </div>
             <div class="panel-body">
-                <div class="row">
+                <div class="row" ng-repeat="option in stage.schema.options">
                     <div class="col-md-4">
-                        <h4>Repository URL</h4>
-                        <p>GitHub URL of repository to clone.</p>
+                        <h4>{{ option.name }}</h4>
+                        <p>{{ option.description }}</p>
                     </div>
-                    <div class="col-md-8">
-                        <input type="text" class="form-control" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        <h4>Another Option</h4>
-                        <p>This could do other stuff!</p>
-                    </div>
-                    <div class="col-md-8">
-                        <input type="text" class="form-control" />
+                    <div class="col-md-8" ng-switch="option.type">
+                        <textarea ng-switch-when="textarea" class="form-control"></textarea>
+                        <input ng-switch-default type="text" class="form-control" />
                     </div>
                 </div>
                 <hr>
