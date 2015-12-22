@@ -8,7 +8,6 @@ const EXT_PATH = process.cwd() + '/node_modules/mc-ext-*'
 let registry = {
 
   _extensions: {},
-  _stageTypes: [],
   _typesByFqids: {},
 
   /**
@@ -31,7 +30,6 @@ let registry = {
 
     // Reset all of our internal registry pieces
     this._extensions = {}
-    this._stageTypes = []
     this._typesByFqids = {}
 
     // Reload the modules
@@ -72,7 +70,6 @@ let registry = {
         // Register the stage as vendor.extension_id.stages.example
         let fqid = module.vendor + '.' + module.id + '.stages.' + st.id
         this._typesByFqids[fqid] = st
-        this._stageTypes.push(st)
 
       })
     }
@@ -99,7 +96,16 @@ let registry = {
    * @return {Array}
    */
   getStageTypes: function getStageTypes() {
-    return this._stageTypes
+    let stages = []
+
+    for (let fqid in this._typesByFqids) {
+      // Shallow clone so we don't mutate the stage object
+      let stage = Object.assign({}, this._typesByFqids[fqid])
+        stage.fqid = fqid
+        stages.push(stage)
+    }
+
+    return stages
   }
 
 }
