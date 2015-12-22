@@ -65,6 +65,13 @@ module.exports = {
     })
   },
 
+  /**
+   * Patch a (single) record in a table
+   *
+   * @param req
+   * @param res
+   * @param table
+   */
   patchRespond: (req, res, table) => {
     if (req.params.id) {
       connection
