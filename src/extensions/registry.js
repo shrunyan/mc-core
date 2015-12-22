@@ -17,7 +17,6 @@ let registry = {
    */
   resolve: function resolve(dir) {
     let modules = glob.sync(dir)
-
     modules.forEach(module => {
       this.register(require(module))
     })
@@ -41,6 +40,7 @@ let registry = {
    * @param  {Object} module [Module instance]
    */
   register: function register(module) {
+
     if (typeof this._extensions[module.vendor] !== 'object') {
       this._extensions[module.vendor] = {}
     }
