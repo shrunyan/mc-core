@@ -1,0 +1,32 @@
+<div class="pull-right" style="display:inline-block">
+    <a class="btn btn-default" ui-sref="configure-pipeline({id: pipeline.id})">
+      <i class="fa fa-gear"></i> Configure Pipeline
+    </a>
+</div>
+
+<h1><i class="fa fa-tasks"></i> {{ pipeline.name }}</h1>
+<h4 style="margin-top: 0;color: #aaa;font-weight: normal;margin-bottom: 30px;"><i class="fa fa-code"></i> {{ project.name }}</h4>
+
+<hr>
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>Completed Executions</h2>
+        <table class="table">
+            <tbody>
+            <tr ng-repeat="pe in pipelineExecutions">
+                <td class="text-center" style="vertical-align:middle;width: 30px;padding-right: 0;">
+                    <i class="fa fa-circle text-info" ng-if="pe.status === 'created'"></i>
+                    <i class="fa fa-circle text-info" ng-if="pe.status === 'queued'"></i>
+                    <i class="fa fa-circle text-info pulse" ng-if="pe.status === 'running'"></i>
+                    <i class="fa fa-circle text-warning" ng-if="pe.status === 'awaiting_confirmation'"></i>
+                    <i class="fa fa-circle text-danger" ng-if="pe.status === 'failed'"></i>
+                    <i class="fa fa-circle text-success" ng-if="pe.status === 'succeeded'"></i>
+                </td>
+                <td><a ui-sref="pipeline-execution-details({id: pe.id})">Execution #{{ pe.id }}<span ng-if="pe.status === 'awaiting_confirmation'"> &ndash; Awaiting Confirmation</span></a><br><small class="text-muted">{{ pe.pipeline_config_name }}</small></td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>

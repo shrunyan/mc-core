@@ -1,0 +1,23 @@
+<div class="modal-header">
+    <h3 class="modal-title">Create Stage</h3>
+</div>
+<div class="modal-body">
+    <h3>Pipeline: {PIPELINE_NAME}</h3>
+    <div class="form-group">
+        <label>Available Stage Types</label>
+        <select class="form-control" ng-model="stage_id">
+          <option ng-repeat="stage in stages" value="{{ stage.id }}">
+            {{ stage.name }}
+          </option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Stage Name</label>
+        <em><small>This is your custom name for this stage. Defaults to stage type name.</small></em>
+        <input class="form-control" type="text" ng-model="name" />
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
+    <button class="btn btn-success" type="button" ng-click="ok()">Create</button>
+</div>

@@ -3,6 +3,8 @@ import helpers from './helpers'
 import socketManager from './socket-manager'
 import dashboard from './dashboard'
 import login from './login'
+import pipeline from './pipeline'
+import configurePipeline from './configure-pipeline'
 import pipelines from './pipelines'
 import pipelineExecutionDetails from './pipeline-execution-details'
 import projects from './projects'
@@ -26,6 +28,8 @@ export default {
   dashboard,
   login,
   projects,
+  pipeline,
+  configurePipeline,
   pipelines,
   pipelineExecutionDetails,
   health,

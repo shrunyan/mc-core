@@ -8,27 +8,36 @@ const EXT_PATH = process.cwd() + '/node_modules/mc-ext-*'
 let registry = {
 
   _extensions: {},
-
-  load: function load() {
-    this.resolve(EXT_PATH)
-    //return this._extensions.map(this.validate)
-  },
+  _typesByFqids: {},
 
   /**
-   * [resolve all `mc-ext-*` modules]
-   * @param  {string} dir [path mission control extensions]
+   * Resolve all `mc-ext-*` modules and register them
+   *
+   * @param  {string} dir Path mission control extensions
    */
   resolve: function resolve(dir) {
     let modules = glob.sync(dir)
-
     modules.forEach(module => {
       this.register(require(module))
     })
   },
 
   /**
+   * Reload all extensions
+   */
+  reload: function reload() {
+
+    // Reset all of our internal registry pieces
+    this._extensions = {}
+    this._typesByFqids = {}
+
+    // Reload the modules
+    this.resolve(EXT_PATH)
+  },
+
+  /**
    * [register provided module]
-   * @param  {[Object]} module [Module instance]
+   * @param  {Object} module [Module instance]
    */
   register: function register(module) {
 
@@ -36,50 +45,72 @@ let registry = {
       this._extensions[module.vendor] = {}
     }
 
-    // TODO: validate stage types
-    // TODO: validate log types
+    // TODO: validate extension index
 
-    this._extensions[module.vendor][module.name] = module
+    this._extensions[module.vendor][module.id] = {
+      vendor: module.vendor,
+      id: module.id,
+      name: module.name,
+      description: module.description
+    }
+
+    this.registerStages(module)
+    // TODO: register log types
+
+  },
+
+  registerStages: function registerStages(module) {
+
+    if (Array.isArray(module.stages)) {
+
+      module.stages.forEach(stage => {
+
+        // TODO: validate stage type
+
+        // Register the stage as vendor.extension_id.stages.example
+        let fqid = module.vendor + '.' + module.id + '.stages.' + stage.id
+        this._typesByFqids[fqid] = stage
+
+      })
+    }
+
   },
 
   /**
-   * [validate a single module]
-   * @param  {[Object]} ext [Object instance of loaded module]
-   * @return {[Object]}     [Validated module]
-   */
-  validate: function validate(ext) {
-
-    // TODO validate
-    //validator.validateIndex(ext, (err) => {
-    //  console.log('validated?', err)
-    //})
-
-    return ext
-  },
-
-  /**
-   * [get any path depth from the extensions object]
-   * @param  {[string]} name [dot syntax path]
-   * @return {[object]}      [resolved extension path]
+   * Get an item/type from the extension via the FQID (full-qualified identifier)
+   *
+   * @param  {string} name [dot syntax path]
+   * @return {object}      [resolved extension path]
    */
   get: function get(name) {
-    let obj = this._extensions
-    let paths = name.split('.')
+    if (typeof this._typesByFqids[name] !== 'undefined') {
+      return this._typesByFqids[name]
+    } else {
+      throw new Error('Extension FQID "' + name + '" not found')
+    }
+  },
 
-    paths.forEach(path => {
-      if (!obj[path]) {
-        let err = 'Undefined extensions path: ' + path
-        throw err
-      }
-      obj = obj[path]
-    })
+  /**
+   * Get stage types
+   *
+   * @return {Array}
+   */
+  getStageTypes: function getStageTypes() {
+    let stages = []
 
-    return obj
+    for (let fqid in this._typesByFqids) {
+      // Shallow clone so we don't mutate the stage object
+      let stage = Object.assign({}, this._typesByFqids[fqid])
+      stage.fqid = fqid
+      stages.push(stage)
+    }
+
+    return stages
   }
 
 }
 
 // Initially load extensions
-registry.load()
+registry.resolve(EXT_PATH)
 
 module.exports = registry

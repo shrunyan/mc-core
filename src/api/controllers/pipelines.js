@@ -16,6 +16,16 @@ module.exports = {
   },
 
   /**
+   * Get a single pipeline config
+   *
+   * @param req
+   * @param res
+   */
+  getPipeline: (req, res) => {
+    basic.getOne(req, res, 'pipeline_configs')
+  },
+
+  /**
    * Create a pipeline
    *
    * @param req

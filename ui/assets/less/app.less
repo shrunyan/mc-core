@@ -22,6 +22,33 @@
     color: #BB9657;
 }
 
+.text-muted {
+    //color: rgba(0, 0, 0, 0.36);
+    color: rgba(105, 85, 144, 0.54)
+}
+
+.help-block {
+    color: #958AAB;
+}
+
+code {
+    color: #349BAF;
+    background-color: #DDF1F5;
+}
+
+.form-control {
+    background: #FBFBFB;
+    &:focus {
+        border-color: #685B82;
+        box-shadow: inset 0 1px 1px rgba(164, 177, 168, 0.075);
+        background: #fff;
+    }
+}
+
+textarea {
+    max-width: 100%;
+}
+
 .btn-default {
     color: #3D344E;
     background-color: #FCFAFF;
@@ -65,11 +92,6 @@
 a, a:active, a:visited, a:hover {
     cursor: pointer;
     color: #675884;
-}
-
-.text-muted {
-    //color: rgba(0, 0, 0, 0.36);
-    color: rgba(105, 85, 144, 0.54)
 }
 
 // Nav overrides
@@ -151,6 +173,11 @@ h1, h2, h3, h4, h5 {
     margin-bottom: 30px;
 }
 
+// Always show the scrollbar (to avoid content jumping back and forth)
+html {
+    overflow-y:scroll;
+}
+
 body {
     font-family: "Helvetica Neue", HelveticaNeue, "TeX Gyre Heros", TeXGyreHeros, FreeSans, "Nimbus Sans L", "Liberation Sans", Arimo, Helvetica, Arial, sans-serif;
     //font-size: 14px;
@@ -203,7 +230,7 @@ tr.off-white {
 
 // Job Steps
 
-.job-step {
+.pipeline-stage {
     .title-block {
         padding: 14px 12px 12px 11px;
         line-height: 1;
@@ -220,26 +247,19 @@ tr.off-white {
             font-size: 42px;
         }
 
-        // Icon stack
-        span.icon {
-            .icon-bg {
-                color: @mission-control-dark;
-            }
-
-            .icon-mg { /*<i class="fa fa-globe fa-stack-2x icon-mg"></i>*/
-                color: rgba(255, 255, 255, 0.2);
-            }
-
-            .icon-fg {
-                color: white;
-            }
-        }
-
-        //.step-num {
-        //    color: #d4d4d4;
-        //    font-size: 18px;
-        //    float: right;
-        //    font-weight: bold;
+        //// Icon stack
+        //span.icon {
+        //    .icon-bg {
+        //        color: @mission-control-dark;
+        //    }
+        //
+        //    .icon-mg { /*<i class="fa fa-globe fa-stack-2x icon-mg"></i>*/
+        //        color: rgba(255, 255, 255, 0.2);
+        //    }
+        //
+        //    .icon-fg {
+        //        color: white;
+        //    }
         //}
 
         a.configure {
@@ -259,8 +279,29 @@ tr.off-white {
 
     .panel-body {
         display: none; // hide until opened
-        background: #F5F5F5;
-        border-top: solid 1px #ddd;
+        background: #F8F6FD;
+        border-top: solid 1px #C5BDD4;
+        padding: 15px 15px 13px 15px;
+
+        .row {
+            &:nth-child(n+2) {
+                margin-top: 12px;
+                border-top: solid 1px #E1DBEC;
+                padding-top: 15px;
+            }
+
+            h4 {
+                margin-top: 0;
+                margin-bottom: 3px;
+            }
+
+            p {
+                font-size: 13px;
+                margin-bottom: 0px;
+            }
+
+        }
+
     }
 }
 
@@ -349,12 +390,14 @@ table.stage-bar {
             line-height: 14px;
 
             &:first-child {
-                border-radius: 15px 0 0 15px !important;
+                border-top-left-radius: 15px;
+                border-bottom-left-radius: 15px !important;
                 border-left: none;
             }
 
             &:last-child {
-                border-radius: 0 15px 15px 0 !important;
+                border-top-right-radius: 15px;
+                border-bottom-right-radius: 15px !important;
                 border-right: none;
             }
 
