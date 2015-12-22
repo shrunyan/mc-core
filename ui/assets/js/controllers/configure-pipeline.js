@@ -49,7 +49,7 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
   // Save stage options
   $scope.save = (id) => {
     $http.patch('/api/stage/' + id, {
-      options: JSON.stringify($scope.form)
+      options: $scope.form
     })
   }
 

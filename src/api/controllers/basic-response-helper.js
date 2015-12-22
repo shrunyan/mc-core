@@ -3,6 +3,20 @@
 let connection = require('../../db/connection')
 let logger = require('tracer').colorConsole()
 
+/**
+ * Stringify's all parameters that are objects
+ * @param  {Object} params Request body
+ * @return {Object}      Process request parameters
+ */
+function parseParams(params) {
+  for (let param in params) {
+    if (typeof params === 'object') {
+      params[param] = JSON.stringify(params[param])
+    }
+  }
+  return params
+}
+
 module.exports = {
 
   /**
@@ -65,12 +79,30 @@ module.exports = {
     })
   },
 
+  /**
+   * Patch a (single) record in a table
+   *
+   * @param req
+   * @param res
+   * @param table
+   */
   patchRespond: (req, res, table) => {
+
+    let changes = req.body
+
+    // Don't allow ID to be changed
+    if (typeof changes.id !== 'undefined') {
+      delete changes.id
+    }
+
+    // Append a updated_at date
+    changes.updated_at = new Date()
+
     if (req.params.id) {
       connection
         .table(table)
         .where('id', req.params.id)
-        .update(req.body)
+        .update(parseParams(changes))
         .then(item => {
           logger.log(item)
           res.status(200).send({message: 'Updated: ' + req.params.id})
