@@ -1,6 +1,6 @@
 'use strict'
 
-let logger = require('tracer').colorConsole()
+// let logger = require('tracer').colorConsole()
 let registry = require('../../extensions/registry')
 let basic = require('./basic-response-helper')
 

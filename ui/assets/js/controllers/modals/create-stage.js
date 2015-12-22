@@ -11,13 +11,13 @@ export default ['$scope', '$http', '$uibModalInstance', function($scope, $http, 
 
     let sort = $scope.$parent.$stages
       ? $scope.$parent.$stages.length + 1
-      : 0;
+      : 0
 
     $http
       .post('/api/stage/config', {
         pipeline_config_id: $scope.$parent.$id,
         type: $scope.stage_id,
-        sort: sort,
+        sort: sort
         // options: {}
       })
       .then(res => {
