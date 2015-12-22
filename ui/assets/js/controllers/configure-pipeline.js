@@ -39,7 +39,7 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
   // Delete Stage
   $scope.remove = (id) => {
     $http.delete('/api/stage/' + id)
-    $state.go($state.$current, null, { reload: true });
+    $state.go($state.$current, null, { reload: true })
   }
 
 }]
