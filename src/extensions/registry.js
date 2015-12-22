@@ -63,13 +63,13 @@ let registry = {
 
     if (Array.isArray(module.stages)) {
 
-      module.stages.forEach(st => {
+      module.stages.forEach(stage => {
 
         // TODO: validate stage type
 
         // Register the stage as vendor.extension_id.stages.example
-        let fqid = module.vendor + '.' + module.id + '.stages.' + st.id
-        this._typesByFqids[fqid] = st
+        let fqid = module.vendor + '.' + module.id + '.stages.' + stage.id
+        this._typesByFqids[fqid] = stage
 
       })
     }
