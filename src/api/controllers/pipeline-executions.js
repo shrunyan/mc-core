@@ -3,6 +3,7 @@
 let connection = require('../../db/connection')
 let logger = require('tracer').colorConsole()
 let basic = require('./basic-response-helper')
+let renderDetails = require('../../extensions/render-log-details')
 
 module.exports = {
 
@@ -77,6 +78,9 @@ module.exports = {
 
         // Append stage executions
         execution.stageExecutions = stageExecutions
+
+        // Get details html for each log
+        logs = renderDetails(logs)
 
         // Append logs
         execution.logs = logs
