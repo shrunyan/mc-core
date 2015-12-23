@@ -1,10 +1,10 @@
 'use strict'
 
-let connection = require('../../db/connection')
 let logger = require('tracer').colorConsole()
-let extensionRegistry = require('../../extensions/registry')
-let Stage = require('./stage').Stage
-let pipelineEvent = require('../../queues/pipeline/events')
+let connection = require('../../db/connection')
+let registry = require('../../extensions/registry')
+let Stage = require('../../core/pipelines/stage').Stage
+let pipelineEvent = require('./events')
 
 /**
  * @prop {int|string} executionId
@@ -21,9 +21,9 @@ class PipelineExecutor {
    * @param {int|string} pipelineExecutionId
    * @param {function} callback A callback to be called when the execution process is complete
    */
-  constructor(pipelineExecutionId, callback) {
+  constructor(execId, next) {
 
-    this.executionId = pipelineExecutionId
+    this.executionId = execId
 
     // Assume no stage has failed until we find out otherwise
     this.anyStageHasFailed = false
@@ -37,7 +37,7 @@ class PipelineExecutor {
       .then(
         // Mark the queue job as complete,
         // and move onto the next pipeline
-        callback()
+        next()
       )
 
   }
@@ -155,7 +155,7 @@ class PipelineExecutor {
     let stage = new Stage(successCallback, failureCallback, stageConfig, this.executionId, stageExecutionId, this.currentStageNumber)
 
     // stage.type == 'mc.basics.stages.pause_execution_for_x_seconds'
-    let stageType = extensionRegistry.get(stageConfig.type)
+    let stageType = registry.get(stageConfig.type)
 
     if (!stageType) {
       stage.log('Stage type: ' + stageConfig.type + ' not found.')

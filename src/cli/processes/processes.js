@@ -8,6 +8,6 @@ module.exports = [
   },
   {
     name: 'mc-worker-pipelines',
-    script: 'node_modules/mc-core/src/worker-pipelines.js'
+    script: 'node_modules/mc-core/src/workers/pipeline.js'
   }
 ]
