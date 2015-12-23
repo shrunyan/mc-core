@@ -40,6 +40,11 @@ app.factory('socket', ['socketFactory', function(socketFactory) {
   })
 }])
 
+// Provide filter for using "unsafe" html
+app.filter('unsafe', ['$sce', function($sce) {
+  return function(input) { return $sce.trustAsHtml(input) }
+}])
+
 app.run(controllers.socketManager)
 app.run(controllers.user)
 app.run(controllers.login)

@@ -11,4 +11,20 @@ export default ['$scope', '$http', '$stateParams', function($scope, $http, $stat
 
   })
 
+  $scope.toggleDetails = function toggleDetails($event) {
+    let $button = $($event.target)
+
+    // Swap the text on the button
+    let existingText = $button.find('span').text()
+    let newText = (existingText === 'Show') ? 'Hide' : 'Show'
+    $button.find('span').text(newText)
+
+    // Swap the icon on the button
+    $button.find('i').toggleClass('fa-angle-down fa-angle-up')
+
+    // Show/hide the area below
+    $button.parent().parent().next().toggle()
+
+  }
+
 }]

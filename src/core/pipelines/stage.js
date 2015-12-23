@@ -2,6 +2,7 @@
 
 let connection = require('../../db/connection')
 let logger = require('tracer').colorConsole()
+let registry = require('../../extensions/registry')
 
 module.exports.Stage = class Stage {
 
@@ -42,15 +43,36 @@ module.exports.Stage = class Stage {
   /**
    * Add a new log
    *
-   * @param {string|class|object} log
+   * Usage Syntax 1:
+   * stage.log('This is a log title')
+   *
+   * Usage Syntax 2:
+   * stage.log('mc.basics.logs.snippet', title, args)
    */
-  log(log) {
+  log() {
 
-    // If a string is passed, format it as an object
-    if (typeof log === 'string') {
-      log = {
-        title: log
+    let log
+
+    if (arguments.length === 1) {
+      if (typeof arguments[0] === 'string') {
+        log = {
+          title: arguments[0]
+        }
+      } else {
+        throw new Error('Argument 1 must be a string')
       }
+    } else if (arguments.length >= 2 && arguments.length <= 3) {
+
+      let logType = registry.get(arguments[0])
+      let args = (Array.isArray(arguments[2])) ? arguments[2] : []
+
+      log = {
+        type: arguments[0],
+        title: arguments[1],
+        data: logType.generate.apply(this, args)
+      }
+    } else {
+      throw new Error('Wrong number of arguments')
     }
 
     let data = {
