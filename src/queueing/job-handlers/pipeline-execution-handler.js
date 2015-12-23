@@ -3,10 +3,7 @@
 let logger = require('tracer').colorConsole()
 let PipelineExecutor = require('../../core/pipelines/pipeline-executor')
 
-module.exports = (msg, next, msgid) => {
-
-  // process your message
-  logger.debug('message received. ID: ' + msgid)
+module.exports = (msg, next) => {
   logger.debug(msg)
 
   // Parse the JSON in the message
@@ -18,5 +15,4 @@ module.exports = (msg, next, msgid) => {
   }
 
   new PipelineExecutor(msg.pipeline_execution_id, next)
-
 }
