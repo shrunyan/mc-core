@@ -54,12 +54,12 @@ let registry = {
       description: module.description
     }
 
-    this.registerStages(module)
-    // TODO: register log types
+    this.registerStageTypes(module)
+    this.registerLogTypes(module)
 
   },
 
-  registerStages: function registerStages(module) {
+  registerStageTypes: function registerStageTypes(module) {
 
     if (Array.isArray(module.stages)) {
 
@@ -73,6 +73,24 @@ let registry = {
 
       })
     }
+
+  },
+
+  registerLogTypes: function registerLogTypes(module) {
+
+    if (Array.isArray(module.logs)) {
+
+      module.logs.forEach(log => {
+
+        // TODO: validate log type
+
+        // Register the stage as vendor.extension_id.stages.example
+        let fqid = module.vendor + '.' + module.id + '.logs.' + log.id
+        this._typesByFqids[fqid] = log
+
+      })
+    }
+
 
   },
 
