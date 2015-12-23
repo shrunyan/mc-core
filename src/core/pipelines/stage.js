@@ -54,7 +54,7 @@ module.exports.Stage = class Stage {
     let log
 
     if (arguments.length === 1) {
-      if (typeof log === 'string') {
+      if (typeof arguments[0] === 'string') {
         log = {
           title: arguments[0]
         }
@@ -67,8 +67,9 @@ module.exports.Stage = class Stage {
       let args = (Array.isArray(arguments[2])) ? arguments[2] : []
 
       log = {
+        type: arguments[0],
         title: arguments[1],
-        data: logType.generate.apply(args)
+        data: logType.generate.apply(this, args)
       }
     } else {
       throw new Error('Wrong number of arguments')
