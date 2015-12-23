@@ -169,6 +169,7 @@ class PipelineExecutor {
       try {
         stageType.execute(stage)
       } catch (err) {
+        logger.error(err)
         stage.fail()
       }
     }
