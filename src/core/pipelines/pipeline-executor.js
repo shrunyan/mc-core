@@ -81,13 +81,9 @@ class PipelineExecutor {
    */
   executeStages() {
     return new Promise(resolve => {
-
       // Clone the stages, so we can pick them off one at a time
       this.stagesRemaining = this.config.stageConfigs.slice(0)
-
-      this.runNextStage(() => {
-        resolve()
-      })
+      this.runNextStage(resolve)
     })
 
   }
