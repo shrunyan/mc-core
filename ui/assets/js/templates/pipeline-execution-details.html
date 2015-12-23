@@ -120,7 +120,7 @@
                     <td><!-- TODO: if details, show button "Show/Hide Details" --></td>
                 </tr>
 
-                <tr ng-repeat-end ng-if="log.details">
+                <tr ng-repeat-end ng-if="log.details" class="log-details">
                     <td colspan="4" ng-bind-html="log.details | unsafe"></td>
                 </tr>
 
