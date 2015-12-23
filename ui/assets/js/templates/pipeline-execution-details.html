@@ -117,7 +117,7 @@
                     <td class="text-center text-muted" style="vertical-align: middle;">{{ log.stage_num }}</td>
                     <td class="text-center text-muted" style="vertical-align: middle;">{{ log.logged_at | amDateFormat : 'h:mma' }}</td>
                     <td style="vertical-align: middle;" class="">{{ log.title }}</td>
-                    <td><!-- TODO: if details, show button "Show/Hide Details" --></td>
+                    <td><a class="btn btn-default" ng-click="toggleDetails($event)" ng-if="log.details"><span>Show</span> Details <i class="fa fa-angle-down"></i></a></td>
                 </tr>
 
                 <tr ng-repeat-end ng-if="log.details" class="log-details">
