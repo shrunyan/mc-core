@@ -26,9 +26,11 @@ module.exports = (function () {
         // Ignore queueExists errors
         if (err.name !== 'queueExists') {
           throw err
+        } else {
+          logger.log(QUEUE_MSG + 'EXISTS')
         }
       } else if (resp === 1) {
-        logger.log(QUEUE_MSG + 'created')
+        logger.log(QUEUE_MSG + 'CREATED')
       }
     })
 
@@ -36,9 +38,9 @@ module.exports = (function () {
       if (err) {
         logger.error(err)
       } else if (resp.id) {
-        logger.log(QUEUE_MSG + 'message recieved |' + resp)
+        logger.log(QUEUE_MSG + 'MESSAGE |' + resp)
       } else {
-        logger.log(QUEUE_MSG + 'no messages')
+        logger.log(QUEUE_MSG + 'EMPTY')
       }
     })
 
