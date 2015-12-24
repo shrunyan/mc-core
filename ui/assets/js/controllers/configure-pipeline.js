@@ -29,16 +29,11 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
         return stage
       })
 
-      setTimeout(function() {
-        $(function() {
-          $('.pipeline-stage a.configure').on('click', function() {
-            $(this).parent().parent().find('.panel-body').slideToggle(200)
-          })
-        })
-
-      }, 1)
-
     })
+
+  $scope.toggleOptions = function toggleOptions($event) {
+    $($event.target).parent().parent().find('.panel-body').slideToggle(200)
+  }
 
   // Delete Stage
   $scope.remove = (id) => {
