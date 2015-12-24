@@ -84,8 +84,8 @@
                         <p>{{ option.description }}</p>
                     </div>
                     <div class="col-md-8" ng-switch="option.type">
-                        <textarea ng-switch-when="textarea" ng-model="form[key]" class="form-control">{{ stage.options[key] }}</textarea>
-                        <input ng-switch-default ng-model="form[key]" type="text" class="form-control" placeholder="{{ stage.options[key] }}" />
+                        <textarea ng-switch-when="textarea" ng-model="form[key]" class="form-control monospace">{{ stage.options[key] }}</textarea>
+                        <input ng-switch-default ng-model="form[key]" type="text" class="form-control monospace" placeholder="{{ stage.options[key] }}" />
                     </div>
                 </div>
                 <hr>
