@@ -36,7 +36,32 @@
 
         <!-- Pipeline Variables -->
         <div class="panel panel-default">
-            <div class="panel-heading"><a href="javascript:void(0)" class="pull-right btn btn-xs btn-default"><i class="fa fa-plus"></i> Add new Variable</a>Variables</div>
+            <div class="panel-heading">Standard Variables and Helpers</div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="monospace"><span class="text-muted">mc.</span>workspace_path</td>
+                    <td>The path of the workspace for a given pipeline execution. Example: <code>/path/to/workspaces/pe_123/</code></td>
+                </tr>
+                <tr>
+                    <td class="monospace"><span class="text-muted">mc.</span>timestamp()</td>
+                    <td>Generates a timestamp</td>
+                </tr>
+                </tbody>
+
+            </table>
+        </div>
+
+
+        <!-- Pipeline Variables -->
+        <div class="panel panel-default">
+            <div class="panel-heading"><a href="javascript:void(0)" class="pull-right btn btn-xs btn-default"><i class="fa fa-plus"></i> Add Custom Variable/Input</a>Custom Variables</div>
             <table class="table">
                 <thead>
                 <tr>
