@@ -19,8 +19,8 @@ module.exports = (function () {
 
     const WORKER_MSG = 'WORKER | '+workerName+' | '
 
-    worker.on('ready', () => logger.log(WORKER_MSG + 'ready'))
-    worker.on('deleted', id => logger.error(WORKER_MSG + 'deleted: ', id))
+    worker.on('ready', () => logger.log(WORKER_MSG + 'READY'))
+    worker.on('deleted', id => logger.error(WORKER_MSG + 'DELETED: ', id))
     worker.on('exceeded', msg => logger.error(WORKER_MSG + 'EXCEEDED', msg))
     worker.on('timeout', msg => logger.error(WORKER_MSG + 'TIMEOUT', msg))
     worker.on('error', (err, msg) => logger.error(WORKER_MSG + 'ERROR', err, msg))
