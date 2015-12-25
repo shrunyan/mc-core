@@ -103,14 +103,14 @@
                 <small class="text-muted">Extension Name › {{ stage.schema.name }}</small>
             </div>
             <div class="panel-body">
-                <div class="row" ng-repeat="(key, option) in stage.schema.options">
+                <div class="row" ng-repeat="(key, option) in stageOptions.current[stage.id]">
                     <div class="col-md-4">
                         <h4>{{ option.name }}</h4>
                         <p>{{ option.description }}</p>
                     </div>
                     <div class="col-md-8" ng-switch="option.type">
-                        <textarea ng-switch-when="textarea" ng-model="form[key]" class="form-control monospace">{{ stage.options[key] }}</textarea>
-                        <input ng-switch-default ng-model="form[key]" type="text" class="form-control monospace" placeholder="{{ stage.options[key] }}" />
+                        <textarea ng-switch-when="textarea" ng-model="stageOptions.current[stage.id][key]" class="form-control monospace">{{ option }}</textarea>
+                        <input ng-switch-default ng-model="stageOptions.current[stage.id][key]" type="text" class="form-control monospace" />
                     </div>
                 </div>
                 <hr>
@@ -144,7 +144,7 @@
                 <div class="row">
                   <div class="col-md-12">
                     <button class="btn btn-danger pull-left" ng-click="remove(stage.id)">Delete Stage</button>
-                    <button class="btn btn-success pull-right" ng-click="save(stage.id)">Save Stage Options</button>
+                    <button class="btn btn-success pull-right" ng-click="save(stage.id)" ng-disabled="(stageOptions.current[stage.id] | json) == (stageOptions.saved[stage.id] | json)">Save Stage Options</button>
                   </div>
                 </div>
             </div>
