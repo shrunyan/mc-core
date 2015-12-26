@@ -2,7 +2,6 @@
 
 let connection = require('../../db/connection')
 let logger = require('tracer').colorConsole()
-let moment = require('moment')
 
 /**
  * Stringify's all parameters that are objects
