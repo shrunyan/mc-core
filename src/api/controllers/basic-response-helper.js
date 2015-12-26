@@ -2,6 +2,7 @@
 
 let connection = require('../../db/connection')
 let logger = require('tracer').colorConsole()
+let moment = require('moment')
 
 /**
  * Stringify's all parameters that are objects
@@ -94,9 +95,6 @@ module.exports = {
     if (typeof changes.id !== 'undefined') {
       delete changes.id
     }
-
-    // Append a updated_at date
-    changes.updated_at = new Date()
 
     if (req.params.id) {
       connection
