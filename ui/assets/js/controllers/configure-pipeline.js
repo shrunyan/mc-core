@@ -5,6 +5,7 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
   // This must be predefined for ng-model
   // values as objects
   $scope.stageOptions = {
+    metadata: {},
     current: {},
     saved: {}
   }
@@ -43,26 +44,34 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
         // Set up holder objects
         // - one for the "last saved" value
         // - one for the current (bound) form value
+        // - one for metadata
         $scope.stageOptions.current[stage.id] = {}
         $scope.stageOptions.saved[stage.id] = {}
+        $scope.stageOptions.metadata[stage.id] = {}
 
         // For each option that exits in the stage type...
         Object.keys(stage.schema.options).forEach((key) => {
+
+          let optionValue
 
           // If the user has specified value, use that
           // Otherwise, if there is a default value, use it
           // Otherwise, make the value blank
           if (typeof stage.options[key] !== 'undefined') {
-            $scope.stageOptions.current[stage.id][key] = stage.options[key]
-            $scope.stageOptions.saved[stage.id][key] = stage.options[key]
+            optionValue = stage.options[key].toString()
 
           } else if (typeof stage.schema.options[key].default !== 'undefined') {
-            $scope.stageOptions.current[stage.id][key] = stage.schema.options[key].default.toString()
-            $scope.stageOptions.saved[stage.id][key] = stage.schema.options[key].default.toString()
+            optionValue = stage.schema.options[key].default.toString()
 
           } else {
-            $scope.stageOptions.current[stage.id][key] = ''
-            $scope.stageOptions.saved[stage.id][key] = ''
+            optionValue = ''
+          }
+
+          $scope.stageOptions.current[stage.id][key] = optionValue
+          $scope.stageOptions.saved[stage.id][key] = optionValue
+          $scope.stageOptions.metadata[stage.id][key] = {
+            name: stage.schema.options[key].name,
+            description: stage.schema.options[key].description
           }
 
         })
@@ -74,11 +83,11 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
   $scope.saveOptions = function saveOptions(stageId) {
 
     // Save the options in the form to the cached "saved" values for comparison
-    $scope.stageOptions.saved = _.cloneDeep($scope.stageOptions.current)
+    $scope.stageOptions.saved[stageId] = _.cloneDeep($scope.stageOptions.current[stageId])
 
     // Send the current values to the server
-    $http.patch('/api/stage/' + id, {
-      options: $scope.stageOptions.current
+    $http.patch('/api/stage/' + stageId, {
+      options: $scope.stageOptions.current[stageId]
     })
 
   }

@@ -105,8 +105,8 @@
             <div class="panel-body">
                 <div class="row" ng-repeat="(key, option) in stageOptions.current[stage.id]">
                     <div class="col-md-4">
-                        <h4>{{ option.name }}</h4>
-                        <p>{{ option.description }}</p>
+                        <h4>{{ stageOptions.metadata[stage.id][key].name }}</h4>
+                        <p>{{ stageOptions.metadata[stage.id][key].description }}</p>
                     </div>
                     <div class="col-md-8" ng-switch="option.type">
                         <textarea ng-switch-when="textarea" ng-model="stageOptions.current[stage.id][key]" class="form-control monospace">{{ option }}</textarea>
@@ -144,7 +144,7 @@
                 <div class="row">
                   <div class="col-md-12">
                     <button class="btn btn-danger pull-left" ng-click="remove(stage.id)">Delete Stage</button>
-                    <button class="btn btn-success pull-right" ng-click="save(stage.id)" ng-disabled="(stageOptions.current[stage.id] | json) == (stageOptions.saved[stage.id] | json)">Save Stage Options</button>
+                    <button class="btn btn-success pull-right" ng-click="saveOptions(stage.id)" ng-disabled="(stageOptions.current[stage.id] | json) == (stageOptions.saved[stage.id] | json)">Save Stage Options</button>
                   </div>
                 </div>
             </div>
