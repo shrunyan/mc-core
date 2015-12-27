@@ -108,6 +108,10 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
     $state.go($state.$current, null, { reload: true })
   }
 
+  $scope.createVar = () => {}
+
+  $scope.updateVar = () => {}
+
   $scope.deleteVar = (variable) => {
 
     // Confirm
