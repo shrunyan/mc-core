@@ -46,7 +46,7 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
     $scope.createVarFormShowing = false
 
     // If the var is required, make the default blank (since there shouldn't be a default value)
-    if ($scope.createVarFormValues.required == 1) {
+    if ($scope.createVarFormValues.required === '1') {
       $scope.createVarFormValues.default_value = ''
     }
 
