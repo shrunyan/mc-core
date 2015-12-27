@@ -75,7 +75,7 @@
                     <td class="monospace"><span class="text-muted">mc.var.</span>{{ var.name }}</td>
                     <td ng-if="var.required"><i class="fa fa-check"></i> Required</td>
                     <td ng-if="!var.required">Optional. Default: <code>{{ var.default_value }}</code></td>
-                    <td><a href="javascript:void(0);" class="btn btn-xs btn-default"><i class="fa fa-pencil"></i> Edit</a> <a href="javascript:void(0);" class="btn btn-xs btn-default"><i class="fa fa-trash"></i> Delete</a></td>
+                    <td><a href="javascript:void(0);" class="btn btn-xs btn-default"><i class="fa fa-pencil"></i> Edit</a> <a ng-click="deleteVar(var)" class="btn btn-xs btn-default"><i class="fa fa-trash"></i> Delete</a></td>
                 </tr>
                 </tbody>
 

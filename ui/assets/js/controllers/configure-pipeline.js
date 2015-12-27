@@ -108,4 +108,19 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
     $state.go($state.$current, null, { reload: true })
   }
 
+  $scope.deleteVar = (variable) => {
+
+    // Confirm
+    if (confirm('Are you sure you want to delete variable "' + variable.name + '"?')) {
+
+      // Delete on server
+      $http.delete('/api/pipelines/' + $stateParams.id + '/variables/' + variable.id)
+
+      // Delete locally
+      $scope.variables.splice( $scope.variables.indexOf(variable),1)
+
+    }
+
+  }
+
 }]
