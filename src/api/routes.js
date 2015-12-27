@@ -43,8 +43,8 @@ module.exports = function(app) {
   // Pipeline Variables
   app.get('/api/pipelines/:pipeline_id/variables', controllers.pipelineVariables.getListForPipeline)
   app.post('/api/pipelines/:pipeline_id/variables', controllers.pipelineVariables.createVar)
-  app.patch('/api/pipelines/:pipeline_id/variables/:var_id', controllers.pipelineVariables.updateVar)
-  app.delete('/api/pipelines/:pipeline_id/variables/:var_id', controllers.pipelineVariables.deleteVar)
+  app.patch('/api/pipelines/:pipeline_id/variables/:id', controllers.pipelineVariables.updateVar)
+  app.delete('/api/pipelines/:pipeline_id/variables/:id', controllers.pipelineVariables.deleteVar)
 
   // Pipeline Stages
   app.get('/api/pipelines/:id/stages', controllers.stages.getListForPipeline)
