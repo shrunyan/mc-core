@@ -12,6 +12,7 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
 
   $scope.standardVariablesSectionShowing = false
   $scope.customVariablesSectionShowing = false
+  $scope.createVarFormShowing = false
 
   $scope.toggleStandardSection = function toggleStandardSection() {
     $scope.standardVariablesSectionShowing = !$scope.standardVariablesSectionShowing
@@ -19,6 +20,40 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
 
   $scope.toggleCustomSection = function toggleCustomSection() {
     $scope.customVariablesSectionShowing = !$scope.customVariablesSectionShowing
+  }
+
+  $scope.showCreateVarForm = function showCreateVarForm() {
+    $scope.resetCreateVarForm()
+    $scope.createVarFormShowing = true
+  }
+
+  $scope.resetCreateVarForm = function resetCreateVarForm() {
+    $scope.createVarFormValues = {
+      pipeline_config_id: $stateParams.id,
+      name: '',
+      description: '',
+      required: '1',
+      default_value: ''
+    }
+  }
+
+  $scope.cancelCreateVar = function cancelCreateVar() {
+    $scope.createVarFormShowing = false
+  }
+
+  $scope.createVar = function createVar() {
+
+    $scope.createVarFormShowing = false
+
+    // If the var is required, make the default blank (since there shouldn't be a default value)
+    if ($scope.createVarFormValues.required == 1) {
+      $scope.createVarFormValues.default_value = ''
+    }
+
+    $http.post('/api/pipelines/' + $stateParams.id + '/variables', $scope.createVarFormValues).then(() => {
+      $scope.resetCreateVarForm()
+      $scope.loadVariables()
+    })
   }
 
   // Load the pipeline and the related project
@@ -125,8 +160,6 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
     $http.delete('/api/stage/' + id)
     $scope.loadStages()
   }
-
-  $scope.createVar = () => {}
 
   $scope.updateVar = () => {}
 
