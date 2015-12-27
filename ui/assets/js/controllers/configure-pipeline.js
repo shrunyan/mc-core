@@ -10,6 +10,7 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
     saved: {}
   }
 
+  // Load the pipeline and the related project
   $http.get('/api/pipelines/' + $stateParams.id).then(response => {
     $scope.pipeline = response.data.data
 
@@ -19,6 +20,7 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
 
   })
 
+  // Load the pipeline variables
   $http.get('/api/pipelines/' + $stateParams.id + '/variables').then(response => {
     $scope.variables = response.data.data
   })
