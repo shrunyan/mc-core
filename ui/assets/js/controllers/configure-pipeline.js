@@ -19,6 +19,10 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
 
   })
 
+  $http.get('/api/pipelines/' + $stateParams.id + '/variables').then(response => {
+    $scope.variables = response.data.data
+  })
+
   // Get Stage Data
   let stageTypes = $http.get('/api/stage-types')
   let stageConfigs = $http.get('/api/pipelines/' + $stateParams.id + '/stages')
