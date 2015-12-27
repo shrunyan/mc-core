@@ -117,7 +117,7 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
       $http.delete('/api/pipelines/' + $stateParams.id + '/variables/' + variable.id)
 
       // Delete locally
-      $scope.variables.splice( $scope.variables.indexOf(variable),1)
+      $scope.variables.splice($scope.variables.indexOf(variable), 1)
 
     }
 
