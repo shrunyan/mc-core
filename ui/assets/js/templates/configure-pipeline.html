@@ -36,8 +36,8 @@
 
         <!-- Pipeline Variables -->
         <div class="panel panel-default">
-            <div class="panel-heading">Standard Variables and Helpers</div>
-            <table class="table">
+            <div class="panel-heading"><a ng-click="toggleStandardSection()" class="pull-right btn btn-xs btn-default"><span ng-if="!standardVariablesSectionShowing"><i class="fa fa-plus"></i> Expand</span><span ng-if="standardVariablesSectionShowing"><i class="fa fa-minus"></i> Minimize</span></a>Standard Variables and Helpers</div>
+            <table class="table" ng-if="standardVariablesSectionShowing">
                 <thead>
                 <tr>
                     <th>Name</th>
@@ -61,8 +61,8 @@
 
         <!-- Pipeline Variables -->
         <div class="panel panel-default">
-            <div class="panel-heading"><a href="javascript:void(0)" class="pull-right btn btn-xs btn-default"><i class="fa fa-plus"></i> Add Custom Variable/Input</a>Custom Variables</div>
-            <table class="table">
+            <div class="panel-heading"><a ng-click="toggleCustomSection()" class="pull-right btn btn-xs btn-default"><span ng-if="!customVariablesSectionShowing"><i class="fa fa-plus"></i> Expand</span><span ng-if="customVariablesSectionShowing"><i class="fa fa-minus"></i> Minimize</span></a>Custom Variables — {{ variables.length }}</div>
+            <table class="table" ng-if="customVariablesSectionShowing">
                 <thead>
                 <tr>
                     <th>Name</th>
@@ -77,6 +77,7 @@
                     <td ng-if="!var.required">Optional. Default: <code>{{ var.default_value }}</code></td>
                     <td><a href="javascript:void(0);" class="btn btn-xs btn-default"><i class="fa fa-pencil"></i> Edit</a> <a ng-click="deleteVar(var)" class="btn btn-xs btn-default"><i class="fa fa-trash"></i> Delete</a></td>
                 </tr>
+                <tr><td colspan="3" class="" style="padding-top: 8px;padding-bottom: 7px;"><a class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Add Custom Variable/Input</a></td></tr>
                 </tbody>
 
             </table>

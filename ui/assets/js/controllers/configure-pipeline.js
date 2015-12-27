@@ -10,6 +10,17 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
     saved: {}
   }
 
+  $scope.standardVariablesSectionShowing = false
+  $scope.customVariablesSectionShowing = false
+
+  $scope.toggleStandardSection = function toggleStandardSection() {
+    $scope.standardVariablesSectionShowing = !$scope.standardVariablesSectionShowing
+  }
+
+  $scope.toggleCustomSection = function toggleCustomSection() {
+    $scope.customVariablesSectionShowing = !$scope.customVariablesSectionShowing
+  }
+
   // Load the pipeline and the related project
   $scope.loadPipelinesAndProject = function loadPipelinesAndProject() {
     $http.get('/api/pipelines/' + $stateParams.id).then(response => {
