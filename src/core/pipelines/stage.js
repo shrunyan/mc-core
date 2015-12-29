@@ -10,8 +10,11 @@ let logger = require('tracer').colorConsole()
 let registry = require('../../extensions/registry')
 let status = require('../../workers/status')
 
+/**
+ * Stage Instance
+ * @type {Object}
+ */
 module.exports = class Stage {
-
   constructor(index, config, msg) {
     this.events = {}
     this.stageNum = index

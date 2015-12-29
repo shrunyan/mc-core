@@ -1,67 +1,49 @@
 'use strict'
 
-const RUNNING = 'running'
 const FAILED = 'failed'
 const SUCCEEDED = 'succeeded'
-const PIPELINE_TABLE = 'pipeline_executions'
-// const STAGE_TABLE = 'pipeline_stage_executions'
 
 let logger = require('tracer').colorConsole()
-let connection = require('../../db/connection')
-let pipelineEvent = require('../../queues/pipeline/events')
+let Pipeline = require('../../core/pipelines/pipeline')
 let Stage = require('../../core/pipelines/stage')
 let registry = require('../../extensions/registry')
-let status = require('../status')
 
 module.exports = class Job {
   constructor(msg, next) {
-    this.hasFailed = false
-    this.pipeline = {}
-    this.stages = []
+    this.msg = msg
+    this.next = next
+    this.pipeline = new Pipeline(this.msg.id)
+    this.start()
+  }
 
-    // Start this party
-    this.load(msg.id)
-      .then(status(msg.id, RUNNING, PIPELINE_TABLE))
-      .then(pipelineEvent('update'))
+  start() {
+    // Once we have a pipeline execution record
+    this.pipeline.exec
+      .then(this.pipeline.run())
       .then(() => {
         // Create stage instance for each configuration
-        this.pipeline.stageConfigs.forEach((config, index) => {
-          this.stages.push(new Stage(index, config, msg))
+        this.stages = this.pipeline.config.stageConfigs.map((config, index) => {
+          return new Stage(index, config, this.msg)
         })
 
         // Resolve once all instances have an execution record
         return Promise.all(this.stages.map(stage => stage.exec))
       })
       .then(() => {
-        // Map over stage instances and create an execution
+        // Map over stage instances and execute them
         return Promise.all(this.stages.map(stage => {
-          return this.execute(stage, this.hasFailed)
+          return this.execute(stage).bind(this)
         }))
-
-        // this.stages.forEach(stage => {
-        //   this.execute(stage, hasFailed)
-        // })
-
       })
-      .then(status(msg.id, (this.hasFailed ? FAILED : SUCCEEDED), PIPELINE_TABLE))
-      .then(pipelineEvent('update'))
-      .then(next)
+      .then(this.pipeline.finish)
+      .then(this.next)
       .catch(err => logger.error(err))
   }
 
-  load(id) {
-    return connection
-      .table(PIPELINE_TABLE)
-      .where('id', id)
-      .first()
-      .then(exec => this.pipeline = JSON.parse(exec.config_snapshot))
-      .catch(err => logger.error(err))
-  }
+  execute(stage) {
+    console.log('execute', stage)
 
-  execute(stage, hasFailed) {
-    console.log('execute', hasFailed, stage)
-
-    if (hasFailed) {
+    if (this.pipeline.hasFailed) {
       logger.error('Previous hasFailed')
       // TODO skip execution
     }
@@ -70,7 +52,7 @@ module.exports = class Job {
       let extension = registry.get(stage.config.type)
 
       stage.on(FAILED, () => {
-        hasFailed = true
+        this.pipeline.hasFailed = true
         // TODO: Should we be rejecting?
         // won't this fail fast the rest of the executions
         // preventing them from running?
