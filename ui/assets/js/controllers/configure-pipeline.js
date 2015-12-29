@@ -9,6 +9,11 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
     current: {},
     saved: {}
   }
+  $scope.stageOutputs = {
+    metadata: {},
+    current: {},
+    saved: {}
+  }
 
   // Default values for view state (form and section visibility)
   $scope.standardVariablesSectionShowing = false
@@ -216,18 +221,37 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
 
           })
 
+          // Set up holder objects
+          // - one for the "last saved" value
+          // - one for the current (bound) form value
+          // - one for metadata
+          $scope.stageOutputs.current[stage.id] = {}
+          $scope.stageOutputs.saved[stage.id] = {}
+          $scope.stageOutputs.metadata[stage.id] = {}
+
+          console.log(stage.schema.outputs)
+
           // for each output that a stage type provides...
           Object.keys(stage.schema.outputs).forEach(key => {
-
-            console.log(key)
-            console.log(stage.schema.outputs[key])
 
             // Check if the stage configuration has mapped that output to a pipeline variable
             // If so, populate it
             // Regardless, provide the output key...
+            let outputMappingValue
 
+            if (typeof stage.output_mapping === 'object' && stage.output_mapping !== null && typeof stage.output_mapping[key] !== 'undefined') {
+              outputMappingValue = stage.output_mapping[key]
+            } else {
+              outputMappingValue = ''
+            }
+
+            $scope.stageOutputs.current[stage.id][key] = outputMappingValue
+            $scope.stageOutputs.saved[stage.id][key] = outputMappingValue
+            $scope.stageOutputs.metadata[stage.id][key] = stage.schema.outputs[key].description
 
           })
+
+          console.log($scope.stageOutputs)
 
         })
 

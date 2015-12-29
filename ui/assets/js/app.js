@@ -45,6 +45,11 @@ app.filter('unsafe', ['$sce', function($sce) {
   return function(input) { return $sce.trustAsHtml(input) }
 }])
 
+// Provide quick way to check key length for an object
+app.filter('keysLength', function() {
+  return function(input) { return Object.keys(input).length }
+})
+
 app.run(controllers.socketManager)
 app.run(controllers.user)
 app.run(controllers.login)

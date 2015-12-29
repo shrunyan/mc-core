@@ -36,7 +36,10 @@ module.exports = {
       .then(items => {
         res.status(200).send({
           data: items.map(item => {
-            //item.output_map = JSON.parse(item.output_map) // TODO: revisit
+            if (typeof item.output_map === 'undefined' || item.output_map.substr(0,1) !== '{') {
+              item.output_map = '{}'
+            }
+            item.output_map = JSON.parse(item.output_map)
             item.options = JSON.parse(item.options)
             return item
           })
