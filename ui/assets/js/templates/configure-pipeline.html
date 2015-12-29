@@ -169,7 +169,7 @@
                     </div>
                 </div>
                 <hr>
-                <div><!--  ng-if="(stageOutputs.current[stage.id] | keysLength) > 0" -->
+                <div ng-if="(stageOutputs.current[stage.id] | keysLength) > 0">
                     <h3>Output</h3>
                     <div class="row" ng-repeat="(name, output) in stageOutputs.current[stage.id]">
                         <div class="col-md-4">
