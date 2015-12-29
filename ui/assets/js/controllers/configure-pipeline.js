@@ -263,14 +263,21 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
    *
    * @param stageId
    */
-  $scope.saveOptions = function saveOptions(stageId) {
+  $scope.saveOptionsAndOutputs = function saveOptionsAndOutputs(stageId) {
+
+    // TODO: validate that stage output variable names are valid mission control variable names
+    // (only lowercase, alphanumeric, and underscores)
 
     // Save the options in the form to the cached "saved" values for comparison
     $scope.stageOptions.saved[stageId] = _.cloneDeep($scope.stageOptions.current[stageId])
 
+    // Do the same with output mappings
+    $scope.stageOutputs.saved[stageId] = _.cloneDeep($scope.stageOutputs.current[stageId])
+
     // Send the current values to the server
     $http.patch('/api/stage/' + stageId, {
-      options: $scope.stageOptions.current[stageId]
+      options: $scope.stageOptions.current[stageId],
+      output_map: $scope.stageOutputs.current[stageId]
     })
 
   }
