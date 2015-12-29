@@ -9,8 +9,8 @@ let RSMQWorker = require('rsmq-worker')
  * Worker factory
  * @return {function} Function to get worker instance
  */
-module.exports = (function () {
-  return function (name) {
+module.exports = (function() {
+  return function(name) {
     let worker = new RSMQWorker(name, {
       redisPrefix: 'mission_control',
       host: process.env.REDIS_HOST,

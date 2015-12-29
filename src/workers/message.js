@@ -3,7 +3,7 @@
 module.exports = function message(message) {
   message = JSON.parse(message)
   if (!message.id) {
-    throw 'Message missing ID'
+    throw new Error('Message missing ID')
   } else {
     return message
   }

@@ -1,5 +1,9 @@
 'use strict'
 
+const FAILED = 'failed'
+const SUCCEEDED = 'succeeded'
+const STAGE_TABLE = 'pipeline_stage_executions'
+
 let connection = require('../../db/connection')
 let logger = require('tracer').colorConsole()
 let registry = require('../../extensions/registry')
@@ -20,7 +24,7 @@ module.exports = class Stage {
    */
   fail() {
     // this.opts.failure()
-    status(stageId, FAILED, STAGE_TABLE)
+    status(this.opts.stageId, FAILED, STAGE_TABLE)
   }
 
   /**
@@ -28,7 +32,7 @@ module.exports = class Stage {
    */
   succeed() {
     // this.opts.success()
-    status(stageId, SUCCEEDED, STAGE_TABLE)
+    status(this.opts.stageId, SUCCEEDED, STAGE_TABLE)
   }
 
   /**
@@ -92,5 +96,4 @@ module.exports = class Stage {
       .insert(data)
       .catch(err => logger.error(err))
   }
-
 }

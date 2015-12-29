@@ -81,7 +81,7 @@ function queueExec() {
   })
 }
 
-module.exports = (function () {
+module.exports = (function() {
   return function command(pipelineId, params, userId, callback) {
     state.pipelineId = pipelineId
     state.userId = userId
@@ -97,9 +97,6 @@ module.exports = (function () {
       .catch(err => logger.error(err))
   }
 }())
-
-
-
 
 /**
  * Execute Pipeline Command - Creates a new pipeline execution, and queues it for processing.

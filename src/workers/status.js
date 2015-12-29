@@ -1,7 +1,7 @@
 'use strict'
 
 let logger = require('tracer').colorConsole()
-let connection = require('../../db/connection')
+let connection = require('../db/connection')
 
 module.exports = function status(id, status, table) {
   logger.log('Module: status', arguments)
@@ -11,7 +11,7 @@ module.exports = function status(id, status, table) {
     updated_at: new Date()
   }
 
-  switch(status) {
+  switch (status) {
     case 'running':
       data.started_at = new Date()
       break

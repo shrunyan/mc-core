@@ -8,11 +8,10 @@ const STAGE_TABLE = 'pipeline_stage_executions'
 
 let logger = require('tracer').colorConsole()
 let connection = require('../../db/connection')
-let pipelineEvent = require('../../queues/pipeline/events')
+// let pipelineEvent = require('../../queues/pipeline/events')
 let Stage = require('../../core/pipelines/stage')
 let registry = require('../../extensions/registry')
 let status = require('../status')
-
 
 module.exports = class Job {
   constructor(msg, next) {
@@ -90,8 +89,8 @@ module.exports = class Job {
     }
 
     let stageId = id[0]
-    let success = () => status(stageId, SUCCEEDED, STAGE_TABLE)
-    let fail = () => status(stageId, FAILED, STAGE_TABLE)
+    // let success = () => status(stageId, SUCCEEDED, STAGE_TABLE)
+    // let fail = () => status(stageId, FAILED, STAGE_TABLE)
     let ext = registry.get(data.stage.type)
     let stage = new Stage({
       // success: success,
@@ -104,7 +103,7 @@ module.exports = class Job {
 
     try {
       ext.execute(stage)
-    } catch(err) {
+    } catch (err) {
       this.failure = true
       logger.error(err)
       stage.fail()
