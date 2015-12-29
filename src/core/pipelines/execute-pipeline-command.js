@@ -18,7 +18,11 @@ module.exports = (pipelineId, input, userId, callback) => {
 
   let pipelineRsmq = require('../../queueing/pipeline-executions-queue')
 
+  // If there is no input provided, use an empty object
   input = input || {}
+
+  // merge input with defaults
+  // TODO
 
   connection.first().where('id', pipelineId).from('pipeline_configs').then((pipelineConfig) => {
 

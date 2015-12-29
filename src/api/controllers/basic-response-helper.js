@@ -9,9 +9,9 @@ let logger = require('tracer').colorConsole()
  * @return {Object}      Process request parameters
  */
 function parseParams(params) {
-  for (let param in params) {
-    if (typeof params === 'object') {
-      params[param] = JSON.stringify(params[param])
+  for (let paramKey in params) {
+    if (typeof params[paramKey] === 'object') {
+      params[paramKey] = JSON.stringify(params[paramKey])
     }
   }
   return params
@@ -94,9 +94,6 @@ module.exports = {
     if (typeof changes.id !== 'undefined') {
       delete changes.id
     }
-
-    // Append a updated_at date
-    changes.updated_at = new Date()
 
     if (req.params.id) {
       connection
