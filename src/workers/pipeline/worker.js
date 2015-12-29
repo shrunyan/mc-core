@@ -1,7 +1,6 @@
 'use strict'
 
 let worker = require('../worker')('pipeline_executions')
-// let process = require('./process')
 let message = require('../message')
 let Job = require('./job')
 

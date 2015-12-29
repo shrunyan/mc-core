@@ -3,7 +3,7 @@
 let connection = require('../../db/connection')
 let logger = require('tracer').colorConsole()
 let registry = require('../../extensions/registry')
-let status = require('../../workers/pipeline/status')
+let status = require('../../workers/status')
 
 module.exports = class Stage {
 
@@ -19,14 +19,16 @@ module.exports = class Stage {
    * Mark a stage as failed
    */
   fail() {
-    this.opts.failure()
+    // this.opts.failure()
+    status(stageId, FAILED, STAGE_TABLE)
   }
 
   /**
    * Mark a stage as successful
    */
   succeed() {
-    this.opts.success()
+    // this.opts.success()
+    status(stageId, SUCCEEDED, STAGE_TABLE)
   }
 
   /**
