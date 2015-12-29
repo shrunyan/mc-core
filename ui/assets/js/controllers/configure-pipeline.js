@@ -62,7 +62,6 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
     $scope.editVarFormValues.required = parseInt($scope.editVarFormValues.required, 10)
 
     // Send changes to server, then refresh variables
-    console.log($scope.editVarFormValues)
     $http.patch('/api/pipelines/' + $stateParams.id + '/variables/' + $scope.editVarId, $scope.editVarFormValues)
       .then(() => {
         $scope.loadVariables()
