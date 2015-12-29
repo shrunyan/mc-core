@@ -10,23 +10,36 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
     saved: {}
   }
 
+  // Default values for view state (form and section visibility)
   $scope.standardVariablesSectionShowing = false
   $scope.customVariablesSectionShowing = false
   $scope.createVarFormShowing = false
 
+  /**
+   * Toggle the visibility of the standard variables section
+   */
   $scope.toggleStandardSection = function toggleStandardSection() {
     $scope.standardVariablesSectionShowing = !$scope.standardVariablesSectionShowing
   }
 
+  /**
+   * Toggle visibility of the custom variables section
+   */
   $scope.toggleCustomSection = function toggleCustomSection() {
     $scope.customVariablesSectionShowing = !$scope.customVariablesSectionShowing
   }
 
+  /**
+   * Show the create variable form
+   */
   $scope.showCreateVarForm = function showCreateVarForm() {
     $scope.resetCreateVarForm()
     $scope.createVarFormShowing = true
   }
 
+  /**
+   * Reset the values in the create var form
+   */
   $scope.resetCreateVarForm = function resetCreateVarForm() {
     $scope.createVarFormValues = {
       pipeline_config_id: $stateParams.id,
@@ -37,10 +50,16 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
     }
   }
 
+  /**
+   * "Cancel" var creation (closes the form)
+   */
   $scope.cancelCreateVar = function cancelCreateVar() {
     $scope.createVarFormShowing = false
   }
 
+  /**
+   * Actual create of a new variable (typically triggered by the create var form)
+   */
   $scope.createVar = function createVar() {
 
     $scope.createVarFormShowing = false
@@ -50,13 +69,16 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
       $scope.createVarFormValues.default_value = ''
     }
 
+    // Create on server, then reset the create variable form and reload the variables data
     $http.post('/api/pipelines/' + $stateParams.id + '/variables', $scope.createVarFormValues).then(() => {
       $scope.resetCreateVarForm()
       $scope.loadVariables()
     })
   }
 
-  // Load the pipeline and the related project
+  /**
+   * Load the pipeline and the related project
+   */
   $scope.loadPipelinesAndProject = function loadPipelinesAndProject() {
     $http.get('/api/pipelines/' + $stateParams.id).then(response => {
       $scope.pipeline = response.data.data
@@ -68,14 +90,18 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
     })
   }
 
-  // Load the pipeline variables
+  /**
+   * Loads the pipeline variables
+   */
   $scope.loadVariables = function loadVariables() {
     $http.get('/api/pipelines/' + $stateParams.id + '/variables').then(response => {
       $scope.variables = response.data.data
     })
   }
 
-  // Get Stage Data
+  /**
+   * Loads Stage Data
+   */
   $scope.loadStages = function loadStages() {
 
     let stageTypes = $http.get('/api/stage-types')
@@ -139,6 +165,11 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
       })
   }
 
+  /**
+   * Save options for a stage
+   *
+   * @param stageId
+   */
   $scope.saveOptions = function saveOptions(stageId) {
 
     // Save the options in the form to the cached "saved" values for comparison
@@ -151,11 +182,20 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
 
   }
 
+  /**
+   * Toggles the visibility of the options section for a stage
+   *
+   * @param {object} $event Angular event object, to operate on html element
+   */
   $scope.toggleOptions = function toggleOptions($event) {
     $($event.target).parent().parent().find('.panel-body').slideToggle(200)
   }
 
-  // Delete Stage
+  /**
+   * Delete Stage (and reload stages)
+   *
+   * @param id
+   */
   $scope.removeStage = (id) => {
     $http.delete('/api/stage/' + id)
     $scope.loadStages()
@@ -163,6 +203,11 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
 
   $scope.updateVar = () => {}
 
+  /**
+   * Deletes a pipeline variable (and removes it from the scope array/obj locally)
+   *
+   * @param {object} variable Full variable object (typically from $scope.variables)
+   */
   $scope.deleteVar = (variable) => {
 
     // Confirm
