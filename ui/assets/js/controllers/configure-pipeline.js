@@ -14,6 +14,64 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
   $scope.standardVariablesSectionShowing = false
   $scope.customVariablesSectionShowing = false
   $scope.createVarFormShowing = false
+  $scope.editVarFormShowing = false
+  $scope.editVarFormValues = {}
+  $scope.editVarId = null
+
+  /**
+   * Opens the edit var form
+   *
+   * @param variable
+   */
+  $scope.editVar = function editVar(variable) {
+
+    // Copy the values of the variable into the edit form
+    $scope.editVarFormValues = {
+      name: variable.name,
+      description: variable.description,
+      required: variable.required.toString(),
+      default_value: variable.default_value
+    }
+
+    // Note which one we are editing
+    $scope.editVarId = variable.id
+
+    //
+    $scope.editVarFormShowing = true
+
+  }
+
+  /**
+   * Cancel making edits for a form var
+   */
+  $scope.cancelVarEdits = function cancelVarEdits() {
+    $scope.editVarFormShowing = false
+  }
+
+  /**
+   * Save edits to a variable (and reload variables)
+   */
+  $scope.saveVarEdits = () => {
+
+    // If the var is required, make the default blank (since there shouldn't be a default value)
+    if ($scope.editVarFormValues.required === '1') {
+      $scope.editVarFormValues.default_value = ''
+    }
+
+    // Coerce the string required value into an integer
+    $scope.editVarFormValues.required = parseInt($scope.editVarFormValues.required)
+
+    // Send changes to server, then refresh variables
+    console.log($scope.editVarFormValues)
+    $http.patch('/api/pipelines/' + $stateParams.id + '/variables/' + $scope.editVarId, $scope.editVarFormValues)
+      .then(() => {
+        $scope.loadVariables()
+      })
+
+    // Hide the edit form
+    $scope.editVarFormShowing = false
+  }
+
 
   /**
    * Toggle the visibility of the standard variables section
@@ -200,8 +258,6 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
     $http.delete('/api/stage/' + id)
     $scope.loadStages()
   }
-
-  $scope.updateVar = () => {}
 
   /**
    * Deletes a pipeline variable (and removes it from the scope array/obj locally)

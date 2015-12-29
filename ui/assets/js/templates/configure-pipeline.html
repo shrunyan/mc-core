@@ -75,7 +75,7 @@
                     <td class="monospace"><span class="text-muted">mc.var.</span>{{ var.name }}</td>
                     <td ng-if="var.required"><i class="fa fa-check"></i> Required</td>
                     <td ng-if="!var.required">Optional. Default: <code>{{ var.default_value }}</code></td>
-                    <td><a href="javascript:void(0);" class="btn btn-xs btn-default"><i class="fa fa-pencil"></i> Edit</a> <a ng-click="deleteVar(var)" class="btn btn-xs btn-default"><i class="fa fa-trash"></i> Delete</a></td>
+                    <td><a ng-click="editVar(var)" class="btn btn-xs btn-default" ng-if="!editVarFormShowing"><i class="fa fa-pencil"></i> Edit</a> <a ng-click="deleteVar(var)" class="btn btn-xs btn-default"><i class="fa fa-trash"></i> Delete</a></td>
                 </tr>
                 <tr ng-if="!createVarFormShowing">
                     <td colspan="3" class="" style="padding-top: 8px;padding-bottom: 7px;">
@@ -110,6 +110,35 @@
                         <a ng-click="createVar()" class="btn btn-success">Create</a>
                     </td>
                 </tr>
+                <tr ng-if="editVarFormShowing">
+                    <td>
+                        <div class="form-group"><label>Name</label>
+                            <div class="input-group input-group-sm">
+                                <div class="input-group-addon monospace">mc.var.</div>
+                                <input type="text" class="form-control monospace" ng-model="editVarFormValues.name">
+                            </div>
+                        </div><div class="form-group"><label>Description</label><textarea class="form-control" ng-model="editVarFormValues.description"></textarea></div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label>Mode</label>
+                            <select class="form-control" ng-model="editVarFormValues.required">
+                                <option value="1">Required input</option>
+                                <option value="0">Optional Input</option>
+                            </select>
+                        </div>
+                        <div class="form-group" ng-if="editVarFormValues.required != 1">
+                            <label>Default Value</label>
+                            <input type="text" class="form-control monospace" ng-model="editVarFormValues.default_value">
+                        </div>
+                    </td>
+
+                    <td>
+                        <a ng-click="cancelVarEdits()" class="btn btn-default">Cancel</a>&nbsp;
+                        <a ng-click="saveVarEdits()" class="btn btn-success">Save</a>
+                    </td>
+                </tr>
+
                 </tbody>
 
             </table>
