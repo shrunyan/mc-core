@@ -239,8 +239,8 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
             // Regardless, provide the output key...
             let outputMappingValue
 
-            if (typeof stage.output_mapping === 'object' && stage.output_mapping !== null && typeof stage.output_mapping[key] !== 'undefined') {
-              outputMappingValue = stage.output_mapping[key]
+            if (typeof stage.output_map === 'object' && stage.output_map !== null && typeof stage.output_map[key] !== 'undefined') {
+              outputMappingValue = stage.output_map[key]
             } else {
               outputMappingValue = ''
             }
