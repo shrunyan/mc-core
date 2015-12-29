@@ -82,6 +82,13 @@ function queueExec() {
 }
 
 module.exports = (function() {
+ /**
+  * [command Creates a new pipeline execution, and queues it for processing.]
+  * @param pipelineId
+  * @param input
+  * @param userId
+  * @param callback
+  */
   return function command(pipelineId, params, userId, callback) {
     state.pipelineId = pipelineId
     state.userId = userId
@@ -97,85 +104,3 @@ module.exports = (function() {
       .catch(err => logger.error(err))
   }
 }())
-
-/**
- * Execute Pipeline Command - Creates a new pipeline execution, and queues it for processing.
- * This functionality is encapsulated here so it can be used by the API, a trigger, CLI, etc
- *
- * @param pipelineId
- * @param input
- * @param userId
- * @param callback
- */
-// module.exports = function command(pipelineId, input, userId, callback) {
-//   input = input || {}
-
-//   getConfig(pipelineId)
-//     .then()
-
-//   // connection
-//   //   .first()
-//   //   .where('id', pipelineId)
-//   //   .from('pipeline_configs')
-//   //   .then(pipelineConfig => {
-//   //     // build pipeline configuration snapshot
-//   //     snapshot(pipelineId, (snapshot) => {
-
-//   //       let newExecutionData = {
-//   //         pipeline_config_id: pipelineId,
-//   //         pipeline_config_name: pipelineConfig.name,
-//   //         owner_id: userId,
-//   //         status: 'created',
-//   //         created_at: new Date(),
-//   //         updated_at: new Date(),
-//   //         initial_values: JSON.stringify(input), // TODO: rename or merge input with defaults
-//   //         config_snapshot: JSON.stringify(snapshot)
-//   //       }
-
-//   //       // Create pipeline execution entry in DB
-//   //       connection.insert(newExecutionData, 'id').into('pipeline_executions').then((id) => {
-
-//   //         let newExecutionId = id[0]
-
-//   //         callback(newExecutionId)
-
-//   //         // Publish a pipeline update event
-//   //         pipelineEvent('update')
-
-//   //         // Send message to queue to handle new execution
-//   //         let message = JSON.stringify({
-//   //           pipeline_execution_id: newExecutionId
-//   //         })
-//   //         queue.sendMessage({qname: 'pipeline_executions', message: message}, function(err, resp) {
-
-//   //           if (resp) {
-//   //             console.log('Message sent. ID:', resp)
-//   //             // Mark new execution as queued (using the id captured above)
-//   //             connection('pipeline_executions')
-//   //               .where('id', newExecutionId)
-//   //               .update('status', 'queued').catch(err => {
-//   //                 logger.error(err)
-//   //               })
-
-//   //             // Publish a pipeline update event
-//   //             pipelineEvent('update')
-
-//   //           }
-
-//   //           if (err) {
-//   //             logger.error(err)
-//   //             throw err
-//   //           }
-
-//   //         })
-
-//   //       }).catch(err => {
-//   //         logger.error(err)
-//   //         throw err
-//   //       })
-
-//   //     })
-
-//   // })
-
-// }
