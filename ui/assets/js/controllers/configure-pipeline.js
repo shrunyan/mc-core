@@ -59,7 +59,7 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
     }
 
     // Coerce the string required value into an integer
-    $scope.editVarFormValues.required = parseInt($scope.editVarFormValues.required)
+    $scope.editVarFormValues.required = parseInt($scope.editVarFormValues.required, 10)
 
     // Send changes to server, then refresh variables
     console.log($scope.editVarFormValues)
