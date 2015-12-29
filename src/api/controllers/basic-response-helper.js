@@ -9,9 +9,9 @@ let logger = require('tracer').colorConsole()
  * @return {Object}      Process request parameters
  */
 function parseParams(params) {
-  for (let param in params) {
-    if (typeof params === 'object') {
-      params[param] = JSON.stringify(params[param])
+  for (let paramKey in params) {
+    if (typeof params[paramKey] === 'object') {
+      params[paramKey] = JSON.stringify(params[paramKey])
     }
   }
   return params
