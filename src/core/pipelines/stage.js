@@ -3,6 +3,7 @@
 const FAILED = 'failed'
 const SUCCEEDED = 'succeeded'
 const STAGE_TABLE = 'pipeline_stage_executions'
+const PIPELINE_LOGS_TABLE = 'pipeline_execution_logs'
 
 let connection = require('../../db/connection')
 let logger = require('tracer').colorConsole()
@@ -11,39 +12,71 @@ let status = require('../../workers/status')
 
 module.exports = class Stage {
 
-  /**
-   *
-   */
-  constructor(opts) {
-    this.opts = opts
-    this.stageOptions = JSON.parse(opts.config.options)
+  constructor(index, config, msg) {
+    this.events = {}
+    this.stageNum = index
+    this.pipeline = msg
+    this.config = config
+    this.opts = JSON.parse(config.options)
+    this.hasFailed = false
+    this.exec = this.createExec('created')
+  }
+
+  on(name, handler) {
+    if (typeof handler === 'function') {
+      this.events[name] = handler
+    } else {
+      throw new Error('Can not register a non function as event handler.')
+    }
+  }
+
+  trigger(name) {
+    this.events[name]()
   }
 
   /**
    * Mark a stage as failed
    */
-  fail() {
-    // this.opts.failure()
-    status(this.opts.stageId, FAILED, STAGE_TABLE)
+  fail(err) {
+    console.log('FAILED; stage fail method', err, this)
+    status(this.stageId, FAILED, STAGE_TABLE)
+    this.trigger(FAILED)
   }
 
   /**
    * Mark a stage as successful
    */
-  succeed() {
-    // this.opts.success()
-    status(this.opts.stageId, SUCCEEDED, STAGE_TABLE)
+  succeed(data) {
+    console.log('SUCCESS; stage succeed method', data, this)
+    status(this.stageId, SUCCEEDED, STAGE_TABLE)
+    this.trigger(SUCCEEDED)
   }
 
   /**
    * Get an option that the user configured for this stage instance
    */
   option(key) {
-    return this.stageOptions[key]
+    return this.opts[key]
   }
 
   options() {
-    return this.stageOptions
+    return this.opts
+  }
+
+  createExec(status) {
+    return connection
+      .table(STAGE_TABLE)
+      .insert({
+        pipeline_execution_id: this.pipeline.id,
+        stage_config_id: this.config.id,
+        stage_num: this.stageNum,
+        status: status,
+        created_at: new Date(),
+        updated_at: new Date(),
+        skipped_at: new Date()
+      })
+      .then(id => this.stageId = id[0])
+      .catch(err => logger.error(err))
   }
 
   /**
@@ -82,17 +115,17 @@ module.exports = class Stage {
     }
 
     let data = {
-      pipeline_execution_id: this.opts.pipelineId,
-      stage_execution_id: this.opts.stageId,
-      stage_num: this.opts.index,
+      pipeline_execution_id: this.pipeline.id,
+      stage_execution_id: this.stageId,
+      stage_num: this.stageNum,
       logged_at: new Date(),
       type: log.type || null,
       title: log.title,
       data: log.data ? JSON.stringify(log.data) : null
     }
 
-    connection
-      .table('pipeline_execution_logs')
+    return connection
+      .table(PIPELINE_LOGS_TABLE)
       .insert(data)
       .catch(err => logger.error(err))
   }
