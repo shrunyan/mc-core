@@ -216,6 +216,19 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
 
           })
 
+          // for each output that a stage type provides...
+          Object.keys(stage.schema.outputs).forEach(key => {
+
+            console.log(key)
+            console.log(stage.schema.outputs[key])
+
+            // Check if the stage configuration has mapped that output to a pipeline variable
+            // If so, populate it
+            // Regardless, provide the output key...
+
+
+          })
+
         })
 
       })
