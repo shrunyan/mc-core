@@ -72,7 +72,6 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
     $scope.editVarFormShowing = false
   }
 
-
   /**
    * Toggle the visibility of the standard variables section
    */
