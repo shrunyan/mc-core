@@ -30,12 +30,12 @@ module.exports = class Pipeline {
       .catch(err => logger.error(err))
   }
 
-  run() {
+  running() {
     status(this.id, RUNNING, PIPELINE_TABLE)
     pipelineEvent('update')
   }
 
-  finish() {
+  complete() {
     status(this.id, (this.hasFailed ? FAILED : SUCCEEDED), PIPELINE_TABLE)
     pipelineEvent('update')
   }

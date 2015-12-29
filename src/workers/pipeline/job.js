@@ -19,7 +19,7 @@ module.exports = class Job {
   start() {
     // Once we have a pipeline execution record
     this.pipeline.exec
-      .then(this.pipeline.run())
+      .then(this.pipeline.running())
       .then(() => {
         // Create stage instance for each configuration
         this.stages = this.pipeline.config.stageConfigs.map((config, index) => {
@@ -35,7 +35,7 @@ module.exports = class Job {
           return this.execute(stage).bind(this)
         }))
       })
-      .then(this.pipeline.finish)
+      .then(this.pipeline.complete())
       .then(this.next)
       .catch(err => logger.error(err))
   }
