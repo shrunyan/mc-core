@@ -190,7 +190,7 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
           $scope.stageOptions.metadata[stage.id] = {}
 
           // For each option that exits in the stage type...
-          Object.keys(stage.schema.options).forEach((key) => {
+          Object.keys(stage.schema.options).forEach(key => {
 
             let optionValue
 
