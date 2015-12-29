@@ -22,24 +22,17 @@ class PipelineExecutor {
    * @param {function} callback A callback to be called when the execution process is complete
    */
   constructor(execId, next) {
+    logger.debug('Running Execution: ', execId)
 
     this.executionId = execId
-
-    // Assume no stage has failed until we find out otherwise
     this.anyStageHasFailed = false
-
     this.currentStageNumber = 0
 
-    this.loadPipelineExecution()
-      .then(this.markPipelineExecutionAsRunning.bind(this))
+    this.load()
+      .then(this.markAsRunning.bind(this))
       .then(this.executeStages.bind(this))
-      .then(this.markPipelineAsComplete.bind(this))
-      .then(
-        // Mark the queue job as complete,
-        // and move onto the next pipeline
-        next()
-      )
-
+      .then(this.markAsCompleted.bind(this))
+      .then(next)
   }
 
   /**
@@ -47,15 +40,39 @@ class PipelineExecutor {
    *
    * @returns {Promise}
    */
-  loadPipelineExecution() {
+  load() {
     return connection('pipeline_executions')
       .where('id', this.executionId)
       .first()
-      .catch(err => logger.error(err))
       .then(execution => {
         this.execution = execution
         this.config = JSON.parse(execution.config_snapshot)
       })
+      .catch(err => logger.error(err))
+  }
+
+  updatePipeline(data) {
+    return connection('pipeline_executions')
+      .where('id', this.executionId)
+      .update(data)
+      .then(() => pipelineEvent('update'))
+      .catch(err => logger.error(err))
+  }
+
+  updateStage(stageId, data, callback) {
+    return connection('pipeline_stage_executions')
+      .where('pipeline_execution_id', this.executionId)
+      .where('stage_config_id', stageId)
+      .update(data)
+      .then(callback)
+  }
+
+  insertStage(execId, stageId, data, callback) {
+    return connection('pipeline_stage_executions')
+      .where('pipeline_execution_id', execId)
+      .where('stage_config_id', stageId)
+      .insert(data)
+      .then(callback)
   }
 
   /**
@@ -63,16 +80,12 @@ class PipelineExecutor {
    *
    * @returns {Promise}
    */
-  markPipelineExecutionAsRunning() {
-    return connection('pipeline_executions')
-      .where('id', this.executionId)
-      .update({
-        status: 'running',
-        started_at: new Date(),
-        updated_at: new Date()
-      })
-      .catch(err => logger.error(err))
-      .then(() => pipelineEvent('update'))
+  markAsRunning() {
+    return this.updatePipeline({
+      status: 'running',
+      started_at: new Date(),
+      updated_at: new Date()
+    })
   }
 
   /**
@@ -90,26 +103,22 @@ class PipelineExecutor {
   }
 
   runNextStage(callback) {
-
     if (this.stagesRemaining.length > 0) {
       let stageConfig = this.stagesRemaining.shift()
 
       this.currentStageNumber++
 
       if (this.anyStageHasFailed) {
-
         // TODO: allow for option to "run step even if a previous step has failed"
         this.createStageAsSkipped(stageConfig.id, () => {
           this.runNextStage(callback)
         })
       } else {
-
         this.createStageAsStarted(stageConfig.id, (stageExecutionId) => {
           this.executeStage(stageConfig, stageExecutionId, () => {
             this.runNextStage(callback)
           })
         })
-
       }
     } else {
       callback()
@@ -117,42 +126,30 @@ class PipelineExecutor {
   }
 
   executeStage(stageConfig, stageExecutionId, onComplete) {
-
     let successCallback = () => {
-      connection('pipeline_stage_executions')
-        .where('pipeline_execution_id', this.executionId)
-        .where('stage_config_id', stageConfig.id)
-        .update({
-          status: 'succeeded',
-          finished_at: new Date(),
-          updated_at: new Date()
-        })
-        .then(() => {
-          onComplete()
-        })
+      this.updateStage(stageConfig.id, {
+        status: 'succeeded',
+        finished_at: new Date(),
+        updated_at: new Date()
+      }, onComplete)
     }
-
     let failureCallback = () => {
-
       this.anyStageHasFailed = true
-
-      connection('pipeline_stage_executions')
-        .where('pipeline_execution_id', this.executionId)
-        .where('stage_config_id', stageConfig.id)
-        .update({
-          status: 'failed',
-          finished_at: new Date(),
-          updated_at: new Date()
-        })
-        .then(() => {
-          onComplete()
-        })
-
-      onComplete()
+      this.updateStage(stageConfig.id, {
+        status: 'failed',
+        finished_at: new Date(),
+        updated_at: new Date()
+      }, onComplete)
     }
 
     // state we pass must contain, stage options, pipeline variables, etc
-    let stage = new Stage(successCallback, failureCallback, stageConfig, this.executionId, stageExecutionId, this.currentStageNumber)
+    let stage = new Stage(
+      successCallback,
+      failureCallback,
+      stageConfig,
+      this.executionId,
+      stageExecutionId,
+      this.currentStageNumber)
 
     // stage.type == 'mc.basics.stages.pause_execution_for_x_seconds'
     let stageType = registry.get(stageConfig.type)
@@ -187,9 +184,9 @@ class PipelineExecutor {
         created_at: new Date(),
         updated_at: new Date(),
         started_at: new Date()
-      }).catch(err => {
-        logger.error(err)
-      }).then(callback)
+      })
+      .then(callback)
+      .catch(err => logger.error(err))
   }
 
   /**
@@ -217,18 +214,16 @@ class PipelineExecutor {
   /**
    * Mark the pipeline execution as complete
    */
-  markPipelineAsComplete() {
-    let status = (this.anyStageHasFailed) ? 'failed' : 'succeeded'
+  markAsCompleted() {
+    let status = (this.anyStageHasFailed)
+      ? 'failed'
+      : 'succeeded'
 
-    connection('pipeline_executions')
-      .where('id', this.executionId)
-      .update({
-        status: status,
-        finished_at: new Date(),
-        updated_at: new Date()
-      })
-      .catch(err => logger.error(err))
-      .then(() => pipelineEvent('update'))
+    return this.updatePipeline({
+      status: status,
+      finished_at: new Date(),
+      updated_at: new Date()
+    })
   }
 
 }

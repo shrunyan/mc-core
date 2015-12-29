@@ -16,7 +16,7 @@ module.exports = (function () {
   return function Queue (name) {
     if (!name) throw 'Must provide queue name'
 
-    const QUEUE_MSG = 'QUEUE | ' + name +' | '
+    const QUEUE_MSG = name + ' | '
     const QUEUE_SETTINGS = {
       qname: name
     }

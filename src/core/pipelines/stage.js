@@ -3,41 +3,41 @@
 let connection = require('../../db/connection')
 let logger = require('tracer').colorConsole()
 let registry = require('../../extensions/registry')
+let status = require('../../workers/pipeline/status')
 
-module.exports.Stage = class Stage {
+module.exports = class Stage {
 
   /**
    *
    */
-  constructor(successCallback, failureCallback, stageConfig, pipelineExecutionId, stageExecutionId, stageNum) {
-    this.successCallback = successCallback
-    this.failureCallback = failureCallback
-    this.stageConfig = stageConfig
-    this.stageConfig.options = JSON.parse(this.stageConfig.options)
-    this.pipelineExecutionId = pipelineExecutionId
-    this.stageExecutionId = stageExecutionId
-    this.stageNum = stageNum
+  constructor(opts) {
+    this.opts = opts
+    this.stageOptions = JSON.parse(opts.config.options)
   }
 
   /**
    * Mark a stage as failed
    */
   fail() {
-    this.failureCallback()
+    this.opts.failure()
   }
 
   /**
    * Mark a stage as successful
    */
   succeed() {
-    this.successCallback()
+    this.opts.success()
   }
 
   /**
    * Get an option that the user configured for this stage instance
    */
   option(key) {
-    return this.stageConfig.options[key]
+    return this.stageOptions[key]
+  }
+
+  options() {
+    return this.stageOptions
   }
 
   /**
@@ -76,18 +76,19 @@ module.exports.Stage = class Stage {
     }
 
     let data = {
-      pipeline_execution_id: this.pipelineExecutionId,
-      stage_execution_id: this.stageExecutionId,
-      stage_num: this.stageNum,
+      pipeline_execution_id: this.opts.pipelineId,
+      stage_execution_id: this.opts.stageId,
+      stage_num: this.opts.index,
       logged_at: new Date(),
       type: log.type || null,
       title: log.title,
       data: log.data ? JSON.stringify(log.data) : null
     }
 
-    connection.insert(data).into('pipeline_execution_logs').catch((err) => {
-      logger.error(err)
-    })
+    connection
+      .table('pipeline_execution_logs')
+      .insert(data)
+      .catch(err => logger.error(err))
   }
 
 }

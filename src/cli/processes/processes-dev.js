@@ -19,7 +19,7 @@ module.exports = [
   },
   {
     name: 'mc-worker-pipelines',
-    script: 'node_modules/mc-core/src/workers/pipeline.js',
+    script: 'node_modules/mc-core/src/workers/pipeline/worker.js',
     watch: 'node_modules/mc-core',
     ignore_watch: [
       '.git',
