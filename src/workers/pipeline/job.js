@@ -51,7 +51,7 @@ module.exports = class Job {
     // we can't mark stages as skipped
     return new Promise(resolve => {
       if (this.pipeline.hasFailed) {
-        logger.error('previous stage failed')
+        logger.debug('previous stage failed')
         // TODO: skip execution
       } else {
         // Turn stage async execution into a sync operation
