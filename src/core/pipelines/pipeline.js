@@ -14,20 +14,22 @@ let pipelineEvent = require('../../queues/pipeline/events')
 module.exports = class Pipeline {
   constructor(id) {
     this.id = id
-    this.exec = this.load()
     this.completed = false
   }
 
   load() {
-    return connection
-      .table(PIPELINE_TABLE)
-      .where('id', this.id)
-      .first()
-      .then(exec => {
-        this.config = JSON.parse(exec.config_snapshot)
-        this.input = JSON.parse(exec.input)
-      })
-      .catch(err => logger.error(err))
+    return new Promise((resolve) => {
+      connection
+        .table(PIPELINE_TABLE)
+        .where('id', this.id)
+        .first()
+        .then(exec => {
+          this.config = JSON.parse(exec.config_snapshot)
+          this.input = JSON.parse(exec.input)
+          resolve()
+        })
+        .catch(err => logger.error(err))
+    })
   }
 
   running() {
@@ -65,6 +67,8 @@ module.exports = class Pipeline {
    */
   complete(failed) {
 
+    let statusValue = failed ? 'failed' : 'succeeded'
+
     if (this.completed) {
       logger.error('complete() called on pipeline but it is already complete')
     }
@@ -73,10 +77,10 @@ module.exports = class Pipeline {
     this.completed = true
 
     let id = this.id
-    logger.debug('Pipeline COMPLETE', id)
+    logger.debug('Pipeline COMPLETE (' + statusValue.toUpperCase() + ')', id)
 
     return new Promise(resolve => {
-      status(id, (failed), PIPELINE_TABLE)
+      status(id, statusValue, PIPELINE_TABLE)
         .then(() => {
           pipelineEvent('update')
           resolve()

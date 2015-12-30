@@ -19,7 +19,7 @@ module.exports = class Job {
   constructor(msg, next) {
     this.next = next
     this.pipeline = new Pipeline(msg.id)
-    this.run()
+    this.pipeline.load().then(() => this.run())
   }
 
   /**
@@ -30,9 +30,19 @@ module.exports = class Job {
     // Mark the pipeline as running
     Promise.resolve(this.pipeline.running())
 
-    // Make sure there is not unexpected input
+    // Validate the variables config snapshot value
+    if (!Array.isArray(this.pipeline.config.variables)) {
+      this.pipeline.config.variables = []
+    }
+
+    // Convert the variable objects into a list of expected input/variable keys
+    let expectedKeys = this.pipeline.config.variables.map(variable => variable.name)
+
+    // Run through the user/trigger provided input (and make sure there is not unexpected input)
     for (let key in this.pipeline.input) {
-      if (typeof this.pipeline.config.variables[key] === 'undefined') {
+
+      // If we can't find the input key in the expected input/variables...
+      if (expectedKeys.indexOf(key) === -1) {
 
         // Note the event in the server logs
         logger.warn('Input key "' + key + '" was provided but was not expected')
@@ -46,12 +56,14 @@ module.exports = class Job {
       }
     }
 
+    // Build the initial variable values by combining default values and input provided
+    // (also check if a required input is missing)
     let initialVariableValues = {}
 
-    for (let key in this.pipeline.config.variables) {
+    this.pipeline.config.variables.forEach(variable => {
 
       // If the variable is a "required" "input"", make sure it exists (and capture it)
-      if (this.pipeline.config.variables[key].required) {
+      if (variable.required) {
         if (typeof this.pipeline.input[key] === 'undefined') {
 
           // Note the event in the server logs
@@ -73,11 +85,11 @@ module.exports = class Job {
         if (typeof this.pipeline.input[key] !== 'undefined') {
           initialVariableValues[key] = this.pipeline.input[key]
         } else {
-          initialVariableValues[key] = this.pipeline.config.variables[key].default_value
+          initialVariableValues[key] = variable.default_value
         }
 
       }
-    }
+    })
 
     logger.debug('initial variable values')
     logger.debug(initialVariableValues)
@@ -98,8 +110,8 @@ module.exports = class Job {
 
     // Get the output from the stage and apply it to the pipeline variables as mapped
 
-    // Mark the pipeline as successful
-    this.pipeline.succeed()
+    // Mark the pipeline as successful and call next callback to clear the queue message and move on
+    this.pipeline.succeed().then(() => this.next())
 
   }
 
