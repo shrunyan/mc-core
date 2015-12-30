@@ -36,7 +36,7 @@ module.exports = class Job {
       }
     }
 
-    let initialVariableValues
+    let initialVariableValues = {}
 
     for (let key in this.pipeline.config.variables) {
 
