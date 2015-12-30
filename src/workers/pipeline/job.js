@@ -30,7 +30,7 @@ module.exports = class Job {
       .then(() => {
         // Create stage instance for each configuration
         this.stages = this.pipeline.config.stageConfigs.map((config, index) => {
-          return new Stage(index, config, this.msg)
+          return new Stage(index + 1, config, this.msg)
         })
         // Resolve once all instances have an execution record
         return Promise.all(this.stages.map(stage => stage.exec))
