@@ -66,6 +66,10 @@ module.exports = class Stage {
     return this.opts
   }
 
+  //output(data) {
+  //
+  //}
+
   createExec(status) {
     return connection
       .table(STAGE_TABLE)
