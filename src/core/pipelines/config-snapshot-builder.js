@@ -16,7 +16,7 @@ let logger = require('tracer').colorConsole()
  * @param {int|string} pipelineId
  * @param {function} callback
  */
-module.exports = function(pipelineId, callback) {
+module.exports = function snapshot(pipelineId, callback) {
 
   let snapshot = {}
   let promises = []
@@ -50,7 +50,5 @@ module.exports = function(pipelineId, callback) {
 
   }))
 
-  Promise.all(promises).then(() => {
-    callback(snapshot)
-  })
+  return Promise.all(promises).then(() => callback(snapshot))
 }
