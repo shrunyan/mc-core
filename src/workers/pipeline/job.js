@@ -4,7 +4,7 @@
 //const SUCCEEDED = 'succeeded'
 
 //let domain = require('domain')
-//let logger = require('tracer').colorConsole()
+let logger = require('tracer').colorConsole()
 let Pipeline = require('../../core/pipelines/pipeline')
 //let Stage = require('../../core/pipelines/stage')
 //let registry = require('../../extensions/registry')
