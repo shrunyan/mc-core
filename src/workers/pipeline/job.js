@@ -49,7 +49,6 @@ module.exports = class Job {
         }
         initialVariableValues[key] = this.pipeline.input[key]
 
-
       } else {
         // Otherwise, if it is optional...
 
