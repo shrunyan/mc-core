@@ -19,7 +19,7 @@ module.exports = class Job {
   start() {
     // Pipeline execution is a complicated mix of async
     // and sync processes. In order to handle both all steps
-    // must be wraped in a Promise. This keeps a promise chain
+    // must be wrapped in a Promise. This keeps a promise chain
     // working through out the whole execution. Then sync
     // operations are handled internally by the promise wrapped
     // functions.
