@@ -12,6 +12,7 @@ let RSMQWorker = require('rsmq-worker')
 module.exports = (function() {
   return function(name) {
     let worker = new RSMQWorker(name, {
+      timeout: 0,
       redisPrefix: 'mission_control',
       host: process.env.REDIS_HOST,
       port: process.env.REDIS_PORT
