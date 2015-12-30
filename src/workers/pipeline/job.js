@@ -63,6 +63,9 @@ module.exports = class Job {
       }
     }
 
+    logger.debug('initial variable values')
+    logger.debug(initialVariableValues)
+
     // this.pipeline.input
     // merge the input with the default values
     // ... in which case we could just capture input and use the config snapshot to apply the defaults...
