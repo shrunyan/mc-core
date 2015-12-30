@@ -15,8 +15,6 @@ let logger = require('tracer').colorConsole()
  *
  * @param {int|string} pipelineId
  * @param {function} callback
- *
- * @todo config snapshots should capture variables configuration
  */
 module.exports = function snapshot(pipelineId, callback) {
 
@@ -42,6 +40,22 @@ module.exports = function snapshot(pipelineId, callback) {
     connection.select().where('pipeline_config_id', pipelineId).orderBy('sort').from('pipeline_stage_configs').then((rows) => {
 
       snapshot.stageConfigs = rows
+
+      resolve()
+
+    }).catch(err => {
+      logger.error(err)
+      reject()
+    })
+
+  }))
+
+  // Load variables
+  promises.push(new Promise((resolve, reject) => {
+
+    connection.select().where('pipeline_config_id', pipelineId).from('pipeline_variables').then((rows) => {
+
+      snapshot.variables = rows
 
       resolve()
 
