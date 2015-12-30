@@ -40,6 +40,10 @@ module.exports = {
               item.output_map = '{}'
             }
             item.output_map = JSON.parse(item.output_map)
+
+            if (typeof item.options !== 'string' || item.options.substr(0, 1) !== '{') {
+              item.options = '{}'
+            }
             item.options = JSON.parse(item.options)
             return item
           })
