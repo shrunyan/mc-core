@@ -19,10 +19,13 @@ module.exports = class Job {
   constructor(msg, next) {
     this.next = next
     this.pipeline = new Pipeline(msg.id)
-    this.start()
+    this.run()
   }
 
-  start() {
+  /**
+   * Run the pipeline execution
+   */
+  run() {
 
     // Mark the pipeline as running
     Promise.resolve(this.pipeline.running())
@@ -30,8 +33,15 @@ module.exports = class Job {
     // Make sure there is not unexpected input
     for (let key in this.pipeline.input) {
       if (typeof this.pipeline.config.variables[key] === 'undefined') {
-        // TODO: store a pipeline execution log noting that there was unexpected input
-        // TODO: mark the pipeline as failed (and complete)
+
+        // Note the event in the server logs
+        logger.warn('Input key "' + key + '" was provided but was not expected')
+
+        // Note the event in the pipeline execution logs
+        this.pipeline.log('Input key "' + key + '" was provided but was not expected')
+
+        // Fail the pipeline
+        this.pipeline.fail()
         return
       }
     }
@@ -43,8 +53,15 @@ module.exports = class Job {
       // If the variable is a "required" "input"", make sure it exists (and capture it)
       if (this.pipeline.config.variables[key].required) {
         if (typeof this.pipeline.input[key] === 'undefined') {
-          // TODO: fail the pipeline
-          // TODO: mark the pipeline as failed (and complete)
+
+          // Note the event in the server logs
+          logger.warn('Missing required input "' + key + '" for pipeline')
+
+          // Note the event in the pipeline execution logs
+          this.pipeline.log('Missing required input "' + key + '" for pipeline')
+
+          // Fail the pipeline
+          this.pipeline.fail()
           return
         }
         initialVariableValues[key] = this.pipeline.input[key]
@@ -80,6 +97,9 @@ module.exports = class Job {
     // ... unless it is the last one, in which case, call that callback and be done with the pipeline...
 
     // Get the output from the stage and apply it to the pipeline variables as mapped
+
+    // Mark the pipeline as successful
+    this.pipeline.succeed()
 
   }
 
