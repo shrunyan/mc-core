@@ -11,9 +11,8 @@ let registry = require('../../extensions/registry')
 
 module.exports = class Job {
   constructor(msg, next) {
-    this.msg = msg
     this.next = next
-    this.pipeline = new Pipeline(this.msg.id)
+    this.pipeline = new Pipeline(msg.id)
     this.start()
   }
 
@@ -31,7 +30,7 @@ module.exports = class Job {
       .then(() => {
         // Create stage instance for each configuration
         this.stages = this.pipeline.config.stageConfigs.map((config, index) => {
-          return new Stage(index + 1, config, this.msg)
+          return new Stage(index + 1, config, this.pipeline)
         })
         // Resolve once all instances have an execution record
         return Promise.all(this.stages.map(stage => stage.exec))
