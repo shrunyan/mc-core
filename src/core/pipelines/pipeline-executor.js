@@ -4,7 +4,7 @@ let connection = require('../../db/connection')
 let logger = require('tracer').colorConsole()
 let extensionRegistry = require('../../extensions/registry')
 let Stage = require('./stage').Stage
-let publishPipelineUpdate = require('../../queueing/publish-pipeline-update-event')
+let pipelineEvent = require('../../queues/pipeline/events')
 
 /**
  * @prop {int|string} executionId
@@ -35,7 +35,8 @@ class PipelineExecutor {
       .then(this.executeStages.bind(this))
       .then(this.markPipelineAsComplete.bind(this))
       .then(
-        // Mark the queue job as complete, and move onto the next
+        // Mark the queue job as complete,
+        // and move onto the next pipeline
         callback()
       )
 
@@ -47,11 +48,11 @@ class PipelineExecutor {
    * @returns {Promise}
    */
   loadPipelineExecution() {
-    return connection.first()
+    return connection('pipeline_executions')
       .where('id', this.executionId)
-      .from('pipeline_executions')
+      .first()
       .catch(err => logger.error(err))
-      .then((execution) => {
+      .then(execution => {
         this.execution = execution
         this.config = JSON.parse(execution.config_snapshot)
       })
@@ -71,9 +72,7 @@ class PipelineExecutor {
         updated_at: new Date()
       })
       .catch(err => logger.error(err))
-      .then(() => {
-        publishPipelineUpdate()
-      })
+      .then(() => pipelineEvent('update'))
   }
 
   /**
@@ -83,13 +82,9 @@ class PipelineExecutor {
    */
   executeStages() {
     return new Promise(resolve => {
-
       // Clone the stages, so we can pick them off one at a time
       this.stagesRemaining = this.config.stageConfigs.slice(0)
-
-      this.runNextStage(() => {
-        resolve()
-      })
+      this.runNextStage(resolve)
     })
 
   }
@@ -213,18 +208,16 @@ class PipelineExecutor {
         created_at: new Date(),
         updated_at: new Date(),
         skipped_at: new Date()
-      }).catch(err => {
-        logger.error(err)
-      }).then(() => {
-        publishPipelineUpdate()
-      }).then(callback)
+      })
+      .catch(err => logger.error(err))
+      .then(() => pipelineEvent('update'))
+      .then(callback)
   }
 
   /**
    * Mark the pipeline execution as complete
    */
   markPipelineAsComplete() {
-
     let status = (this.anyStageHasFailed) ? 'failed' : 'succeeded'
 
     connection('pipeline_executions')
@@ -235,10 +228,7 @@ class PipelineExecutor {
         updated_at: new Date()
       })
       .catch(err => logger.error(err))
-      .then(() => {
-        publishPipelineUpdate()
-      })
-
+      .then(() => pipelineEvent('update'))
   }
 
 }

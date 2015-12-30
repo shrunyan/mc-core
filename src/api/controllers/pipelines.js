@@ -1,7 +1,7 @@
 'use strict'
 
 let basic = require('./basic-response-helper')
-let executePipelineCommand = require('../../core/pipelines/execute-pipeline-command')
+let execPipeline = require('../../core/pipelines/execute-pipeline-command')
 
 module.exports = {
 
@@ -43,15 +43,18 @@ module.exports = {
    */
   executePipeline: (req, res) => {
     try {
-      executePipelineCommand(req.params.id, req.body, req.user.id, (id) => {
-
+      const PIPELINE_ID = req.params.id
+      const USER_ID = req.user.id
+      const PARAMS = req.body
+      const CALLBACK = (id) => {
         res.status(200).send({
           data: {
             pipeline_execution_id: id
           }
         })
+      }
 
-      })
+      execPipeline(PIPELINE_ID, PARAMS, USER_ID, CALLBACK)
 
     } catch (err) {
       res.status(500).send()

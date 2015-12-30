@@ -1,43 +1,85 @@
 'use strict'
 
+const FAILED = 'failed'
+const SUCCEEDED = 'succeeded'
+const RUNNING = 'running'
+const STAGE_TABLE = 'pipeline_stage_executions'
+const PIPELINE_LOGS_TABLE = 'pipeline_execution_logs'
+
 let connection = require('../../db/connection')
 let logger = require('tracer').colorConsole()
 let registry = require('../../extensions/registry')
+let status = require('../../workers/status')
 
-module.exports.Stage = class Stage {
-
-  /**
-   *
-   */
-  constructor(successCallback, failureCallback, stageConfig, pipelineExecutionId, stageExecutionId, stageNum) {
-    this.successCallback = successCallback
-    this.failureCallback = failureCallback
-    this.stageConfig = stageConfig
-    this.stageConfig.options = JSON.parse(this.stageConfig.options)
-    this.pipelineExecutionId = pipelineExecutionId
-    this.stageExecutionId = stageExecutionId
-    this.stageNum = stageNum
+/**
+ * Stage Instance
+ * @type {Object}
+ */
+module.exports = class Stage {
+  constructor(index, config, msg) {
+    this.events = {}
+    this.stageNum = index
+    this.pipeline = msg
+    this.config = config
+    this.opts = JSON.parse(config.options)
+    this.hasFailed = false
+    this.exec = this.createExec('created')
   }
 
-  /**
-   * Mark a stage as failed
-   */
-  fail() {
-    this.failureCallback()
+  on(name, handler) {
+    if (typeof handler === 'function') {
+      this.events[name] = handler
+    } else {
+      throw new Error('Can not register a non function as event handler.')
+    }
   }
 
-  /**
-   * Mark a stage as successful
-   */
-  succeed() {
-    this.successCallback()
+  trigger(name) {
+    if (this.events[name]) {
+      this.events[name]()
+    }
   }
 
-  /**
-   * Get an option that the user configured for this stage instance
-   */
+  fail(err) {
+    logger.debug('Stage FAILED | ', JSON.stringify(err))
+    status(this.stageId, FAILED, STAGE_TABLE)
+    this.trigger(FAILED)
+  }
+
+  succeed(data) {
+    logger.debug('Stage SUCCESS | ', JSON.stringify(data))
+    status(this.stageId, SUCCEEDED, STAGE_TABLE)
+    this.trigger(SUCCEEDED)
+  }
+
+  running() {
+    logger.debug('Stage RUNNING')
+    status(this.stageId, RUNNING, STAGE_TABLE)
+    this.trigger(RUNNING)
+  }
+
   option(key) {
-    return this.stageConfig.options[key]
+    return this.opts[key]
+  }
+
+  options() {
+    return this.opts
+  }
+
+  createExec(status) {
+    return connection
+      .table(STAGE_TABLE)
+      .insert({
+        pipeline_execution_id: this.pipeline.id,
+        stage_config_id: this.config.id,
+        stage_num: this.stageNum,
+        status: status,
+        created_at: new Date(),
+        updated_at: new Date(),
+        skipped_at: new Date()
+      })
+      .then(id => this.stageId = id[0])
+      .catch(err => logger.error(err))
   }
 
   /**
@@ -76,8 +118,8 @@ module.exports.Stage = class Stage {
     }
 
     let data = {
-      pipeline_execution_id: this.pipelineExecutionId,
-      stage_execution_id: this.stageExecutionId,
+      pipeline_execution_id: this.pipeline.id,
+      stage_execution_id: this.stageId,
       stage_num: this.stageNum,
       logged_at: new Date(),
       type: log.type || null,
@@ -85,9 +127,9 @@ module.exports.Stage = class Stage {
       data: log.data ? JSON.stringify(log.data) : null
     }
 
-    connection.insert(data).into('pipeline_execution_logs').catch((err) => {
-      logger.error(err)
-    })
+    return connection
+      .table(PIPELINE_LOGS_TABLE)
+      .insert(data)
+      .catch(err => logger.error(err))
   }
-
 }
