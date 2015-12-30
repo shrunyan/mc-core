@@ -39,8 +39,11 @@ module.exports = class Job {
         return Promise.all(this.stages.map(stage => this.execute(stage)))
       })
       .then(() => this.pipeline.complete())
-      .then(this.next)
-      .catch(err => logger.error(err))
+      .then(() => this.next())
+      .catch((err) => {
+        logger.error('Pipeline execution failed in an unexpected way!')
+        logger.error(err)
+      })
   }
 
   execute(stage) {
