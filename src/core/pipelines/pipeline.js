@@ -1,8 +1,5 @@
 'use strict'
 
-const RUNNING = 'running'
-const FAILED = 'failed'
-const SUCCEEDED = 'succeeded'
 const PIPELINE_TABLE = 'pipeline_executions'
 
 let logger = require('tracer').colorConsole()
@@ -38,7 +35,7 @@ module.exports = class Pipeline {
     logger.debug('Pipeline RUNNING', id)
 
     return new Promise(resolve => {
-      status(id, RUNNING, PIPELINE_TABLE)
+      status(id, 'running', PIPELINE_TABLE)
         .then(() => {
           pipelineEvent('update')
           resolve()
