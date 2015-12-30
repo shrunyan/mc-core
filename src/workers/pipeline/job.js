@@ -17,7 +17,14 @@ module.exports = class Job {
   }
 
   start() {
-    // Once we have a pipeline execution record
+    // Pipeline execution is a complicated mix of async
+    // and sync processes. In order to handle both all steps
+    // must be wraped in a Promise. This keeps a promise chain
+    // working through out the whole execution. Then sync
+    // operations are handled internally by the promise wrapped
+    // functions.
+
+    // Start once our pipeline execution record has been loaded
     this.pipeline.exec
       .then(() => this.pipeline.running())
       .then(() => {
@@ -39,13 +46,15 @@ module.exports = class Job {
   execute(stage) {
     let extension = registry.get(stage.config.type)
 
-    // This keeps the promise chain intact
-    return new Promise((resolve, reject) => {
+    // TODO: should we use the reject callback
+    // to have to promise fail fast? but then
+    // we can't mark stages as skipped
+    return new Promise(resolve => {
       if (this.pipeline.hasFailed) {
         logger.error('previous stage failed')
         // TODO: skip execution
-        // reject()
       } else {
+        // Turn stage async execution into a sync operation
         let wait = setInterval(() => {
           logger.debug('Running stage | ' + stage.stageId)
         }, 2000)
