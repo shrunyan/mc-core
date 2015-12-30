@@ -59,4 +59,27 @@ module.exports = class Pipeline {
     })
   }
 
+  /**
+   * Add a basic log
+   *
+   * @param message
+   * @returns {Promise}
+   */
+  log(message) {
+
+    let data = {
+      pipeline_execution_id: this.id,
+      logged_at: new Date(),
+      type: null,
+      title: message,
+      data: null
+    }
+
+    return connection
+      .table('pipeline_execution_logs')
+      .insert(data)
+      .catch(err => logger.error(err))
+
+  }
+
 }
