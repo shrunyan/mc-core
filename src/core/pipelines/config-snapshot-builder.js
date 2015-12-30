@@ -15,6 +15,8 @@ let logger = require('tracer').colorConsole()
  *
  * @param {int|string} pipelineId
  * @param {function} callback
+ *
+ * @todo config snapshots should capture variables configuration
  */
 module.exports = function snapshot(pipelineId, callback) {
 
