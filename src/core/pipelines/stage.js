@@ -23,7 +23,7 @@ module.exports = class Stage {
     this.config = config
     this.opts = JSON.parse(config.options)
     this.hasFailed = false
-    this.exec = this.createExec('created')
+    this.exec = this.createExec()
   }
 
   on(name, handler) {
@@ -70,14 +70,14 @@ module.exports = class Stage {
   //
   //}
 
-  createExec(status) {
+  createExec() {
     return connection
       .table(STAGE_TABLE)
       .insert({
         pipeline_execution_id: this.pipeline.id,
         stage_config_id: this.config.id,
         stage_num: this.stageNum,
-        status: status,
+        status: 'waiting',
         created_at: new Date(),
         updated_at: new Date(),
         skipped_at: new Date()

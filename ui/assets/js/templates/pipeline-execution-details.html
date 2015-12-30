@@ -57,7 +57,7 @@
                     <td class="text-muted">{{ stage.stage_num }}</td>
 
                     <!-- status:  "created", "running", "awaiting_confirmation", "failed", "succeeded", or "skipped -->
-                    <td class="text-info" ng-if="stage.status === 'created'"><i class="fa fa-asterisk"></i> Created</td>
+                    <td class="text-info" ng-if="stage.status === 'waiting'"><i class="fa fa-hourglass-half"></i> Waiting</td>
                     <td class="text-info" ng-if="stage.status === 'running'"><i class="fa fa-refresh fa-spin"></i> Running</td>
                     <td class="text-success" ng-if="stage.status === 'succeeded'"><i class="fa fa-check"></i> Succeeded</td>
                     <td class="text-warning" ng-if="stage.status === 'awaiting_confirmation'"><i class="fa fa-question-circle"></i> Awaiting Confirmation</td>
