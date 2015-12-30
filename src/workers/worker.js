@@ -24,7 +24,12 @@ module.exports = (function() {
     worker.on('deleted', id => logger.debug(WORKER_MSG + 'DELETED: ', id))
     worker.on('exceeded', msg => logger.error(WORKER_MSG + 'EXCEEDED', msg))
     worker.on('timeout', msg => logger.error(WORKER_MSG + 'TIMEOUT', msg))
-    worker.on('error', (err, msg) => logger.error(WORKER_MSG + 'ERROR', err, msg))
+    worker.on('error', (err, msg) => {
+      logger.error(WORKER_MSG + 'ERROR', err, msg)
+      if (err.stack) {
+        logger.error(err.stack)
+      }
+    })
 
     return worker
   }
