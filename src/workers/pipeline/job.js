@@ -3,6 +3,7 @@
 const FAILED = 'failed'
 const SUCCEEDED = 'succeeded'
 
+let domain = require('domain')
 let logger = require('tracer').colorConsole()
 let Pipeline = require('../../core/pipelines/pipeline')
 let Stage = require('../../core/pipelines/stage')
@@ -70,7 +71,24 @@ module.exports = class Job {
           resolve()
         })
 
-        extension.execute(stage)
+        // This try-catch doesn't work
+        // Looks like we'll need to use process.on('uncaughtException'...
+        // https://nodejs.org/docs/latest/api/process.html#process_event_uncaughtexception
+        // OR, domains
+
+        let d = domain.create()
+
+        d.on('error', function(err) {
+          logger.error(err)
+          stage.trigger(FAILED)
+        })
+
+        d.run(() => {
+          extension.execute(stage)
+        })
+
+
+
       }
     })
   }
