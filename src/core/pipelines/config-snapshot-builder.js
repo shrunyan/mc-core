@@ -10,6 +10,7 @@ let logger = require('tracer').colorConsole()
  * - initial variable values
  * - stages
  * - stage configuration values
+ * - pipeline variables configuration
  *
  * Ultimately, this is used to execute a pipeline and its stages.
  *
