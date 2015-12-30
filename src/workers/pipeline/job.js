@@ -19,8 +19,9 @@ module.exports = class Job {
   start() {
     // Once we have a pipeline execution record
     this.pipeline.exec
-      .then(this.pipeline.running())
+      .then(this.pipeline.running)
       .then(() => {
+        console.log('Create stage execution records')
         // Create stage instance for each configuration
         this.stages = this.pipeline.config.stageConfigs.map((config, index) => {
           return new Stage(index, config, this.msg)
@@ -30,38 +31,83 @@ module.exports = class Job {
         return Promise.all(this.stages.map(stage => stage.exec))
       })
       .then(() => {
-        // Map over stage instances and execute them
-        return Promise.all(this.stages.map(stage => {
-          return this.execute(stage).bind(this)
-        }))
+        console.log('Run stage execution')
+        return Promise.all(this.stages.map(stage => this.execute(stage)))
       })
-      .then(this.pipeline.complete())
+      .then(this.pipeline.complete)
       .then(this.next)
       .catch(err => logger.error(err))
   }
 
   execute(stage) {
-    console.log('execute', stage)
+    let extension = registry.get(stage.config.type)
 
-    if (this.pipeline.hasFailed) {
-      logger.error('Previous hasFailed')
-      // TODO skip execution
-    }
-
+    // This keeps the promise chain intact
     return new Promise((resolve, reject) => {
-      let extension = registry.get(stage.config.type)
-
-      stage.on(FAILED, () => {
-        this.pipeline.hasFailed = true
-        // TODO: Should we be rejecting?
-        // won't this fail fast the rest of the executions
-        // preventing them from running?
+      if (this.pipeline.hasFailed) {
+        logger.error('previous stage failed')
+        // TODO: skip execution
         // reject()
-      })
-      stage.on(SUCCEEDED, resolve)
+      } else {
+        let executed = false
+        let done = false
 
-      extension.execute(stage)
+        stage.on(FAILED, () => {
+          this.pipeline.hasFailed = true
+          done = true
+          resolve()
+        })
+
+        stage.on(SUCCEEDED, () => {
+          done = true
+          resolve()
+        })
+
+        while(!done) {
+          if (!executed) {
+            extension.execute(stage)
+          }
+        }
+      }
     })
+
+
+    // if (this.pipeline.hasFailed) {
+    //   logger.error('Previous hasFailed')
+    //   // TODO skip execution
+    // } else {
+    //   // Stages must execute synchronously
+    //   // wait till stage is done
+    //   // let wait = setInterval(() => {
+    //   //   logger.debug(`Running Stage | ${stage.config.name} | ${stage.stageId}`)
+    //   // }, 1000)
+
+    //   let executed = false
+    //   let done = false
+
+    //   stage.on(FAILED, () => {
+    //     this.pipeline.hasFailed = true
+    //     done = true
+    //     // clearInterval(wait)
+    //   })
+    //   stage.on(SUCCEEDED, () => {
+    //     done = true
+    //     // clearInterval(wait)
+    //   })
+
+    //   console.log('done var value', done)
+
+    //   while(!done) {
+    //     if (!executed) {
+    //       extension.execute(stage)
+    //     }
+    //   }
+
+    //   console.log('HERE?')
+
+      // return
+    // }
+
   }
 
   // skip() {

@@ -2,6 +2,7 @@
 
 const FAILED = 'failed'
 const SUCCEEDED = 'succeeded'
+const RUNNING = 'running'
 const STAGE_TABLE = 'pipeline_stage_executions'
 const PIPELINE_LOGS_TABLE = 'pipeline_execution_logs'
 
@@ -34,30 +35,29 @@ module.exports = class Stage {
   }
 
   trigger(name) {
-    this.events[name]()
+    if (this.events[name]) {
+      this.events[name]()
+    }
   }
 
-  /**
-   * Mark a stage as failed
-   */
   fail(err) {
-    console.log('FAILED; stage fail method', err, this)
+    console.log('Stage FAILED | ')
     status(this.stageId, FAILED, STAGE_TABLE)
     this.trigger(FAILED)
   }
 
-  /**
-   * Mark a stage as successful
-   */
   succeed(data) {
-    console.log('SUCCESS; stage succeed method', data, this)
+    console.log('Stage SUCCESS | ')
     status(this.stageId, SUCCEEDED, STAGE_TABLE)
     this.trigger(SUCCEEDED)
   }
 
-  /**
-   * Get an option that the user configured for this stage instance
-   */
+  running() {
+    console.log('Stage RUNNING | ')
+    status(this.stageId, RUNNING, STAGE_TABLE)
+    this.trigger(RUNNING)
+  }
+
   option(key) {
     return this.opts[key]
   }

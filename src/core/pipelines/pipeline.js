@@ -31,13 +31,25 @@ module.exports = class Pipeline {
   }
 
   running() {
-    status(this.id, RUNNING, PIPELINE_TABLE)
-    pipelineEvent('update')
+    return new Promise(resolve => {
+      console.log('Pipeline RUNNING')
+      status(this.id, RUNNING, PIPELINE_TABLE)
+        .then(() => {
+          pipelineEvent('update')
+          resolve()
+        })
+    })
   }
 
   complete() {
-    status(this.id, (this.hasFailed ? FAILED : SUCCEEDED), PIPELINE_TABLE)
-    pipelineEvent('update')
+    return new Promise(resolve => {
+      console.log('Pipeline COMPLETE')
+      status(this.id, (this.hasFailed ? FAILED : SUCCEEDED), PIPELINE_TABLE)
+        .then(() => {
+          pipelineEvent('update')
+          resolve()
+        })
+    })
   }
 
 }
