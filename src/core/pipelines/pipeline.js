@@ -17,8 +17,8 @@ let pipelineEvent = require('../../queues/pipeline/events')
 module.exports = class Pipeline {
   constructor(id) {
     this.id = id
-    this.hasFailed = false
     this.exec = this.load()
+    this.completed = false
   }
 
   load() {
@@ -46,12 +46,40 @@ module.exports = class Pipeline {
     })
   }
 
-  complete() {
+  /**
+   * Mark the pipeline execution as failed
+   */
+  fail() {
+    this.complete(true)
+  }
+
+  /**
+   * Mark the pipeline execution as successful
+   */
+  succeed() {
+    this.complete()
+  }
+
+  /**
+   * Mark the pipeline execution as complete
+   *
+   * @param {boolean} [failed]
+   * @returns {Promise}
+   */
+  complete(failed) {
+
+    if (this.completed) {
+      logger.error('complete() called on pipeline but it is already complete')
+    }
+
+    // Otherwise, mark it as completed locally, and then in the database
+    this.completed = true
+
     let id = this.id
     logger.debug('Pipeline COMPLETE', id)
 
     return new Promise(resolve => {
-      status(id, (this.hasFailed ? FAILED : SUCCEEDED), PIPELINE_TABLE)
+      status(id, (failed), PIPELINE_TABLE)
         .then(() => {
           pipelineEvent('update')
           resolve()
