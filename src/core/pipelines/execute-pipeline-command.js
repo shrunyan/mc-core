@@ -35,7 +35,7 @@ function getSnapshot() {
       created_at: new Date(),
       updated_at: new Date(),
       // TODO: rename or merge input with defaults
-      initial_values: JSON.stringify(state.params),
+      input: JSON.stringify(state.params),
       config_snapshot: JSON.stringify(snapshot)
     }
   })
