@@ -89,8 +89,6 @@ module.exports = class Job {
           extension.execute(stage)
         })
 
-
-
       }
     })
   }
