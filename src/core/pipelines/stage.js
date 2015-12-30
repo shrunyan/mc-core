@@ -46,8 +46,8 @@ module.exports = class Stage {
     this.trigger(FAILED)
   }
 
-  succeed(data) {
-    logger.debug('Stage SUCCESS | ', JSON.stringify(data))
+  succeed() {
+    logger.debug('Stage SUCCESS')
     status(this.stageId, SUCCEEDED, STAGE_TABLE)
     this.trigger(SUCCEEDED)
   }
