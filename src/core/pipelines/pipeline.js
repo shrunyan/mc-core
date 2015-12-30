@@ -28,6 +28,7 @@ module.exports = class Pipeline {
       .first()
       .then(exec => {
         this.config = JSON.parse(exec.config_snapshot)
+        this.input = JSON.parse(exec.input)
       })
       .catch(err => logger.error(err))
   }
