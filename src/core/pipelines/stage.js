@@ -41,19 +41,19 @@ module.exports = class Stage {
   }
 
   fail(err) {
-    console.log('Stage FAILED | ')
+    logger.debug('Stage FAILED | ', JSON.stringify(err))
     status(this.stageId, FAILED, STAGE_TABLE)
     this.trigger(FAILED)
   }
 
   succeed(data) {
-    console.log('Stage SUCCESS | ')
+    logger.debug('Stage SUCCESS | ', JSON.stringify(data))
     status(this.stageId, SUCCEEDED, STAGE_TABLE)
     this.trigger(SUCCEEDED)
   }
 
   running() {
-    console.log('Stage RUNNING | ')
+    logger.debug('Stage RUNNING')
     status(this.stageId, RUNNING, STAGE_TABLE)
     this.trigger(RUNNING)
   }

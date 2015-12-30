@@ -4,8 +4,6 @@ let logger = require('tracer').colorConsole()
 let connection = require('../db/connection')
 
 module.exports = function status(id, status, table) {
-  logger.log('Module: status', arguments)
-
   let data = {
     status: status,
     updated_at: new Date()

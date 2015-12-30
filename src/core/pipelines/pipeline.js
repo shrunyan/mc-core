@@ -26,14 +26,18 @@ module.exports = class Pipeline {
       .table(PIPELINE_TABLE)
       .where('id', this.id)
       .first()
-      .then(exec => this.config = JSON.parse(exec.config_snapshot))
+      .then(exec => {
+        this.config = JSON.parse(exec.config_snapshot)
+      })
       .catch(err => logger.error(err))
   }
 
   running() {
+    let id = this.id
+    logger.debug('Pipeline RUNNING', id)
+
     return new Promise(resolve => {
-      console.log('Pipeline RUNNING')
-      status(this.id, RUNNING, PIPELINE_TABLE)
+      status(id, RUNNING, PIPELINE_TABLE)
         .then(() => {
           pipelineEvent('update')
           resolve()
@@ -42,9 +46,11 @@ module.exports = class Pipeline {
   }
 
   complete() {
+    let id = this.id
+    logger.debug('Pipeline COMPLETE', id)
+
     return new Promise(resolve => {
-      console.log('Pipeline COMPLETE')
-      status(this.id, (this.hasFailed ? FAILED : SUCCEEDED), PIPELINE_TABLE)
+      status(id, (this.hasFailed ? FAILED : SUCCEEDED), PIPELINE_TABLE)
         .then(() => {
           pipelineEvent('update')
           resolve()
