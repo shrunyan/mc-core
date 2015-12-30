@@ -38,6 +38,11 @@ module.exports = class Job {
     // Convert the variable objects into a list of expected input/variable keys
     let expectedKeys = this.pipeline.config.variables.map(variable => variable.name)
 
+    // INPUT VALIDATION
+    // NOTE: I'm ok failing validation here. For example, if GitHub were to trigger a job without all of the required
+    // input, I would rather that the webhook succeed and we can fail the job here before it begins with a note saying
+    // it was missing a required input or provided input we didn't expect.
+
     // Run through the user/trigger provided input (and make sure there is not unexpected input)
     for (let key in this.pipeline.input) {
 
@@ -95,15 +100,6 @@ module.exports = class Job {
 
     logger.debug('initial variable values')
     logger.debug(initialVariableValues)
-
-    // this.pipeline.input
-    // merge the input with the default values
-    // ... in which case we could just capture input and use the config snapshot to apply the defaults...
-
-    // TODO: also, here we should validate that all of the required inputs were provided
-    // NOTE: I'm ok failing validation here. For example, if GitHub were to trigger a job without all of the required
-    // input, I would rather that the webhook succeeds and we can fail the job before it begins with a note saying
-    // why it wasn't run.
 
     // Load up the stages...
     // Set up a callback for when all the stages are complete...
