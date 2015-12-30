@@ -3,6 +3,13 @@
 let logger = require('tracer').colorConsole()
 let connection = require('../db/connection')
 
+/**
+ * Handles updating statuses for pipeline executions and stage executions
+ * @param id
+ * @param status
+ * @param table
+ * @returns {Promise}
+ */
 module.exports = function status(id, status, table) {
   let data = {
     status: status,
