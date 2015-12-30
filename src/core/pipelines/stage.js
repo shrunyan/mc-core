@@ -66,6 +66,10 @@ module.exports = class Stage {
     return this.opts
   }
 
+  output(data) {
+    // TODO: handle stage output
+  }
+
   createExec(status) {
     return connection
       .table(STAGE_TABLE)
