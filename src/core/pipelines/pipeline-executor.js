@@ -3,10 +3,6 @@
 // DEPRECATED
 // -- BELOW LEFT FOR REFERENCE --
 
-
-
-
-
 let connection = require('../../db/connection')
 let logger = require('tracer').colorConsole()
 let extensionRegistry = require('../../extensions/registry')
