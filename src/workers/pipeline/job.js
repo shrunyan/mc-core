@@ -62,6 +62,8 @@ module.exports = class Job {
 
     this.pipeline.config.variables.forEach(variable => {
 
+      let key = variable.name
+
       // If the variable is a "required" "input"", make sure it exists (and capture it)
       if (variable.required) {
         if (typeof this.pipeline.input[key] === 'undefined') {
