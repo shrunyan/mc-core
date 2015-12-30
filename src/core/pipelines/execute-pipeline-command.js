@@ -95,8 +95,6 @@ module.exports = (function() {
     state.params = params || {}
     state.callback = callback
 
-    // TODO merge params with defaults
-
     getConfig()
       .then(getSnapshot)
       .then(createPipelineExecRecord)
