@@ -40,14 +40,7 @@ module.exports = {
       .then(items => {
         res.status(200).send({
           data: items.map(item => {
-            if (typeof item.output_map !== 'string' || item.output_map.substr(0, 1) !== '{') {
-              item.output_map = '{}'
-            }
             item.output_map = JSON.parse(item.output_map)
-
-            if (typeof item.options !== 'string' || item.options.substr(0, 1) !== '{') {
-              item.options = '{}'
-            }
             item.options = JSON.parse(item.options)
             return item
           })
