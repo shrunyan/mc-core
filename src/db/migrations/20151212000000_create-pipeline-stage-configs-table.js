@@ -9,8 +9,8 @@ exports.up = function(knex, Promise) {
     table.string('type')
     table.string('name')
     table.text('options')
+    table.timestamp('updated_at').notNullable()
     table.timestamp('created_at').notNullable().defaultTo(knex.fn.now())
-    table.timestamp('updated_at').notNullable().onUpdate(knex.fn.now())
   })
 
 }

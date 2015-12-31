@@ -8,10 +8,10 @@ exports.up = function(knex, Promise) {
     table.string('pipeline_config_name')
     table.integer('owner_id')
     table.string('status') // Should be either "created", "queued", "running", "awaiting_confirmation", "failed", "succeeded"
+    table.timestamp('updated_at').notNullable()
+    table.timestamp('created_at').notNullable().defaultTo(knex.fn.now())
     table.timestamp('started_at').nullable()
     table.timestamp('finished_at').nullable()
-    table.timestamp('created_at').notNullable().defaultTo(knex.fn.now())
-    table.timestamp('updated_at').notNullable().onUpdate(knex.fn.now())
     table.text('initial_values')
     table.text('config_snapshot')
   })
