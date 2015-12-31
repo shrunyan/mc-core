@@ -6,6 +6,7 @@ let logger = require('tracer').colorConsole()
 let connection = require('../../db/connection')
 let status = require('../../workers/status')
 let pipelineEvent = require('../../queues/pipeline/events')
+let extensionRegistry = require('../../extensions/registry')
 
 /**
  * Pipeline Instance
@@ -99,17 +100,40 @@ module.exports = class Pipeline {
   /**
    * Add a basic log
    *
-   * @param message
    * @returns {Promise}
    */
-  log(message) {
+  log() {
+
+    let log
+
+    if (arguments.length === 1) {
+      if (typeof arguments[0] === 'string') {
+        log = {
+          title: arguments[0]
+        }
+      } else {
+        throw new Error('Argument 1 must be a string')
+      }
+    } else if (arguments.length >= 2 && arguments.length <= 3) {
+
+      let logType = extensionRegistry.get(arguments[0])
+      let args = (Array.isArray(arguments[2])) ? arguments[2] : []
+
+      log = {
+        type: arguments[0],
+        title: arguments[1],
+        data: logType.generate.apply(this, args)
+      }
+    } else {
+      throw new Error('Wrong number of arguments')
+    }
 
     let data = {
       pipeline_execution_id: this.id,
       logged_at: new Date(),
-      type: null,
-      title: message,
-      data: null
+      type: log.type || null,
+      title: log.title,
+      data: log.data ? JSON.stringify(log.data) : null
     }
 
     return connection
@@ -118,5 +142,6 @@ module.exports = class Pipeline {
       .catch(err => logger.error(err))
 
   }
+
 
 }
