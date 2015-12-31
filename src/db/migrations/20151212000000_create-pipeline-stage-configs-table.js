@@ -1,5 +1,7 @@
 'use strict'
 
+let timestamps = require('../timestamps-schema')
+
 exports.up = function(knex, Promise) {
 
   return knex.schema.createTable('pipeline_stage_configs', function(table) {
@@ -9,8 +11,7 @@ exports.up = function(knex, Promise) {
     table.string('type')
     table.string('name')
     table.text('options')
-    table.timestamp('created_at').nullable()
-    table.timestamp('updated_at').nullable().defaultTo(knex.fn.now())
+    timestamps(knex, table)
   })
 
 }

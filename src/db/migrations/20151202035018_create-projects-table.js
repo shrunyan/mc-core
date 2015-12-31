@@ -1,12 +1,13 @@
 'use strict'
 
+let timestamps = require('../timestamps-schema')
+
 exports.up = function(knex, Promise) {
 
   return knex.schema.createTable('projects', function(table) {
     table.increments()
     table.string('name')
-    table.timestamp('created_at').nullable()
-    table.timestamp('updated_at').nullable()
+    timestamps(knex, table)
   })
 
 }

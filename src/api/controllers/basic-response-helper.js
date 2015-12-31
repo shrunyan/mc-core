@@ -137,20 +137,12 @@ module.exports = {
    * @param table
    */
   insertRespond: (req, res, table) => {
-
-    // Create a new object from the incoming data
-    let item = req.body
-
     // Protect the ID field by not allowing the user to specify it
-    delete item.id
-
-    // Add metadata fields automatically
-    item.created_at = new Date()
-    item.updated_at = new Date()
+    delete req.body.id
 
     connection
       .table(table)
-      .insert(parseParams(item), 'id')
+      .insert(parseParams(req.body), 'id')
       .then(id => {
 
         connection
