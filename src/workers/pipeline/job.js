@@ -5,6 +5,7 @@ let logger = require('tracer').colorConsole()
 let Pipeline = require('../../core/pipelines/pipeline')
 let Stage = require('../../core/pipelines/stage')
 let extensionRegistry = require('../../extensions/registry')
+let TokenResolver = require('../../core/pipelines/token-resolver')
 
 module.exports = class Job {
 
@@ -117,7 +118,11 @@ module.exports = class Job {
       logger.debug('initial variable values')
       logger.debug(initialVariableValues)
 
-      this.initialVariableValues = initialVariableValues
+      let baseJobData = {
+        workspace_dir: ''
+      }
+
+      this.tokenResolver = new TokenResolver(baseJobData, initialVariableValues)
 
       console.log('resolved variables')
 
@@ -190,7 +195,8 @@ module.exports = class Job {
     logger.debug('this.currentStageNumber', this.currentStageNumber)
 
     // Create a stage object for use in the extension execute method
-    let stage = new Stage(this.currentStageNumber, stageConfig, this.pipeline, () => {
+    let stage = new Stage(this.currentStageNumber, stageConfig, this.pipeline, this.tokenResolver, () => {
+
 
       stage.on('failed', () => {
         this.anyStageHasFailed = true
@@ -201,14 +207,23 @@ module.exports = class Job {
         this.executeNextStage(callback)
       })
 
+      stage.on('skipped', () => {
+        this.executeNextStage(callback)
+      })
+
+      if (this.anyStageHasFailed) {
+        stage.skip()
+      }
+
       // Create a domain in which to execute the stage
       let d = domain.create()
 
       // Set up an event handler for if the stage fails
       d.on('error', (err) => {
         logger.error(err)
-        this.pipeline.log('An exception occurred executing stage #' + this.currentStageNumber + '.')
+        this.pipeline.log('mc.basics.logs.snippet', 'An exception occurred executing stage #' + this.currentStageNumber, [err.message + '\n\n' + err.stack])
         stage.fail(err)
+        this.executeNextStage(callback)
       })
 
       d.run(() => {
