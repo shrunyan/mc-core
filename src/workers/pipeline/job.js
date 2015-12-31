@@ -176,6 +176,9 @@ module.exports = class Job {
     // Pull off a stage configuration off of the stages remaining
     let stageConfig = this.stagesRemaining.shift()
 
+    // parse the output map for the stage congig
+    stageConfig.output_map = JSON.parse(stageConfig.output_map)
+
     logger.debug('stageConfig')
     logger.debug(stageConfig)
 
@@ -193,7 +196,32 @@ module.exports = class Job {
       })
 
       stage.on('succeeded', () => {
-        // TODO Get the output from the stage and apply it to the pipeline variables as mapped
+
+        // Get the output from the stage
+        let output = stage.getOutput()
+
+        logger.debug('output from stage #' + this.currentStageNumber + ':')
+        logger.debug(output)
+
+        //logger.debug('stage config output map:')
+        //logger.debug(stageConfig.output_map)
+
+        // If output has been mapped for this stage configuration
+        if (typeof stageConfig.output_map === 'object') {
+
+          // Loop through the output provided by the extension stage type
+          for (let key in output) {
+
+            // If the output is mapped, then update the value in the token resolver
+            if (typeof stageConfig.output_map[key] === 'string' && stageConfig.output_map[key].trim() !== '') {
+              logger.debug('found a mapped output. setting user variable "' + stageConfig.output_map[key] + '" to "' + output[key] + '"')
+              this.tokenResolver.setUserVarValue(stageConfig.output_map[key], output[key])
+            }
+
+          }
+
+        }
+
         this.executeNextStage(callback)
       })
 
