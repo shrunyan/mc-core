@@ -14,6 +14,10 @@ module.exports = class TokenResolver {
     this._userVariables = userVariables
   }
 
+  setUserVarValue(key, newValue) {
+    this._userVariables[key] = newValue
+  }
+
   /**
    * Process tokens in a string
    *
