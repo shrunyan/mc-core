@@ -144,10 +144,6 @@ module.exports = {
     // Protect the ID field by not allowing the user to specify it
     delete item.id
 
-    // Add metadata fields automatically
-    item.created_at = new Date()
-    item.updated_at = new Date()
-
     connection.insert(item, 'id').into(table).then((id) => {
 
       connection.table(table).where('id', id).first().then((item) => {
