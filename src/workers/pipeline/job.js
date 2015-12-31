@@ -6,7 +6,7 @@
 //let domain = require('domain')
 let logger = require('tracer').colorConsole()
 let Pipeline = require('../../core/pipelines/pipeline')
-//let Stage = require('../../core/pipelines/stage')
+let Stage = require('../../core/pipelines/stage')
 //let registry = require('../../extensions/registry')
 //let pipelineEvent = require('../../queues/pipeline/events') // Syntax: pipelineEvent('update')
 
@@ -18,21 +18,29 @@ module.exports = class Job {
    */
   constructor(msg, next) {
     this.pipeline = new Pipeline(msg.id)
-    this.pipeline.load()
-      .then(this.pipeline.running())
-      .then(this.prepareInputAndVariables())
-      .then(this.run())
-      .then(this.pipeline.succeed())
-      .then(() => next())
-      .catch(err => logger.error(err))
+    this.pipeline.load().then(() => {
+      this.pipeline.running().then(() => {
+        this.prepareInputAndVariables().then(() => {
+          this.run().then(() => {
+            this.pipeline.succeed().then(() => {
+              next()
+            })
+          })
+        })
+      })
+    })
+    .catch(err => logger.error(err))
   }
 
   /**
    * Prepare initial values of variables
    */
   prepareInputAndVariables() {
-
+    console.log('job:prepareInputAndVariables')
     return new Promise((resolve, reject) => {
+
+      console.log('job:inputvariables:starting to resolve')
+      console.log(this)
 
       // Validate the variables config snapshot value
       if (!Array.isArray(this.pipeline.config.variables)) {
@@ -109,6 +117,9 @@ module.exports = class Job {
 
       this.initialVariableValues = initialVariableValues
 
+      console.log('resolved variables')
+
+      console.log('job:inputvariables:about to resolve')
       resolve()
 
     })
@@ -119,16 +130,31 @@ module.exports = class Job {
    * Run the pipeline execution
    */
   run() {
+    console.log('job:run')
+    return new Promise(resolve => {
 
-    // Load up the stages...
-    // Set up a callback for when all the stages are complete...
-    // Run each stage, and when the stage is done, move onto the next one...
-    // ... unless it is the last one, in which case, call that callback and be done with the pipeline...
+      //logger.debug('Inside run()')
+      //logger.debug(this.pipeline.config)
 
-    // Get the output from the stage and apply it to the pipeline variables as mapped
+      // Load up the stages...
+      // Set up a callback for when all the stages are complete...
+      // Run each stage, and when the stage is done, move onto the next one...
+      // ... unless it is the last one, in which case, call that callback and be done with the pipeline...
 
-    // Mark the pipeline as successful and call next callback to clear the queue message and move on
-    this.pipeline.succeed().then(() => this.next())
+      // Get the output from the stage and apply it to the pipeline variables as mapped
+
+      this.pipeline.config.stageConfigs.forEach((stageConfig, index) => {
+
+        logger.debug('Stage ' + (index + 1))
+        logger.debug(stageConfig)
+
+      })
+
+      console.log('job:run:about to resolve')
+
+      resolve()
+
+    })
 
   }
 

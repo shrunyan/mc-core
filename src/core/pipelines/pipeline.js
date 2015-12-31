@@ -18,15 +18,23 @@ module.exports = class Pipeline {
   }
 
   load() {
-    return new Promise((resolve) => {
+    console.log('pipeline:load')
+
+    return new Promise((resolveLoad) => {
+      console.log('pipeline:load:executing promise')
       connection
         .table(PIPELINE_TABLE)
         .where('id', this.id)
         .first()
         .then(exec => {
+          console.log('pipeline:load:resolved', this)
+          logger.debug('Pipeline > load() > exec record: ')
+          //logger.debug(exec)
           this.config = JSON.parse(exec.config_snapshot)
+          //logger.debug(this.config)
           this.input = JSON.parse(exec.input)
-          resolve()
+
+          resolveLoad()
         })
         .catch(err => logger.error(err))
     })

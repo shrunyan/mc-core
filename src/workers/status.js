@@ -27,9 +27,12 @@ module.exports = function status(id, status, table) {
   }
 
   // Returns a promise
-  return connection
-    .table(table)
-    .where('id', id)
-    .update(data)
-    .catch(err => logger.error(err))
+  return new Promise((resolve) => {
+    connection
+      .table(table)
+      .where('id', id)
+      .update(data)
+      .catch(err => logger.error(err))
+      .then(() => resolve())
+  })
 }
