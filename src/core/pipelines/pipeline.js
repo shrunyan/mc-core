@@ -19,23 +19,22 @@ module.exports = class Pipeline {
   }
 
   load() {
-    console.log('pipeline:load')
+    logger.debug('pipeline:load', this.id)
 
-    return new Promise((resolveLoad) => {
-      console.log('pipeline:load:executing promise')
+    return new Promise((resolve, reject) => {
+      logger.debug('pipeline:load: Promise', this.id)
+
       connection
         .table(PIPELINE_TABLE)
         .where('id', this.id)
         .first()
         .then(exec => {
-          console.log('pipeline:load:resolved', this)
-          logger.debug('Pipeline > load() > exec record: ')
-          //logger.debug(exec)
-          this.config = JSON.parse(exec.config_snapshot)
-          //logger.debug(this.config)
-          this.input = JSON.parse(exec.input)
-
-          resolveLoad()
+          logger.debug('pipeline:load: Finished', this.id)
+          if (exec) {
+            resolve(exec)
+          } else {
+            reject(new Error('Could not find pipeline execution record'))
+          }
         })
         .catch(err => logger.error(err))
     })
