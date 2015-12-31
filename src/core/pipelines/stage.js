@@ -40,6 +40,7 @@ module.exports = class Stage {
     this.stageNum = stageNum
     this.pipeline = pipeline
     this.config = config
+    this._output = {}
     this.opts = JSON.parse(config.options)
     tokenResolver.processEach(this.opts)
     this.hasFailed = false
@@ -97,7 +98,16 @@ module.exports = class Stage {
   }
 
   output(data) {
-    logger.warn('Stage:output() is not yet implemented')
+    for (let key in data) {
+      this._output[key] = data[key]
+    }
+  }
+
+  /**
+   * To capture the output after the stage execution. (not intended for end user)
+   */
+  getOutput() {
+    return this._output
   }
 
   /**
