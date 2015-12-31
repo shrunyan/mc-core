@@ -3,6 +3,7 @@
 const FAILED = 'failed'
 const SUCCEEDED = 'succeeded'
 const RUNNING = 'running'
+const SKIPPED = 'skipped'
 const STAGE_TABLE = 'pipeline_stage_executions'
 const PIPELINE_LOGS_TABLE = 'pipeline_execution_logs'
 
@@ -34,12 +35,13 @@ function createExec(pipelineId, configId, stageNum, callback) {
  * @type {Object}
  */
 module.exports = class Stage {
-  constructor(stageNum, config, pipeline, onReady) {
+  constructor(stageNum, config, pipeline, tokenResolver, onReady) {
     this.events = {}
     this.stageNum = stageNum
     this.pipeline = pipeline
     this.config = config
     this.opts = JSON.parse(config.options)
+    tokenResolver.processEach(this.opts)
     this.hasFailed = false
     this.exec = createExec(this.pipeline.id, this.config.id, this.stageNum, (id) => {
       this.stageId = id
@@ -73,6 +75,11 @@ module.exports = class Stage {
     logger.debug('Stage SUCCESS')
     status(this.stageId, SUCCEEDED, STAGE_TABLE)
     this.trigger(SUCCEEDED)
+  }
+
+  skip() {
+    logger.debug('Stage SKIPPED')
+    status(this.stageId, SKIPPED, STAGE_TABLE)
   }
 
   running() {
