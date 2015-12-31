@@ -13,7 +13,6 @@ let status = require('../../workers/status')
 
 function createExec(pipelineId, configId, stageNum, callback) {
   return connection
-    .table(STAGE_TABLE)
     .insert({
       pipeline_execution_id: pipelineId,
       stage_config_id: configId,
@@ -23,8 +22,11 @@ function createExec(pipelineId, configId, stageNum, callback) {
       updated_at: new Date(),
       skipped_at: new Date()
     })
-    .then(callback)
-    .catch(err => logger.error(err))
+    .into(STAGE_TABLE)
+    .then((rows) => {
+      callback(rows[0])
+    })
+    //.catch(err => logger.error(err))
 }
 
 
@@ -33,7 +35,7 @@ function createExec(pipelineId, configId, stageNum, callback) {
  * @type {Object}
  */
 module.exports = class Stage {
-  constructor(stageNum, config, pipeline) {
+  constructor(stageNum, config, pipeline, onReady) {
     this.events = {}
     this.stageNum = stageNum
     this.pipeline = pipeline
@@ -41,7 +43,8 @@ module.exports = class Stage {
     this.opts = JSON.parse(config.options)
     this.hasFailed = false
     this.exec = createExec(this.pipeline.id, this.config.id, this.stageNum, (id) => {
-      this.stageId = id[0]
+      this.stageId = id
+      onReady()
     })
   }
 

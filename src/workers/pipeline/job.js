@@ -158,11 +158,11 @@ module.exports = class Job {
 
       this.executeNextStage(() => {
         if (this.anyStageHasFailed) {
-          this.pipeline.succeed().then(() => {
+          this.pipeline.fail().then(() => {
             resolve()
           })
         } else {
-          this.pipeline.fail().then(() => {
+          this.pipeline.succeed().then(() => {
             resolve()
           })
         }
@@ -194,42 +194,40 @@ module.exports = class Job {
     logger.debug('this.currentStageNumber', this.currentStageNumber)
 
     // Create a stage object for use in the extension execute method
-    let stage = new Stage(this.currentStageNumber, stageConfig, this.pipeline)
+    let stage = new Stage(this.currentStageNumber, stageConfig, this.pipeline, () => {
 
-    stage.on('failed', () => {
-      this.anyStageHasFailed = true
-      this.executeNextStage(callback)
+      stage.on('failed', () => {
+        this.anyStageHasFailed = true
+        this.executeNextStage(callback)
+      })
+
+      stage.on('succeeded', () => {
+        this.executeNextStage(callback)
+      })
+
+      // Create a domain in which to execute the stage
+      let d = domain.create()
+
+      // Set up an event handler for if the stage fails
+      d.on('error', (err) => {
+        logger.error(err)
+        this.pipeline.log('An exception occurred executing stage #' + this.currentStageNumber + '.')
+        stage.fail(err)
+      })
+
+      d.run(() => {
+
+        logger.debug('d.run() for stage #' + this.currentStageNumber)
+
+        // Get the stage type from the extension for this stage
+        let stageType = extensionRegistry.get(stageConfig.type)
+
+        // Run the stage
+        stageType.execute(stage)
+
+      })
+
     })
-
-    stage.on('succeeded', () => {
-      this.executeNextStage(callback)
-    })
-
-    // Create a domain in which to execute the stage
-    let d = domain.create()
-
-    // Set up an event handler for if the stage fails
-    d.on('error', function(err) {
-      logger.error(err)
-      this.pipeline.log('An exception occurred executing stage #' + this.currentStageNumber + '.')
-      stage.fail(err)
-    })
-
-    d.run(() => {
-
-      logger.debug('d.run() for stage #' + this.currentStageNumber)
-
-      // Get the stage type from the extension for this stage
-      let stageType = extensionRegistry.get(stageConfig.type)
-
-      // Run the stage
-      //stageType.execute(stage)
-
-      stage.fail()
-
-    })
-
-
 
   }
 
