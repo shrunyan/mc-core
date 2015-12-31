@@ -137,25 +137,30 @@ module.exports = {
    * @param table
    */
   insertRespond: (req, res, table) => {
-
-    // Create a new object from the incoming data
-    let item = req.body
-
     // Protect the ID field by not allowing the user to specify it
-    delete item.id
+    delete req.body.id
 
-    connection.insert(item, 'id').into(table).then((id) => {
+    connection
+      .table(table)
+      .insert(parseParams(req.body), 'id')
+      .then(id => {
 
-      connection.table(table).where('id', id).first().then((item) => {
-        res.status(201).send({data: item})
-      }).catch(err => {
+        connection
+          .table(table)
+          .where('id', id)
+          .first()
+          .then(item => {
+            res.status(201).send({data: item})
+          })
+          .catch(err => {
+            logger.error(err)
+            res.status(500).send({message: 'An error occurred.'})
+          })
+
+      })
+      .catch(err => {
         logger.error(err)
         res.status(500).send({message: 'An error occurred.'})
       })
-
-    }).catch(err => {
-      logger.error(err)
-      res.status(500).send({message: 'An error occurred.'})
-    })
   }
 }
