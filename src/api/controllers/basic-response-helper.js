@@ -141,6 +141,9 @@ module.exports = {
     // Create a new object from the incoming data
     let item = req.body
 
+    // Prevent null options for stages
+    item.options = item.options || {}
+
     // Protect the ID field by not allowing the user to specify it
     delete item.id
 
@@ -148,18 +151,27 @@ module.exports = {
     item.created_at = new Date()
     item.updated_at = new Date()
 
-    connection.insert(item, 'id').into(table).then((id) => {
+    connection
+      .table(table)
+      .insert(parseParams(item), 'id')
+      .then(id => {
 
-      connection.table(table).where('id', id).first().then((item) => {
-        res.status(201).send({data: item})
-      }).catch(err => {
+        connection
+          .table(table)
+          .where('id', id)
+          .first()
+          .then(item => {
+            res.status(201).send({data: item})
+          })
+          .catch(err => {
+            logger.error(err)
+            res.status(500).send({message: 'An error occurred.'})
+          })
+
+      })
+      .catch(err => {
         logger.error(err)
         res.status(500).send({message: 'An error occurred.'})
       })
-
-    }).catch(err => {
-      logger.error(err)
-      res.status(500).send({message: 'An error occurred.'})
-    })
   }
 }
