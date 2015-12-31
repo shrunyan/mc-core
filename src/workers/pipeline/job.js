@@ -213,8 +213,8 @@ module.exports = class Job {
         logger.error(err)
 
         let logTitle = 'Extension Error: An exception occurred executing stage #' + this.currentStageNumber
-        let fullErrorMessage = 'Extension: ' + stageConfig.type + '\n\n'+
-          'Error Message: ' + err.message + '\n\n'+
+        let fullErrorMessage = 'Extension: ' + stageConfig.type + '\n\n' +
+          'Error Message: ' + err.message + '\n\n' +
           'Stack Trace: ' + '\n\n' + err.stack
 
         this.pipeline.log('mc.basics.logs.snippet', logTitle, [fullErrorMessage])
