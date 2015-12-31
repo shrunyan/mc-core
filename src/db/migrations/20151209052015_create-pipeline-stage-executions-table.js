@@ -1,5 +1,7 @@
 'use strict'
 
+let timestamps = require('../timestamps-schema')
+
 exports.up = function(knex, Promise) {
 
   return knex.schema.createTable('pipeline_stage_executions', function(table) {
@@ -8,8 +10,7 @@ exports.up = function(knex, Promise) {
     table.integer('stage_config_id')
     table.integer('stage_num')
     table.string('status') // Should be either "created", "running", "awaiting_confirmation", "failed", "succeeded", "skipped"
-    table.timestamp('updated_at').notNullable()
-    table.timestamp('created_at').notNullable().defaultTo(knex.fn.now())
+    timestamps(knex, table)
     table.timestamp('started_at').nullable()
     table.timestamp('finished_at').nullable()
     table.timestamp('skipped_at').nullable()
