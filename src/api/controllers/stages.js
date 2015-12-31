@@ -8,6 +8,10 @@ let connection = require('../../db/connection')
 module.exports = {
 
   setStageConfig: function setStageConfig(req, res) {
+    // Prevent null for stages options/outputmap
+    req.body.options = req.body.options || {}
+    req.body.output_map = req.body.output_map || {}
+
     basic.insertRespond(req, res, 'pipeline_stage_configs')
   },
 

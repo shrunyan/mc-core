@@ -141,9 +141,6 @@ module.exports = {
     // Create a new object from the incoming data
     let item = req.body
 
-    // Prevent null options for stages
-    item.options = item.options || {}
-
     // Protect the ID field by not allowing the user to specify it
     delete item.id
 
