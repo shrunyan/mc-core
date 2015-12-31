@@ -1,14 +1,10 @@
 'use strict'
 
-//const FAILED = 'failed'
-//const SUCCEEDED = 'succeeded'
-
 let domain = require('domain')
 let logger = require('tracer').colorConsole()
 let Pipeline = require('../../core/pipelines/pipeline')
 let Stage = require('../../core/pipelines/stage')
 let extensionRegistry = require('../../extensions/registry')
-//let pipelineEvent = require('../../queues/pipeline/events') // Syntax: pipelineEvent('update')
 
 module.exports = class Job {
 
