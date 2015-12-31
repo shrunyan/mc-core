@@ -1,4 +1,4 @@
-export default ['$scope', '$http', '$uibModalInstance', function($scope, $http, $uibModalInstance) {
+export default ['$scope', '$http', '$uibModalInstance', 'data', function($scope, $http, $uibModalInstance, data) {
 
   $http
     .get('/api/stage-types')
@@ -17,7 +17,7 @@ export default ['$scope', '$http', '$uibModalInstance', function($scope, $http, 
 
     $http
       .post('/api/stage/config', {
-        pipeline_config_id: $scope.$parent.$id,
+        pipeline_config_id: data.pipelineId,
         type: stage.fqid,
         sort: sort,
         name: $scope.name || stage.name

@@ -46,7 +46,12 @@ export default ['$rootScope', '$uibModal', ($rootScope, $uibModal) => {
         case 'stage':
           return {
             templateUrl: '/assets/js/templates/modals/create-stage.html',
-            controller: createStageModal
+            controller: createStageModal,
+            resolve: {
+              data: () => {
+                return dataToPass
+              }
+            }
           }
       }
     }

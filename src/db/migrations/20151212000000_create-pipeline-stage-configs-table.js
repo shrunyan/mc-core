@@ -5,7 +5,7 @@ exports.up = function(knex, Promise) {
   return knex.schema.createTable('pipeline_stage_configs', function(table) {
     table.increments()
     table.integer('pipeline_config_id')
-    table.integer('sort')
+    table.integer('sort').default(99999)
     table.string('type')
     table.string('name')
     table.text('options')

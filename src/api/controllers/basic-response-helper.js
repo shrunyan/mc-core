@@ -2,20 +2,7 @@
 
 let connection = require('../../db/connection')
 let logger = require('tracer').colorConsole()
-
-/**
- * Stringify's all parameters that are objects
- * @param  {Object} params Request body
- * @return {Object}      Process request parameters
- */
-function parseParams(params) {
-  for (let paramKey in params) {
-    if (typeof params[paramKey] === 'object') {
-      params[paramKey] = JSON.stringify(params[paramKey])
-    }
-  }
-  return params
-}
+let parseParams = require('./util/parse-params')
 
 module.exports = {
 

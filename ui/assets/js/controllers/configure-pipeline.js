@@ -229,29 +229,29 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
           $scope.stageOutputs.saved[stage.id] = {}
           $scope.stageOutputs.metadata[stage.id] = {}
 
-          console.log(stage.schema.outputs)
-
           // for each output that a stage type provides...
-          Object.keys(stage.schema.outputs).forEach(key => {
+          if (typeof stage.schema.outputs !== 'undefined' && Object.keys(stage.schema.outputs).length > 0) {
 
-            // Check if the stage configuration has mapped that output to a pipeline variable
-            // If so, populate it
-            // Regardless, provide the output key...
-            let outputMappingValue
+            Object.keys(stage.schema.outputs).forEach(key => {
 
-            if (typeof stage.output_map === 'object' && stage.output_map !== null && typeof stage.output_map[key] !== 'undefined') {
-              outputMappingValue = stage.output_map[key]
-            } else {
-              outputMappingValue = ''
-            }
+              // Check if the stage configuration has mapped that output to a pipeline variable
+              // If so, populate it
+              // Regardless, provide the output key...
+              let outputMappingValue
 
-            $scope.stageOutputs.current[stage.id][key] = outputMappingValue
-            $scope.stageOutputs.saved[stage.id][key] = outputMappingValue
-            $scope.stageOutputs.metadata[stage.id][key] = stage.schema.outputs[key].description
+              if (typeof stage.output_map === 'object' && stage.output_map !== null && typeof stage.output_map[key] !== 'undefined') {
+                outputMappingValue = stage.output_map[key]
+              } else {
+                outputMappingValue = ''
+              }
 
-          })
+              $scope.stageOutputs.current[stage.id][key] = outputMappingValue
+              $scope.stageOutputs.saved[stage.id][key] = outputMappingValue
+              $scope.stageOutputs.metadata[stage.id][key] = stage.schema.outputs[key].description
 
-          console.log($scope.stageOutputs)
+            })
+
+          }
 
         })
 

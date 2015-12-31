@@ -34,8 +34,7 @@ function getSnapshot() {
       status: 'created',
       created_at: new Date(),
       updated_at: new Date(),
-      // TODO: rename or merge input with defaults
-      initial_values: JSON.stringify(state.params),
+      input: JSON.stringify(state.params),
       config_snapshot: JSON.stringify(snapshot)
     }
   })
@@ -94,8 +93,6 @@ module.exports = (function() {
     state.userId = userId
     state.params = params || {}
     state.callback = callback
-
-    // TODO merge params with defaults
 
     getConfig()
       .then(getSnapshot)

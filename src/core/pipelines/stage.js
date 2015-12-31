@@ -3,6 +3,7 @@
 const FAILED = 'failed'
 const SUCCEEDED = 'succeeded'
 const RUNNING = 'running'
+const SKIPPED = 'skipped'
 const STAGE_TABLE = 'pipeline_stage_executions'
 const PIPELINE_LOGS_TABLE = 'pipeline_execution_logs'
 
@@ -11,19 +12,42 @@ let logger = require('tracer').colorConsole()
 let registry = require('../../extensions/registry')
 let status = require('../../workers/status')
 
+function createExec(pipelineId, configId, stageNum, callback) {
+  return connection
+    .insert({
+      pipeline_execution_id: pipelineId,
+      stage_config_id: configId,
+      stage_num: stageNum,
+      status: 'running',
+      created_at: new Date(),
+      updated_at: new Date(),
+      skipped_at: new Date()
+    })
+    .into(STAGE_TABLE)
+    .then((rows) => {
+      callback(rows[0])
+    })
+    //.catch(err => logger.error(err))
+}
+
 /**
  * Stage Instance
  * @type {Object}
  */
 module.exports = class Stage {
-  constructor(index, config, msg) {
+  constructor(stageNum, config, pipeline, tokenResolver, onReady) {
     this.events = {}
-    this.stageNum = index
-    this.pipeline = msg
+    this.stageNum = stageNum
+    this.pipeline = pipeline
     this.config = config
+    this._output = {}
     this.opts = JSON.parse(config.options)
+    tokenResolver.processEach(this.opts)
     this.hasFailed = false
-    this.exec = this.createExec('created')
+    this.exec = createExec(this.pipeline.id, this.config.id, this.stageNum, (id) => {
+      this.stageId = id
+      onReady()
+    })
   }
 
   on(name, handler) {
@@ -42,14 +66,21 @@ module.exports = class Stage {
 
   fail(err) {
     logger.debug('Stage FAILED | ', JSON.stringify(err))
+    logger.debug('about to call status() with args: [this.stageId, FAILED, STAGE_TABLE]')
+    logger.debug([this.stageId, FAILED, STAGE_TABLE])
     status(this.stageId, FAILED, STAGE_TABLE)
     this.trigger(FAILED)
   }
 
-  succeed(data) {
-    logger.debug('Stage SUCCESS | ', JSON.stringify(data))
+  succeed() {
+    logger.debug('Stage SUCCESS')
     status(this.stageId, SUCCEEDED, STAGE_TABLE)
     this.trigger(SUCCEEDED)
+  }
+
+  skip() {
+    logger.debug('Stage SKIPPED')
+    status(this.stageId, SKIPPED, STAGE_TABLE)
   }
 
   running() {
@@ -66,20 +97,17 @@ module.exports = class Stage {
     return this.opts
   }
 
-  createExec(status) {
-    return connection
-      .table(STAGE_TABLE)
-      .insert({
-        pipeline_execution_id: this.pipeline.id,
-        stage_config_id: this.config.id,
-        stage_num: this.stageNum,
-        status: status,
-        created_at: new Date(),
-        updated_at: new Date(),
-        skipped_at: new Date()
-      })
-      .then(id => this.stageId = id[0])
-      .catch(err => logger.error(err))
+  output(data) {
+    for (let key in data) {
+      this._output[key] = data[key]
+    }
+  }
+
+  /**
+   * To capture the output after the stage execution. (not intended for end user)
+   */
+  getOutput() {
+    return this._output
   }
 
   /**
