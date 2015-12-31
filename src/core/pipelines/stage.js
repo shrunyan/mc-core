@@ -11,19 +11,38 @@ let logger = require('tracer').colorConsole()
 let registry = require('../../extensions/registry')
 let status = require('../../workers/status')
 
+function createExec(pipelineId, configId, stageNum, callback) {
+  return connection
+    .table(STAGE_TABLE)
+    .insert({
+      pipeline_execution_id: pipelineId,
+      stage_config_id: configId,
+      stage_num: stageNum,
+      status: 'running',
+      created_at: new Date(),
+      updated_at: new Date(),
+      skipped_at: new Date()
+    })
+    .then(callback)
+    .catch(err => logger.error(err))
+}
+
+
 /**
  * Stage Instance
  * @type {Object}
  */
 module.exports = class Stage {
-  constructor(index, config, msg) {
+  constructor(stageNum, config, pipeline) {
     this.events = {}
-    this.stageNum = index
-    this.pipeline = msg
+    this.stageNum = stageNum
+    this.pipeline = pipeline
     this.config = config
     this.opts = JSON.parse(config.options)
     this.hasFailed = false
-    this.exec = this.createExec()
+    this.exec = createExec(this.pipeline.id, this.config.id, this.stageNum, (id) => {
+      this.stageId = id[0]
+    })
   }
 
   on(name, handler) {
@@ -42,6 +61,8 @@ module.exports = class Stage {
 
   fail(err) {
     logger.debug('Stage FAILED | ', JSON.stringify(err))
+    logger.debug('about to call status() with args: [this.stageId, FAILED, STAGE_TABLE]')
+    logger.debug([this.stageId, FAILED, STAGE_TABLE])
     status(this.stageId, FAILED, STAGE_TABLE)
     this.trigger(FAILED)
   }
@@ -66,24 +87,8 @@ module.exports = class Stage {
     return this.opts
   }
 
-  //output(data) {
-  //
-  //}
-
-  createExec() {
-    return connection
-      .table(STAGE_TABLE)
-      .insert({
-        pipeline_execution_id: this.pipeline.id,
-        stage_config_id: this.config.id,
-        stage_num: this.stageNum,
-        status: 'waiting',
-        created_at: new Date(),
-        updated_at: new Date(),
-        skipped_at: new Date()
-      })
-      .then(id => this.stageId = id[0])
-      .catch(err => logger.error(err))
+  output(data) {
+    logger.warn('Stage:output() is not yet implemented')
   }
 
   /**

@@ -3,11 +3,11 @@
 //const FAILED = 'failed'
 //const SUCCEEDED = 'succeeded'
 
-//let domain = require('domain')
+let domain = require('domain')
 let logger = require('tracer').colorConsole()
 let Pipeline = require('../../core/pipelines/pipeline')
 let Stage = require('../../core/pipelines/stage')
-//let registry = require('../../extensions/registry')
+let extensionRegistry = require('../../extensions/registry')
 //let pipelineEvent = require('../../queues/pipeline/events') // Syntax: pipelineEvent('update')
 
 module.exports = class Job {
@@ -17,14 +17,20 @@ module.exports = class Job {
    * @param {function} next Should be called on complete (to clear the message from the queue)
    */
   constructor(msg, next) {
+
+    // Set up the stage numbering
+    this.currentStageNumber = 0
+
+    // Assume no stage has failed until we find out otherwise
+    this.anyStageHasFailed = false
+
+    // Load the pipeline and start the execution
     this.pipeline = new Pipeline(msg.id)
     this.pipeline.load().then(() => {
       this.pipeline.running().then(() => {
         this.prepareInputAndVariables().then(() => {
           this.run().then(() => {
-            this.pipeline.succeed().then(() => {
-              next()
-            })
+            next()
           })
         })
       })
@@ -130,8 +136,12 @@ module.exports = class Job {
    * Run the pipeline execution
    */
   run() {
-    console.log('job:run')
+
+    logger.debug('run() promise registered')
+
     return new Promise(resolve => {
+
+      logger.debug('run() promise executing...')
 
       //logger.debug('Inside run()')
       //logger.debug(this.pipeline.config)
@@ -143,18 +153,83 @@ module.exports = class Job {
 
       // Get the output from the stage and apply it to the pipeline variables as mapped
 
-      this.pipeline.config.stageConfigs.forEach((stageConfig, index) => {
+      // Clone the stage configurations to execute
+      this.stagesRemaining = this.pipeline.config.stageConfigs.slice(0)
 
-        logger.debug('Stage ' + (index + 1))
-        logger.debug(stageConfig)
-
+      this.executeNextStage(() => {
+        if (this.anyStageHasFailed) {
+          this.pipeline.succeed().then(() => {
+            resolve()
+          })
+        } else {
+          this.pipeline.fail().then(() => {
+            resolve()
+          })
+        }
       })
 
-      console.log('job:run:about to resolve')
+    })
 
-      resolve()
+  }
+
+  executeNextStage(callback) {
+
+    logger.debug('Job:executeNextStage()')
+
+    // If we've completed all the stages, call the callback
+    if (this.stagesRemaining.length === 0) {
+      callback()
+      return
+    }
+
+    // Pull off a stage configuration off of the stages remaining
+    let stageConfig = this.stagesRemaining.shift()
+
+    logger.debug('stageConfig')
+    logger.debug(stageConfig)
+
+    // Bump the current stage number
+    this.currentStageNumber++
+
+    logger.debug('this.currentStageNumber', this.currentStageNumber)
+
+    // Create a stage object for use in the extension execute method
+    let stage = new Stage(this.currentStageNumber, stageConfig, this.pipeline)
+
+    stage.on('failed', () => {
+      this.anyStageHasFailed = true
+      this.executeNextStage(callback)
+    })
+
+    stage.on('succeeded', () => {
+      this.executeNextStage(callback)
+    })
+
+    // Create a domain in which to execute the stage
+    let d = domain.create()
+
+    // Set up an event handler for if the stage fails
+    d.on('error', function(err) {
+      logger.error(err)
+      this.pipeline.log('An exception occurred executing stage #' + this.currentStageNumber + '.')
+      stage.fail(err)
+    })
+
+    d.run(() => {
+
+      logger.debug('d.run() for stage #' + this.currentStageNumber)
+
+      // Get the stage type from the extension for this stage
+      let stageType = extensionRegistry.get(stageConfig.type)
+
+      // Run the stage
+      //stageType.execute(stage)
+
+      stage.fail()
 
     })
+
+
 
   }
 
