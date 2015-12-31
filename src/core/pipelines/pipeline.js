@@ -57,14 +57,14 @@ module.exports = class Pipeline {
    * Mark the pipeline execution as failed
    */
   fail() {
-    this.complete(true)
+    return this.complete(true)
   }
 
   /**
    * Mark the pipeline execution as successful
    */
   succeed() {
-    this.complete()
+    return this.complete()
   }
 
   /**
