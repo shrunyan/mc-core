@@ -28,9 +28,9 @@ module.exports = class Job {
         this.prepareInputAndVariables().then(() => {
           this.run().then(() => {
             next()
-          })
+          }).catch(err => logger(err))
         })
-      })
+      }).catch(err => logger.error(err))
     })
     .catch(err => logger.error(err))
   }
@@ -211,7 +211,13 @@ module.exports = class Job {
       // Set up an event handler for if the stage fails
       d.on('error', (err) => {
         logger.error(err)
-        this.pipeline.log('mc.basics.logs.snippet', 'An exception occurred executing stage #' + this.currentStageNumber, [err.message + '\n\n' + err.stack])
+
+        let logTitle = 'Extension Error: An exception occurred executing stage #' + this.currentStageNumber
+        let fullErrorMessage = 'Extension: ' + stageConfig.type + '\n\n'+
+          'Error Message: ' + err.message + '\n\n'+
+          'Stack Trace: ' + '\n\n' + err.stack
+
+        this.pipeline.log('mc.basics.logs.snippet', logTitle, [fullErrorMessage])
         stage.fail(err)
         this.executeNextStage(callback)
       })
