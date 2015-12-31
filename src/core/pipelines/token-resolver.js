@@ -29,17 +29,20 @@ module.exports = class TokenResolver {
         return Math.floor(Date.now() / 1000)
 
       } else if (rightSideVariable.substr(0, 4) === 'var.') {
+
+        let userVarKey = rightSideVariable.substr(4)
+
         // if the token is something like mc.var.example
-        if (typeof this._userVariables[rightSideVariable] === 'string') {
-          return rightSideVariable
+        if (typeof this._userVariables[userVarKey] === 'string') {
+          return this._userVariables[userVarKey]
         } else {
-          logger.error('User variable not found: "' + rightSideVariable + '"')
+          logger.error('User variable not found: "' + userVarKey + '"')
           return '1'
         }
 
       } else {
         if (typeof this._baseData[rightSideVariable] === 'string') {
-          return rightSideVariable
+          return this._baseData[rightSideVariable]
         } else {
           logger.error('Variable not found: "' + rightSideVariable + '"')
           return '1'
@@ -55,6 +58,9 @@ module.exports = class TokenResolver {
    * @param {object} object
    */
   processEach(object) {
+
+    logger.debug('Searching for variables to replace in object:')
+    logger.debug(object)
 
     for (let key in object) {
       object[key] = this.process(object[key])
