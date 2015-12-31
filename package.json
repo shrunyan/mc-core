@@ -79,6 +79,8 @@
     "watchify": "^3.6.1"
   },
   "devDependencies": {
+    "node-mocks-http": "1.5.1",
+    "proxyquire": "1.7.3",
     "sinon": "1.17.2",
     "supertest": "1.1.0",
     "tap-spec": "4.1.1",

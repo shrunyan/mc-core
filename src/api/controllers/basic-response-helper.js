@@ -27,12 +27,18 @@ module.exports = {
    * @param table
    */
   getList: (req, res, table) => {
-    connection.select().from(table).then((items) => {
-      res.send({data: items})
-    }).catch(err => {
-      logger.error(err)
-      res.status(500).send({message: 'An error occurred.'})
-    })
+    connection
+      .select()
+      .from(table)
+      .then(items => {
+        res.send({data: items})
+      })
+      .catch(err => {
+        logger.error(err)
+        res.status(500).send({
+          message: 'An error occurred.'
+        })
+      })
   },
 
   /**

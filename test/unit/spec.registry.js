@@ -1,6 +1,8 @@
-var test = require('tape')
-var sinon = require('sinon')
-var extensions = require('../../src/extensions/registry')
+'use strict'
+
+let test = require('tape')
+let sinon = require('sinon')
+let registry = require('../../src/extensions/registry')
 
 const MODULE_STUB = {
   vendor: 'test',
@@ -10,36 +12,53 @@ const MODULE_STUB = {
   ]
 }
 
-test('resolve()', function(t) {
-  var spy = sinon.spy(extensions, 'register')
+test('registry.resolve()', (t) => {
+  let spy = sinon.spy(registry, 'register')
 
-  extensions.resolve(process.cwd() + '/node_modules/sinon')
+  registry.resolve(process.cwd() + '/node_modules/sinon')
 
   t.ok(spy.called, 'invokes register()')
-
   spy.restore()
-
   t.end()
 })
 
-test('register() ', function(t) {
-  extensions._extensions = {}
-  extensions.register(MODULE_STUB)
-
-  t.ok(extensions._extensions.test.test, 'set module to internal _extensions prop')
+test('registry.reload()', (t) => {
+  t.skip('reloads')
   t.end()
 })
 
-test('validate()', function(t) {
+test('registry.register() ', (t) => {
+  registry._extensions = {}
+  registry.register(MODULE_STUB)
+
+  t.ok(registry._extensions.test.test, 'set module to internal _extensions prop')
+  t.end()
+})
+
+test('registry.registerStageTypes()', (t) => {
+  t.skip('register stage type')
+  t.end()
+})
+
+test('registry.registerLogTypes()', (t) => {
+  t.skip('register log type')
+  t.end()
+})
+
+test('registry.validate()', (t) => {
   t.skip(false, 'uses validator module')
   t.end()
 })
 
-test('get()', function(t) {
-  t.ok(extensions.get('test.test.stages.wow'), 'resolves extension path')
+test('registry.get()', (t) => {
+  t.ok(registry.get('test.test.stages.wow'), 'resolves extension path')
   t.throws(() => {
-    extensions.get('wrong.test')
+    registry.get('wrong.test')
   }, 'throws path error for undefined extension paths')
   t.end()
 })
 
+test('registry.getStageTypes()', (t) => {
+  t.skip('get stage type')
+  t.end()
+})
