@@ -230,7 +230,7 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
           $scope.stageOutputs.metadata[stage.id] = {}
 
           // for each output that a stage type provides...
-          if (Array.isArray(stage.schema.outputs)) {
+          if (Object.keys(stage.schema.outputs).length > 0) {
 
             Object.keys(stage.schema.outputs).forEach(key => {
 
