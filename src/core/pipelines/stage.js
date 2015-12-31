@@ -29,7 +29,6 @@ function createExec(pipelineId, configId, stageNum, callback) {
     //.catch(err => logger.error(err))
 }
 
-
 /**
  * Stage Instance
  * @type {Object}
