@@ -1,5 +1,7 @@
 'use strict'
 
+let logger = require('tracer').colorConsole()
+
 module.exports = class TokenResolver {
 
   /**
@@ -23,11 +25,10 @@ module.exports = class TokenResolver {
 
     return stringWithTokens.replace(searchPattern, (wholeMatch, rightSideVariable, offset, originalString) => {
 
-      if ('timestamp()' === rightSideVariable) {
+      if (rightSideVariable === 'timestamp()') {
         return Math.floor(Date.now() / 1000)
 
-
-      } else if (rightSideVariable.substr(0,4) === 'var.') {
+      } else if (rightSideVariable.substr(0, 4) === 'var.') {
         // if the token is something like mc.var.example
         if (typeof this._userVariables[rightSideVariable] === 'string') {
           return rightSideVariable
@@ -35,7 +36,6 @@ module.exports = class TokenResolver {
           logger.error('User variable not found: "' + rightSideVariable + '"')
           return '1'
         }
-
 
       } else {
         if (typeof this._baseData[rightSideVariable] === 'string') {

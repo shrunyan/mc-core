@@ -144,16 +144,6 @@ module.exports = class Job {
 
       logger.debug('run() promise executing...')
 
-      //logger.debug('Inside run()')
-      //logger.debug(this.pipeline.config)
-
-      // Load up the stages...
-      // Set up a callback for when all the stages are complete...
-      // Run each stage, and when the stage is done, move onto the next one...
-      // ... unless it is the last one, in which case, call that callback and be done with the pipeline...
-
-      // Get the output from the stage and apply it to the pipeline variables as mapped
-
       // Clone the stage configurations to execute
       this.stagesRemaining = this.pipeline.config.stageConfigs.slice(0)
 
@@ -197,13 +187,13 @@ module.exports = class Job {
     // Create a stage object for use in the extension execute method
     let stage = new Stage(this.currentStageNumber, stageConfig, this.pipeline, this.tokenResolver, () => {
 
-
       stage.on('failed', () => {
         this.anyStageHasFailed = true
         this.executeNextStage(callback)
       })
 
       stage.on('succeeded', () => {
+        // TODO Get the output from the stage and apply it to the pipeline variables as mapped
         this.executeNextStage(callback)
       })
 

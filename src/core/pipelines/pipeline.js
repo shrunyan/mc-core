@@ -143,5 +143,4 @@ module.exports = class Pipeline {
 
   }
 
-
 }
