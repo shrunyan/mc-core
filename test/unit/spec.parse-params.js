@@ -1,7 +1,7 @@
 'use strict'
 
 var test = require('tape')
-var parseParams = require('../../src/api/controllers/util/parse-params')
+var parseParams = require('../../src/api/utils/parse-params')
 
 test('parseParams()', function(t) {
 
