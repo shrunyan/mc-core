@@ -1,8 +1,12 @@
 'use strict'
 
-let connection = require('../../db/connection')
-let logger = require('tracer').colorConsole()
-let basic = require('./basic-response-helper')
+const PROJECTS = 'projects'
+const PIPELINE_CONFIGS = 'pipeline_configs'
+
+let query = require('../../db/queries')
+let success = require('../utils/responses/success')
+let created = require('../utils/responses/created')
+let error = require('../utils/responses/error')
 
 module.exports = {
 
@@ -13,9 +17,10 @@ module.exports = {
    * @param res
    */
   getProjects: (req, res) => {
-    basic.getListCustom(req, res, 'projects', query => {
-      return query.orderBy('name', 'ASC')
-    })
+    query.all(PROJECTS)
+      .orderBy('name', 'ASC')
+      .then(success.bind(res))
+      .catch(error.bind(res))
   },
 
   /**
@@ -25,7 +30,9 @@ module.exports = {
    * @param res
    */
   getProject: (req, res) => {
-    basic.getOne(req, res, 'projects')
+    query.first(req.params.id, PROJECTS)
+      .then(success.bind(res))
+      .catch(error.bind(res))
   },
 
   /**
@@ -35,33 +42,32 @@ module.exports = {
    * @param res
    */
   getProjectsWithPipelines: (req, res) => {
+    let p1 = query.all(PIPELINE_CONFIGS)
+    let p2 = query.all(PROJECTS).orderBy('name', 'ASC')
 
-    let p1 = connection.select().from('pipeline_configs')
-    let p2 = connection.select().orderBy('name', 'ASC').from('projects')
+    Promise.all([p1, p2])
+      .then(values => {
 
-    Promise.all([p1, p2]).then((values) => {
-      let pipelines = values[0]
-      let projects = values[1]
-      let pipelinesByProjectId = {}
+        let pipelines = values[0]
+        let projects = values[1]
+        let pipelinesByProjectId = {}
 
-      pipelines.forEach((pipeline) => {
-        if (!pipelinesByProjectId[pipeline.project_id]) {
-          pipelinesByProjectId[pipeline.project_id] = [pipeline]
-        } else {
-          pipelinesByProjectId[pipeline.project_id].push(pipeline)
-        }
+        pipelines.forEach(pipeline => {
+          if (!pipelinesByProjectId[pipeline.project_id]) {
+            pipelinesByProjectId[pipeline.project_id] = [pipeline]
+          } else {
+            pipelinesByProjectId[pipeline.project_id].push(pipeline)
+          }
+        })
+
+        projects.forEach((project, index) => {
+          projects[index].pipelines = pipelinesByProjectId[project.id] || []
+        })
+
+        success.call(res, projects)
+
       })
-
-      projects.forEach((project, index) => {
-        projects[index].pipelines = pipelinesByProjectId[project.id] || []
-      })
-
-      res.send({data: projects})
-
-    }).catch(err => {
-      logger.error(err)
-      res.status(500).send({message: 'An error occurred.'})
-    })
+      .catch(error.bind(res))
   },
 
   /**
@@ -71,7 +77,9 @@ module.exports = {
    * @param res
    */
   createProject: (req, res) => {
-    basic.insertRespond(req, res, 'projects')
+    query.insert(req.body, PROJECTS)
+      .then(created.bind(res))
+      .catch(error.bind(res))
   }
 
 }
