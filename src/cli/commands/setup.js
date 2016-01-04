@@ -102,6 +102,10 @@ module.exports = () => {
             // Read the .env file
             fs.readFile('.env', 'utf8', (err, data) => {
 
+              if (err) {
+                console.log(err)
+              }
+
               let newDataContents
 
               // If it has the secret key line in it, add the new secret key
