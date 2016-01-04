@@ -31,6 +31,12 @@ module.exports = {
       .del()
   },
 
+  where: (filter, column, table) => {
+    return connection
+      .table(table)
+      .where(column, filter)
+  },
+
   insert: (data, table) => {
     // Protect the ID field by not allowing
     // the user to specify one
