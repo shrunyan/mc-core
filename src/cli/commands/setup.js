@@ -96,6 +96,9 @@ module.exports = () => {
             console.log('Generating secret key...')
             let generatedKey = crypto.randomBytes(32).toString('hex')
 
+            console.log('Generated secret key: ' + generatedKey)
+            console.log(colors.yellow('Consider noting your secret key somewhere secure for backup purposes.'))
+
             // Read the .env file
             fs.readFile('.env', 'utf8', (err, data) => {
 
