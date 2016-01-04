@@ -4,7 +4,7 @@ let test = require('tape')
 let MockResponse = require('mock-express-response')
 let error = require('../../../src/api/utils/responses/error')
 
-test('http 500 response utility', (t) => {
+test('http 500 response utility', function(t) {
   // Assign
   let response = new MockResponse()
 
@@ -13,6 +13,6 @@ test('http 500 response utility', (t) => {
 
   // Assert
   t.ok(response.statusCode === 500, 'Responds with 500')
-  t.ok(response._getJSON().message === 'An error occurred.', 'Returned error message')
+  t.equal(response._getJSON().message, 'An error occurred.')
   t.end()
 })
