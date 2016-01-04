@@ -83,7 +83,7 @@ module.exports = () => {
   function checkSecretKey() {
     return new Promise((resolve) => {
       if (!process.env.SECRET_KEY) {
-        console.log(colors.red('Your .env file is missing a SECRET_KEY. This is used to sign JWT issued to Mission Control users.'))
+        console.log(colors.yellow('Your .env file is missing a SECRET_KEY. This is used to sign JWT issued to Mission Control users and for encryption.'))
 
         // Prompt to ask if they'd like to set up one now
         promptly.confirm('Would you like to generate one now? [Y/n]', {default: 'y'}, (err, value) => {
