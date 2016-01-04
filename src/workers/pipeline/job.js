@@ -134,6 +134,27 @@ module.exports = class Job {
   }
 
   /**
+   * get next available stage for execution
+   * @param  {Function} resolve Promise resolution callback
+   * @return {Object}         stage config for execution
+   */
+  getNextStage(resolve) {
+    // Ensure we've setup remaining stages
+    if (!this.stagesRemaining) {
+      this.stagesRemaining = this.pipeline.config.stageConfigs.slice(0)
+    }
+
+    if (!this.stagesRemaining.length) {
+      // All stages have been executed
+      // so reolve the current promise
+      resolve()
+      return false
+    } else {
+      return this.stagesRemaining.shift()
+    }
+  }
+
+  /**
    * Run the pipeline execution
    */
   run() {
@@ -143,9 +164,6 @@ module.exports = class Job {
     return new Promise(resolve => {
 
       logger.debug('run() promise executing...')
-
-      // Clone the stage configurations to execute
-      this.stagesRemaining = this.pipeline.config.stageConfigs.slice(0)
 
       this.executeNextStage(() => {
         if (this.anyStageHasFailed) {
@@ -167,14 +185,7 @@ module.exports = class Job {
 
     logger.debug('Job:executeNextStage()')
 
-    // If we've completed all the stages, call the callback
-    if (this.stagesRemaining.length === 0) {
-      callback()
-      return
-    }
-
-    // Pull off a stage configuration off of the stages remaining
-    let stageConfig = this.stagesRemaining.shift()
+    let stageConfig = this.getNextStage(callback)
 
     // parse the output map for the stage congig
     stageConfig.output_map = JSON.parse(stageConfig.output_map)
