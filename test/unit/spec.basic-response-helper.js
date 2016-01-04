@@ -32,18 +32,3 @@ test('helper.getList', (t) => {
   t.ok(spy.calledOnce, 'helper invoked getList')
   t.end()
 })
-
-test.skip('helper.getOne', (t) => {
-  // Arrange
-  // let spy = sinon.spy(helper, 'getList')
-  // let req = httpMocks.createRequest()
-  // let res = httpMocks.createResponse()
-  // let table = 'test'
-
-  // // Act
-  // helper.getList(req, res, table)
-
-  // // Assert
-  // t.ok(spy.calledOnce, 'helper invoked getList')
-  // t.end()
-})
