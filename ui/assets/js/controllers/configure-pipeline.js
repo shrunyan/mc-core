@@ -214,10 +214,7 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
 
             $scope.stageOptions.current[stage.id][key] = optionValue
             $scope.stageOptions.saved[stage.id][key] = optionValue
-            $scope.stageOptions.metadata[stage.id][key] = {
-              name: stage.schema.options[key].name,
-              description: stage.schema.options[key].description
-            }
+            $scope.stageOptions.metadata[stage.id][key] = stage.schema.options[key]
 
           })
 
