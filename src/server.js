@@ -19,7 +19,6 @@ if (httpsOn) {
     console.log('Mission Control listening at https://%s:%s', host, port)
   })
 
-
 } else {
   server = require('http').createServer(app).listen(port, () => {
     console.log('Mission Control listening at http://%s:%s', host, port)
