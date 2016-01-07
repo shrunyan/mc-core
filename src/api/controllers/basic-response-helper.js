@@ -2,7 +2,7 @@
 
 let connection = require('../../db/connection')
 let logger = require('tracer').colorConsole()
-let parseParams = require('./util/parse-params')
+let parseParams = require('../utils/parse-params')
 
 module.exports = {
 
