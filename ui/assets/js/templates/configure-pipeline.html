@@ -163,8 +163,8 @@
                         <h4>{{ stageOptions.metadata[stage.id][key].name }}</h4>
                         <p>{{ stageOptions.metadata[stage.id][key].description }}</p>
                     </div>
-                    <div class="col-md-8" ng-switch="option.type">
-                        <textarea ng-switch-when="textarea" ng-model="stageOptions.current[stage.id][key]" class="form-control monospace">{{ option }}</textarea>
+                    <div class="col-md-8" ng-switch="stageOptions.metadata[stage.id][key].type">
+                        <textarea ng-switch-when="textarea" ng-model="stageOptions.current[stage.id][key]" class="form-control monospace" rows="10">{{ option }}</textarea>
                         <input ng-switch-default ng-model="stageOptions.current[stage.id][key]" type="text" class="form-control monospace" />
                     </div>
                 </div>
