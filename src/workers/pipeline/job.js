@@ -231,6 +231,8 @@ module.exports = class Job {
 
       if (this.anyStageHasFailed) {
         stage.skip()
+        this.executeNextStage(callback)
+        return
       }
 
       // Create a domain in which to execute the stage
