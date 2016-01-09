@@ -15,7 +15,7 @@ module.exports = {
     return connection
       .table(table)
       .where('id', id)
-      .update(data)
+      .update(parseParams(data))
   },
 
   first: (id, table) => {
