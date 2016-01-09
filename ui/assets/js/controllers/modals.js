@@ -1,4 +1,5 @@
 import createPipelineModal from './modals/create-pipeline'
+import createPipelineExecutionModal from './modals/create-pipeline-execution'
 import createProjectModal from './modals/create-project'
 import createCheckModal from './modals/create-check'
 import createStageModal from './modals/create-stage'
@@ -20,6 +21,7 @@ export default ['$rootScope', '$uibModal', ($rootScope, $uibModal) => {
 
     getConfig: function getConfig(modal, dataToPass) {
       switch (modal) {
+
         case 'project':
           return {
             templateUrl: '/assets/js/templates/modals/create-project.html',
@@ -30,6 +32,17 @@ export default ['$rootScope', '$uibModal', ($rootScope, $uibModal) => {
           return {
             templateUrl: '/assets/js/templates/modals/create-pipeline.html',
             controller: createPipelineModal,
+            resolve: {
+              data: () => {
+                return dataToPass
+              }
+            }
+          }
+
+        case 'pipeline-execution':
+          return {
+            templateUrl: '/assets/js/templates/modals/create-pipeline-execution.html',
+            controller: createPipelineExecutionModal,
             resolve: {
               data: () => {
                 return dataToPass
@@ -53,6 +66,7 @@ export default ['$rootScope', '$uibModal', ($rootScope, $uibModal) => {
               }
             }
           }
+
       }
     }
 
