@@ -1,4 +1,4 @@
-export default ['$scope', '$http', function($scope, $http) {
+export default ['$rootScope', '$scope', '$http', function($rootScope, $scope, $http) {
 
   $http.get('/api/pipeline-executions/recent').then(response => {
     $scope.pipelineExecutions = response.data.data
@@ -18,7 +18,7 @@ export default ['$scope', '$http', function($scope, $http) {
   })
 
   $scope.execute = function execute(pipelineConfigId) {
-    $http.post('/api/pipelines/' + pipelineConfigId + '/execute', {})
+    $rootScope.modal.open('pipeline-execution', () => {}, {id: pipelineConfigId})
   }
 
 }]
