@@ -64,7 +64,7 @@ module.exports = {
           }
 
           try {
-            let token = jwt.sign({user_id: user.id}, process.env.SECRET_KEY)
+            let token = jwt.sign({user_id: user.id}, process.env.SECRET_KEY, {algorithm: 'HS256'})
             res.cookie('mc_jwt', token, {
               maxAge: 3 * 24 * 60 * 60 * 1000,
               httpOnly: true
