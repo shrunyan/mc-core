@@ -19,7 +19,7 @@ module.exports = function authMiddleware(req, res, next) {
   try {
 
     // Attempt to decode the jwt
-    let decoded = jwt.verify(req.cookies.mc_jwt, process.env.SECRET_KEY)
+    let decoded = jwt.verify(req.cookies.mc_jwt, process.env.SECRET_KEY,  {algorithms: ['HS256']})
 
     // If user_id was not provided in the JWT, they aren't authorized
     if (!decoded.user_id) {
