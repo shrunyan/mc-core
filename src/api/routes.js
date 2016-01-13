@@ -12,7 +12,8 @@ let controllers = {
   projects: require('./controllers/projects'),
   user: require('./controllers/user'),
   checks: require('./controllers/checks'),
-  stages: require('./controllers/stages')
+  stages: require('./controllers/stages'),
+  gitHubWebhooks: require('./controllers/github-webhooks')
 }
 
 module.exports = function(app) {
@@ -63,6 +64,9 @@ module.exports = function(app) {
   // Pipeline Stage Executions
 
   // Pipeline Execution Logs
+
+  // GitHub Webhooks
+  app.post('/github-webhooks/pipelines/:id', controllers.gitHubWebhooks.receive)
 
   // Health Checks
   app.get('/api/checks', controllers.checks.getAll)
