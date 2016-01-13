@@ -1,6 +1,7 @@
 'use strict'
 
 let test = require('tape')
+let jwt = require('jsonwebtoken')
 let createJwt = require('../../src/security/create-jwt')
 let validateAndDecodeJwt = require('../../src/security/validate-and-decode-jwt')
 
@@ -13,9 +14,9 @@ test('create, validate, and decode valid jwt', function(t) {
 
   const TEST_USER_ID = 12
 
-  let jwt = createJwt(TEST_USER_ID)
+  let providedJwt = createJwt(TEST_USER_ID)
 
-  validateAndDecodeJwt(jwt)
+  validateAndDecodeJwt(providedJwt)
     .then((decoded) => {
 
       if (decoded.user_id === 'undefined') {
@@ -45,6 +46,32 @@ test('test invalid jwt', function(t) {
     .then((decoded) => {
       t.fail()
 
+    })
+    .catch(() => {
+      t.pass('the jwt was not validated')
+    })
+
+})
+
+test('test valid jwt with invalid alg', function(t) {
+
+  t.plan(1)
+
+  const TEST_USER_ID = 12
+  let providedJwt
+
+  try {
+    // Testing with HS512 here. Not necessarily insecure, but rather testing that a single algorithm is enforced.
+    providedJwt = jwt.sign({user_id: TEST_USER_ID}, process.env.SECRET_KEY, {algorithm: 'HS512'})
+
+  } catch (err) {
+    t.fail('JWT signing failed')
+    return
+  }
+
+  validateAndDecodeJwt(providedJwt)
+    .then(() => {
+      t.fail('the jwt was validated when it shouldn\'t have been')
     })
     .catch(() => {
       t.pass('the jwt was not validated')
