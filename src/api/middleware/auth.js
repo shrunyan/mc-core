@@ -1,8 +1,8 @@
 'use strict'
 
-let jwt = require('jsonwebtoken')
 let logger = require('tracer').colorConsole()
 let connection = require('../../db/connection')
+let validateAndDecodeJwt = require('../../security/validate-and-decode-jwt')
 
 let respondUnauthorized = (res) => {
   res.status(401).send({message: 'Unauthorized'})
@@ -16,10 +16,9 @@ module.exports = function authMiddleware(req, res, next) {
     return
   }
 
-  try {
+  validateAndDecodeJwt(req.cookies.mc_jwt).then((decoded) => {
 
-    // Attempt to decode the jwt
-    let decoded = jwt.verify(req.cookies.mc_jwt, process.env.SECRET_KEY, {algorithms: ['HS256']})
+    logger.debug('validateAndDecodeJwt:then()')
 
     // If user_id was not provided in the JWT, they aren't authorized
     if (!decoded.user_id) {
@@ -43,12 +42,9 @@ module.exports = function authMiddleware(req, res, next) {
       respondUnauthorized(res)
     })
 
-  } catch (err) {
-
+  }).catch(() => {
     logger.log('JWT provided but could not be verified')
-    logger.error(err)
     respondUnauthorized(res)
-
-  }
+  })
 
 }

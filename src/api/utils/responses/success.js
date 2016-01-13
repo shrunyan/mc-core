@@ -1,6 +1,6 @@
 'use strict'
 
-let logger = require('tracer').colorConsole()
+//let logger = require('tracer').colorConsole()
 
 /**
  * By binding your Express `res` object
@@ -9,6 +9,6 @@ let logger = require('tracer').colorConsole()
  * @param  {Multi} data Value to be sent to request
  */
 module.exports = function(data) {
-  logger.debug(data)
+  //logger.debug(data)
   this.status(200).send({data})
 }
