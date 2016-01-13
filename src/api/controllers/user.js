@@ -1,9 +1,9 @@
 'use strict'
 
 let logger = require('tracer').colorConsole()
-let bcrypt = require('bcryptjs')
-let jwt = require('jsonwebtoken')
 let connection = require('../../db/connection')
+let validateLogin = require('../../security/validate-login')
+let createJwt = require('../../security/create-jwt')
 
 module.exports = {
 
@@ -46,46 +46,28 @@ module.exports = {
 
     }
 
+    logger.debug('about to run validateLogin')
+
     // Look up user
-    connection
-      .table('users')
-      .first('id', 'email', 'password')
-      .where('email', req.body.email)
-      .then(function(user) {
+    validateLogin(req.body.email, req.body.password)
+      .then((userId) => {
+        let token = createJwt(userId)
 
-        // Test hash. If successful, respond with JWT
-        bcrypt.compare(req.body.password, user.password, (err, hash) => {
-
-          if (err) {
-            logger.error(err)
-            res.status(401).send({
-              message: 'Incorrect email or password.'
-            })
-          }
-
-          try {
-            let token = jwt.sign({user_id: user.id}, process.env.SECRET_KEY, {algorithm: 'HS256'})
-            res.cookie('mc_jwt', token, {
-              maxAge: 3 * 24 * 60 * 60 * 1000,
-              httpOnly: true
-            })
-
-            res.send({
-              message: 'Successfully logged in.'
-            })
-          } catch (err) {
-            logger.error(err)
-          }
-
+        res.cookie('mc_jwt', token, {
+          maxAge: 3 * 24 * 60 * 60 * 1000,
+          httpOnly: true
         })
 
-      }).catch(function(err) {
+        res.send({
+          message: 'Successfully logged in.'
+        })
 
-        logger.error(err)
+      }).catch(() => {
+        logger.debug('in login:validateLogin:catch')
+
         res.status(401).send({
           message: 'Incorrect email or password.'
         })
-
       })
 
   },
