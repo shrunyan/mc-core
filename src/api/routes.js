@@ -61,16 +61,49 @@ module.exports = function(app) {
   app.get('/api/pipeline-executions/:id/with-details', controllers.pipelineExecutions.getOneWithDetails)
   // TODO: POST /api/pipeline-executions
 
-  // Pipeline Stage Executions
-
-  // Pipeline Execution Logs
-
-  // GitHub Webhooks
-  app.post('/github-webhooks/pipelines/:id', controllers.gitHubWebhooks.receive)
-
   // Health Checks
   app.get('/api/checks', controllers.checks.getAll)
   app.post('/api/check', controllers.checks.create)
+
+  // WEBHOOKS
+
+  //app.post('/hooks/execute-pipeline/:id', controllers.hooks.executePipeline)
+
+  // GitHub Webhooks
+  app.post('/github', (req, res) => {
+
+    let reqBody = req.rawBody || ''
+    let providedSignature = req.headers['x-hub-signature'] || ''
+
+    console.log('received github hook')
+    console.dir(req)
+
+    function githubSignatureIsValid(secret, blob, signature) {
+      let expectedSig = 'sha1=' + require('crypto').createHmac('sha1', secret).update(blob).digest('hex')
+
+      console.log(expectedSig)
+      console.log(signature)
+
+      return (signature === expectedSig)
+    }
+
+    if (!githubSignatureIsValid('abc', reqBody, providedSignature)) {
+      console.log('github sig invalid')
+      res.status(500)
+      res.send()
+    } else {
+      console.log('github sig valid')
+      res.send('ok')
+    }
+
+    res.send('after')
+
+  })
+  //app.post('/github-webhooks/pipelines/:id', controllers.gitHubWebhooks.receive)
+  // /extensions/public/... (public)
+  // /extensions/public/mc-ext-github/hooks/execute-pipeline/:id
+  // /ext/mc-ext-github/execute-pipeline/:id
+  // /extensions/api/... (private)
 
   // Static files
   app.use(express.static('./node_modules/mc-core/ui-build/'))
