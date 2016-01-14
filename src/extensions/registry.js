@@ -2,6 +2,7 @@
 
 //let validator = require('mc-extension-validator')
 let glob = require('glob')
+let webhookHelper = require('./webhook-helper')
 
 const EXT_PATH = process.cwd() + '/node_modules/mc-ext-*'
 
@@ -102,17 +103,13 @@ let registry = {
 
     if (Array.isArray(module.webhooks)) {
 
-      //console.log('found webhooks array')
-      //console.dir(webhooks)
-
-
       module.webhooks.forEach(webhook => {
 
         console.log('found webhook')
         console.dir(webhook)
 
         let verb = (typeof webhook.method === 'string') ? webhook.method.toLowerCase() : 'all'
-        let allowedVerbs = ["all", "get", "post", "put", "patch", "delete"]
+        let allowedVerbs = ['all', 'get', 'post', 'put', 'patch', 'delete']
 
         if (allowedVerbs.indexOf(verb) === -1) {
           console.log('invalid webhook route verb')
@@ -121,8 +118,8 @@ let registry = {
 
         this._webhooks.push({
           verb: verb,
-          path: '/ext/' + module.vendor + '/' + module.name + '/webhooks/' + webhook.route,
-          handler: (req, res) => { webhook.handler(req, res, require('./webhook-helper')) }
+          path: '/ext/' + module.vendor + '/' + module.id + '/webhooks/' + webhook.route,
+          handler: (req, res) => { webhook.handler(req, res, webhookHelper) }
         })
 
       })
@@ -139,7 +136,7 @@ let registry = {
     this._webhooks.forEach(webhook => {
       console.log('Registering extension webhook')
       console.log(webhook.verb.toUpperCase() + ': ' + webhook.path)
-      app[webhook.verb].apply(app, [webhook.path, webhook.handler])
+      app[webhook.verb](webhook.path, webhook.handler)
     })
 
   },
