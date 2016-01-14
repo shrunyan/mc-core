@@ -81,9 +81,8 @@ module.exports = class Job {
       // (also check if a required input is missing)
       let initialVariableValues = {}
 
-
       this.tokenResolver = new TokenResolver()
-      //this.tokenResolver.setKey('workspace_dir', '')
+      //this.tokenResolver.setKey('workspace_dir', '') // TODO
       this.tokenResolver.setKey('webhook', this.pipeline.webhook_data)
 
       this.pipeline.config.variables.forEach(variable => {
@@ -124,7 +123,6 @@ module.exports = class Job {
       logger.debug(initialVariableValues)
 
       this.tokenResolver.setKey('var', initialVariableValues)
-
 
       console.log('resolved variables')
 
