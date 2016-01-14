@@ -74,6 +74,7 @@ module.exports = {
         })
 
         // Append owner
+        delete owner.password
         execution.owner = owner
 
         // Append stage executions
