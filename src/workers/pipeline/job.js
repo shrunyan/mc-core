@@ -82,7 +82,7 @@ module.exports = class Job {
       let initialVariableValues = {}
 
       this.tokenResolver = new TokenResolver()
-      //this.tokenResolver.setKey('workspace_dir', '') // TODO
+      //this.tokenResolver.setKey('workspace_path', '') // TODO // {[ mc.workspace_path ]}
       this.tokenResolver.setKey('webhook', this.pipeline.webhook_data)
 
       this.pipeline.config.variables.forEach(variable => {
