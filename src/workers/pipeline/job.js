@@ -111,7 +111,7 @@ module.exports = class Job {
 
           // Check if an input was provided. If so, use that, otherwise, use the default value
           if (typeof this.pipeline.input[key] !== 'undefined') {
-            initialVariableValues[key] = this.pipeline.input[key]
+            initialVariableValues[key] = this.tokenResolver.process(this.pipeline.input[key])
           } else {
             initialVariableValues[key] = this.tokenResolver.process(variable.default_value)
           }
