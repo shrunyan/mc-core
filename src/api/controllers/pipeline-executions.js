@@ -74,8 +74,12 @@ module.exports = {
         })
 
         // Append owner
-        delete owner.password
-        execution.owner = owner
+        if (typeof owner === 'object') {
+          delete owner.password
+          execution.owner = owner
+        } else {
+          execution.owner = null
+        }
 
         // Append stage executions
         execution.stageExecutions = stageExecutions
