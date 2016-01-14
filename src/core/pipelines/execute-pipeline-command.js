@@ -93,7 +93,7 @@ module.exports = (function() {
   return function command(pipelineId, options, callback) {
 
     state.pipelineId = pipelineId
-    state.userId = options.userId || options.userId
+    state.userId = options.userId || null
     state.webhookData = options.webhookData || {}
     state.input = options.input || {}
     state.callback = callback

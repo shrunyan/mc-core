@@ -5,13 +5,13 @@
  *
  * @param {object} obj
  * @param {string} dotKey
- * @param {boolean} [defaultValue]
+ * @param {*} [defaultValue]
  * @returns {*}
  */
 module.exports = function objectGetByDotNotation(obj, dotKey, defaultValue) {
 
   // If there is no default value, use null
-  defaultValue = defaultValue || null
+  defaultValue = (typeof defaultValue !== 'undefined') ? defaultValue : null
 
   // If the dot-notation key string provided is empty, return the object
   if (!dotKey) {
@@ -25,9 +25,9 @@ module.exports = function objectGetByDotNotation(obj, dotKey, defaultValue) {
   let clonedObject = Object.assign({}, obj)
 
   // Narrow the cloned object to the value we are looking for
-  for (let x=0;x < keyParts.length; x++) {
+  for (let x = 0; x < keyParts.length; x++) {
 
-    if (null !== clonedObject && clonedObject.hasOwnProperty(keyParts[x])) {
+    if (clonedObject !== null && clonedObject.hasOwnProperty(keyParts[x])) {
 
       clonedObject = clonedObject[keyParts[x]]
 
