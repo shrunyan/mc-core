@@ -10,6 +10,7 @@ let state = {
   pipelineId: null,
   userId: null,
   input: null,
+  webhookData: null,
   callback: null
 }
 
@@ -35,6 +36,7 @@ function getSnapshot() {
       created_at: new Date(),
       updated_at: new Date(),
       input: JSON.stringify(state.input),
+      webhook_data: JSON.stringify(state.webhookData),
       config_snapshot: JSON.stringify(snapshot)
     }
   })
@@ -88,10 +90,12 @@ module.exports = (function() {
   * @param userId
   * @param callback
   */
-  return function command(pipelineId, input, userId, callback) {
+  return function command(pipelineId, options, callback) {
+
     state.pipelineId = pipelineId
-    state.userId = userId
-    state.input = input || {}
+    state.userId = options.userId || options.userId
+    state.webhookData = options.webhookData || {}
+    state.input = options.input || {}
     state.callback = callback
 
     getConfig()

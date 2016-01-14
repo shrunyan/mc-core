@@ -62,11 +62,6 @@ module.exports = {
       const USER_ID = req.user.id
       const PARAMS = req.body
       const CALLBACK = (id) => {
-        // res.status(200).send({
-        //   data: {
-        //     pipeline_execution_id: id
-        //   }
-        // })
 
         success.call(res, {
           data: {
@@ -76,10 +71,14 @@ module.exports = {
 
       }
 
-      execPipeline(PIPELINE_ID, PARAMS, USER_ID, CALLBACK)
+      let options = {
+        input: PARAMS,
+        userId: USER_ID
+      }
+
+      execPipeline(PIPELINE_ID, options, CALLBACK)
 
     } catch (err) {
-      // res.status(500).send()
       error.call(res, err)
     }
   }
