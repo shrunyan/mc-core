@@ -1,6 +1,7 @@
 'use strict'
 
 let express = require('express')
+let registry = require('../extensions/registry')
 let middleware = {
   auth: require('./middleware/auth'),
   notFound: require('./middleware/not-found')
@@ -69,36 +70,9 @@ module.exports = function(app) {
 
   //app.post('/hooks/execute-pipeline/:id', controllers.hooks.executePipeline)
 
-  // GitHub Webhooks
-  app.post('/github', (req, res) => {
+  // Register Extension Webhooks
+  registry.registerWebhookRoutes(app)
 
-    let reqBody = req.rawBody || ''
-    let providedSignature = req.headers['x-hub-signature'] || ''
-
-    console.log('received github hook')
-    console.dir(req)
-
-    function githubSignatureIsValid(secret, blob, signature) {
-      let expectedSig = 'sha1=' + require('crypto').createHmac('sha1', secret).update(blob).digest('hex')
-
-      console.log(expectedSig)
-      console.log(signature)
-
-      return (signature === expectedSig)
-    }
-
-    if (!githubSignatureIsValid('abc', reqBody, providedSignature)) {
-      console.log('github sig invalid')
-      res.status(500)
-      res.send()
-    } else {
-      console.log('github sig valid')
-      res.send('ok')
-    }
-
-    res.send('after')
-
-  })
   //app.post('/github-webhooks/pipelines/:id', controllers.gitHubWebhooks.receive)
   // /extensions/public/... (public)
   // /extensions/public/mc-ext-github/hooks/execute-pipeline/:id
