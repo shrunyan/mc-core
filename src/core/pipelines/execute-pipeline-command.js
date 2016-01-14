@@ -9,7 +9,7 @@ let queue = require('../../queues/queue')('pipeline_executions')
 let state = {
   pipelineId: null,
   userId: null,
-  params: null,
+  input: null,
   callback: null
 }
 
@@ -34,7 +34,7 @@ function getSnapshot() {
       status: 'created',
       created_at: new Date(),
       updated_at: new Date(),
-      input: JSON.stringify(state.params),
+      input: JSON.stringify(state.input),
       config_snapshot: JSON.stringify(snapshot)
     }
   })
@@ -88,10 +88,10 @@ module.exports = (function() {
   * @param userId
   * @param callback
   */
-  return function command(pipelineId, params, userId, callback) {
+  return function command(pipelineId, input, userId, callback) {
     state.pipelineId = pipelineId
     state.userId = userId
-    state.params = params || {}
+    state.input = input || {}
     state.callback = callback
 
     getConfig()
