@@ -1,21 +1,35 @@
 'use strict'
 
 let logger = require('tracer').colorConsole()
+let objectGetByDotNotation = require('../../helpers/object-get-by-dot')
 
 module.exports = class TokenResolver {
 
   /**
    *
-   * @param baseData
-   * @param userVariables
    */
-  constructor(baseData, userVariables) {
-    this._baseData = baseData
-    this._userVariables = userVariables
+  constructor() {
+    this._data = {
+      var: {}
+    }
   }
 
+  /**
+   *
+   * @param {string} key
+   * @param value
+   */
+  setKey(key, value) {
+    this._data[key] = value
+  }
+
+  /**
+   *
+   * @param key
+   * @param newValue
+   */
   setUserVarValue(key, newValue) {
-    this._userVariables[key] = newValue
+    this._data.var[key] = newValue
   }
 
   /**
@@ -29,28 +43,13 @@ module.exports = class TokenResolver {
 
     return stringWithTokens.replace(searchPattern, (wholeMatch, rightSideVariable, offset, originalString) => {
 
+      // rightSideVariable will be something like example.whatever (derived from {[ mc.example.whatever ]})
+
       if (rightSideVariable === 'timestamp()') {
         return Math.floor(Date.now() / 1000)
 
-      } else if (rightSideVariable.substr(0, 4) === 'var.') {
-
-        let userVarKey = rightSideVariable.substr(4)
-
-        // if the token is something like mc.var.example
-        if (typeof this._userVariables[userVarKey] === 'string') {
-          return this._userVariables[userVarKey]
-        } else {
-          logger.error('User variable not found: "' + userVarKey + '"')
-          return '1'
-        }
-
       } else {
-        if (typeof this._baseData[rightSideVariable] === 'string') {
-          return this._baseData[rightSideVariable]
-        } else {
-          logger.error('Variable not found: "' + rightSideVariable + '"')
-          return '1'
-        }
+        return objectGetByDotNotation(this._data, rightSideVariable, '')
       }
 
     })

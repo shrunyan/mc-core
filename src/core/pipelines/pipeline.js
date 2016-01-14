@@ -34,6 +34,7 @@ module.exports = class Pipeline {
           this.config = JSON.parse(exec.config_snapshot)
           //logger.debug(this.config)
           this.input = JSON.parse(exec.input)
+          this.webhook_data = JSON.parse(exec.webhook_data)
 
           resolveLoad()
         })
