@@ -24,6 +24,9 @@ module.exports = class Job {
     // Assume no stage has failed until we find out otherwise
     this.anyStageHasFailed = false
 
+    // Save next callback for use in run().then() OR this.onWorkspaceDirectoryCreationFailure()
+    this.next = next
+
     // Load the pipeline and start the execution
     this.pipeline = new Pipeline(msg.id)
     this.pipeline.load().then(() => {
@@ -32,7 +35,7 @@ module.exports = class Job {
           this.prepareInputAndVariables().then(() => {
             this.run()
               .then(() => {
-                next()
+                this.next()
               })
               .catch(err => logger(err))
           }).catch(this.onWorkspaceDirectoryCreationFailure)
@@ -175,7 +178,7 @@ module.exports = class Job {
 
     // Mark the pipeline as failed and resolve
     this.pipeline.fail().then(() => {
-      resolve()
+      this.next()
     })
 
   }
@@ -213,26 +216,26 @@ module.exports = class Job {
 
       logger.debug('run() promise executing...')
 
-        // log error to pipeline execution logs
-        let message = 'Path:\n' + this.workspacePath
-        this.pipeline.log('mc.basics.logs.snippet', 'Workspace directory created', [message])
+      // log error to pipeline execution logs
+      let message = 'Path:\n' + this.workspacePath
+      this.pipeline.log('mc.basics.logs.snippet', 'Workspace directory created', [message])
 
-        // Clone the stage configurations to execute
-        this.stagesRemaining = this.pipeline.config.stageConfigs.slice(0)
+      // Clone the stage configurations to execute
+      this.stagesRemaining = this.pipeline.config.stageConfigs.slice(0)
 
-        let onComplete = () => {
-          this.tearDownWorkspaceDirectory().then(() => {
-            resolve()
-          })
-        }
-
-        this.executeNextStage(() => {
-          if (this.anyStageHasFailed) {
-            this.pipeline.fail().then(onComplete)
-          } else {
-            this.pipeline.succeed().then(onComplete)
-          }
+      let onComplete = () => {
+        this.tearDownWorkspaceDirectory().then(() => {
+          resolve()
         })
+      }
+
+      this.executeNextStage(() => {
+        if (this.anyStageHasFailed) {
+          this.pipeline.fail().then(onComplete)
+        } else {
+          this.pipeline.succeed().then(onComplete)
+        }
+      })
 
     })
 
