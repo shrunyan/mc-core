@@ -1,5 +1,8 @@
 'use strict'
 
+let fs = require('fs')
+let path = require('path')
+let exec = require('child_process').exec
 let domain = require('domain')
 let logger = require('tracer').colorConsole()
 let Pipeline = require('../../core/pipelines/pipeline')
@@ -21,14 +24,21 @@ module.exports = class Job {
     // Assume no stage has failed until we find out otherwise
     this.anyStageHasFailed = false
 
+    // Save next callback for use in run().then() OR this.onWorkspaceDirectoryCreationFailure()
+    this.next = next
+
     // Load the pipeline and start the execution
     this.pipeline = new Pipeline(msg.id)
     this.pipeline.load().then(() => {
       this.pipeline.running().then(() => {
-        this.prepareInputAndVariables().then(() => {
-          this.run().then(() => {
-            next()
-          }).catch(err => logger(err))
+        this.setUpWorkspaceDirectory().then(() => {
+          this.prepareInputAndVariables().then(() => {
+            this.run()
+              .then(() => {
+                this.next()
+              })
+              .catch(err => logger(err))
+          }).catch(this.onWorkspaceDirectoryCreationFailure)
         })
       }).catch(err => logger.error(err))
     })
@@ -82,7 +92,7 @@ module.exports = class Job {
       let initialVariableValues = {}
 
       this.tokenResolver = new TokenResolver()
-      //this.tokenResolver.setKey('workspace_path', '') // TODO // {[ mc.workspace_path ]}
+      this.tokenResolver.setKey('workspace_path', this.workspacePath)
       this.tokenResolver.setKey('webhook', this.pipeline.webhook_data)
 
       this.pipeline.config.variables.forEach(variable => {
@@ -133,6 +143,68 @@ module.exports = class Job {
 
   }
 
+  setUpWorkspaceDirectory() {
+
+    logger.debug('setUpWorkspaceDirectory() promise registered')
+
+    return new Promise((resolve, reject) => {
+
+      logger.debug('setUpWorkspaceDirectory() promise running')
+
+      let baseDir = process.env.WORKSPACES_DIR || './storage/workspaces/'
+      let fullQualifiedBaseDir = path.resolve(baseDir)
+      let workspaceDir = '/pipeline_execution_' + this.pipeline.id
+      this.workspacePath = fullQualifiedBaseDir + workspaceDir
+
+      fs.mkdir(this.workspacePath, (err) => {
+        if (err) {
+          logger.error('workspace directory could not be created')
+          logger.error(err)
+          reject()
+        } else {
+          resolve()
+        }
+      })
+
+    })
+
+  }
+
+  onWorkspaceDirectoryCreationFailure() {
+
+    // log error to pipeline execution logs
+    let message = 'Path:\n' + this.workspacePath
+    this.pipeline.log('mc.basics.logs.snippet', 'Workspace directory could not created', [message])
+
+    // Mark the pipeline as failed and resolve
+    this.pipeline.fail().then(() => {
+      this.next()
+    })
+
+  }
+
+  tearDownWorkspaceDirectory() {
+    return new Promise((resolve) => {
+
+      logger.debug('tearing down workspace dir')
+
+      let command = 'rm -rf ' + this.workspacePath
+
+      exec(command, (err) => {
+
+        if (err) {
+          logger.error(err)
+        }
+
+        let title = (err) ? 'Workspace directory could not be deleted' : 'Workspace directory deleted'
+        let snippet = 'Path:\n' + this.workspacePath
+        this.pipeline.log('mc.basics.logs.snippet', title, [snippet])
+
+        resolve()
+      })
+    })
+  }
+
   /**
    * Run the pipeline execution
    */
@@ -144,18 +216,24 @@ module.exports = class Job {
 
       logger.debug('run() promise executing...')
 
+      // log error to pipeline execution logs
+      let message = 'Path:\n' + this.workspacePath
+      this.pipeline.log('mc.basics.logs.snippet', 'Workspace directory created', [message])
+
       // Clone the stage configurations to execute
       this.stagesRemaining = this.pipeline.config.stageConfigs.slice(0)
 
+      let onComplete = () => {
+        this.tearDownWorkspaceDirectory().then(() => {
+          resolve()
+        })
+      }
+
       this.executeNextStage(() => {
         if (this.anyStageHasFailed) {
-          this.pipeline.fail().then(() => {
-            resolve()
-          })
+          this.pipeline.fail().then(onComplete)
         } else {
-          this.pipeline.succeed().then(() => {
-            resolve()
-          })
+          this.pipeline.succeed().then(onComplete)
         }
       })
 
