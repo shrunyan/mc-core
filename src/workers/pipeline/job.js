@@ -28,10 +28,14 @@ module.exports = class Job {
     this.pipeline = new Pipeline(msg.id)
     this.pipeline.load().then(() => {
       this.pipeline.running().then(() => {
-        this.prepareInputAndVariables().then(() => {
-          this.run().then(() => {
-            next()
-          }).catch(err => logger(err))
+        this.setUpWorkspaceDirectory().then(() => {
+          this.prepareInputAndVariables().then(() => {
+            this.run()
+              .then(() => {
+                next()
+              })
+              .catch(err => logger(err))
+          }).catch(this.onWorkspaceDirectoryCreationFailure)
         })
       }).catch(err => logger.error(err))
     })
@@ -163,6 +167,19 @@ module.exports = class Job {
 
   }
 
+  onWorkspaceDirectoryCreationFailure() {
+
+    // log error to pipeline execution logs
+    let message = 'Path:\n' + this.workspacePath
+    this.pipeline.log('mc.basics.logs.snippet', 'Workspace directory could not created', [message])
+
+    // Mark the pipeline as failed and resolve
+    this.pipeline.fail().then(() => {
+      resolve()
+    })
+
+  }
+
   tearDownWorkspaceDirectory() {
     return new Promise((resolve) => {
 
@@ -196,8 +213,6 @@ module.exports = class Job {
 
       logger.debug('run() promise executing...')
 
-      this.setUpWorkspaceDirectory().then(() => {
-
         // log error to pipeline execution logs
         let message = 'Path:\n' + this.workspacePath
         this.pipeline.log('mc.basics.logs.snippet', 'Workspace directory created', [message])
@@ -218,20 +233,6 @@ module.exports = class Job {
             this.pipeline.succeed().then(onComplete)
           }
         })
-
-      }).catch(() => {
-
-        // If we could not create the directory...
-
-        // log error to pipeline execution logs
-        let message = 'Path:\n' + this.workspacePath
-        this.pipeline.log('mc.basics.logs.snippet', 'Workspace directory could not created', [message])
-
-        // Mark the pipeline as failed and resolve
-        this.pipeline.fail().then(() => {
-          resolve()
-        })
-      })
 
     })
 
