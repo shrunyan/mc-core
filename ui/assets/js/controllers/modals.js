@@ -2,7 +2,7 @@ import createPipelineModal from './modals/create-pipeline'
 import createPipelineExecutionModal from './modals/create-pipeline-execution'
 import createProjectModal from './modals/create-project'
 import createCheckModal from './modals/create-check'
-import createStageModal from './modals/create-stage'
+import addStageModal from './modals/add-stage'
 
 export default ['$rootScope', '$uibModal', ($rootScope, $uibModal) => {
 
@@ -58,8 +58,8 @@ export default ['$rootScope', '$uibModal', ($rootScope, $uibModal) => {
 
         case 'stage':
           return {
-            templateUrl: '/assets/js/templates/modals/create-stage.html',
-            controller: createStageModal,
+            templateUrl: '/assets/js/templates/modals/add-stage.html',
+            controller: addStageModal,
             resolve: {
               data: () => {
                 return dataToPass
