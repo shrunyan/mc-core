@@ -11,6 +11,7 @@ let registry = {
   _extensions: {},
   _typesByFqids: {},
   _webhooks: [],
+  _stageTypes: [],
 
   /**
    * Resolve all `mc-ext-*` modules and register them
@@ -74,6 +75,10 @@ let registry = {
         // Register the stage as vendor.extension_id.stages.example
         let fqid = module.vendor + '.' + module.id + '.stages.' + stage.id
         this._typesByFqids[fqid] = stage
+
+        let stageCopy = Object.assign({}, stage)
+        stageCopy.fqid = fqid
+        this._stageTypes.push(stageCopy)
 
       })
     }
@@ -161,16 +166,7 @@ let registry = {
    * @return {Array}
    */
   getStageTypes: function getStageTypes() {
-    let stages = []
-
-    for (let fqid in this._typesByFqids) {
-      // Shallow clone so we don't mutate the stage object
-      let stage = Object.assign({}, this._typesByFqids[fqid])
-      stage.fqid = fqid
-      stages.push(stage)
-    }
-
-    return stages
+    return this._stageTypes
   }
 
 }
