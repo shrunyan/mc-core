@@ -13,9 +13,9 @@ var uglify = require('gulp-uglify')
 
 var options = {
   DEST: './ui-build',
-  APP_ENTRY: 'ui/assets/js/app.js',
+  APP_ENTRY: 'ui/app/app.js',
   LESS: [
-    'ui/assets/less/*.less'
+    'ui/less/*.less'
   ],
   HTML: [
     'ui/**/*.html'
@@ -32,7 +32,7 @@ var bundle = function bundle() {
     .pipe(sourcemaps.init())
     .pipe(uglify())
     .pipe(sourcemaps.write('./maps'))
-    .pipe(gulp.dest(options.DEST + '/assets/js'))
+    .pipe(gulp.dest(options.DEST + '/app'))
 
   return b
 }
@@ -47,7 +47,7 @@ gulp.task('watch-bundle', function() {
     w.bundle()
       .pipe(source('app.min.js'))
       .pipe(buffer())
-      .pipe(gulp.dest(options.DEST + '/assets/js'))
+      .pipe(gulp.dest(options.DEST + '/app'))
   })
   w.on('log', function(msg) {
     console.log(msg)
@@ -64,7 +64,7 @@ gulp.task('less', function() {
       compatibility: 'ie8'
     }))
     .pipe(concat('app.min.css'))
-    .pipe(gulp.dest(options.DEST + '/assets/css'))
+    .pipe(gulp.dest(options.DEST + '/css'))
 })
 
 gulp.task('html', function() {
