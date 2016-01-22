@@ -1,8 +1,4 @@
-import modals from './modals'
-import helpers from './helpers'
-import socketManager from './socket-manager'
 import dashboard from './dashboard'
-import login from './login'
 import pipeline from './pipeline'
 import configurePipeline from './configure-pipeline'
 import pipelines from './pipelines'
@@ -19,14 +15,9 @@ import configuration from './configuration'
 import users from './users'
 import slack from './slack'
 import email from './email'
-import user from './user'
 
 export default {
-  modals,
-  helpers,
-  socketManager,
   dashboard,
-  login,
   projects,
   pipeline,
   configurePipeline,
@@ -42,6 +33,5 @@ export default {
   configuration,
   users,
   slack,
-  email,
-  user
+  email
 }

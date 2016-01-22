@@ -7,7 +7,7 @@ export default function(app) {
 
       var opts = {
         url: url,
-        templateUrl: '/assets/js/templates/' + templateUrl
+        templateUrl: '/app/views/' + templateUrl
       }
 
       if (controller) {

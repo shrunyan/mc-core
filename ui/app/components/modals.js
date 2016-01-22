@@ -24,13 +24,13 @@ export default ['$rootScope', '$uibModal', ($rootScope, $uibModal) => {
 
         case 'project':
           return {
-            templateUrl: '/assets/js/templates/modals/create-project.html',
+            templateUrl: '/app/components/modals/create-project.html',
             controller: createProjectModal
           }
 
         case 'pipeline':
           return {
-            templateUrl: '/assets/js/templates/modals/create-pipeline.html',
+            templateUrl: '/app/components/modals/create-pipeline.html',
             controller: createPipelineModal,
             resolve: {
               data: () => {
@@ -41,7 +41,7 @@ export default ['$rootScope', '$uibModal', ($rootScope, $uibModal) => {
 
         case 'pipeline-execution':
           return {
-            templateUrl: '/assets/js/templates/modals/create-pipeline-execution.html',
+            templateUrl: '/app/components/modals/create-pipeline-execution.html',
             controller: createPipelineExecutionModal,
             resolve: {
               data: () => {
@@ -52,13 +52,13 @@ export default ['$rootScope', '$uibModal', ($rootScope, $uibModal) => {
 
         case 'check':
           return {
-            templateUrl: '/assets/js/templates/modals/create-check.html',
+            templateUrl: '/app/templates/modals/create-check.html',
             controller: createCheckModal
           }
 
         case 'stage':
           return {
-            templateUrl: '/assets/js/templates/modals/add-stage.html',
+            templateUrl: '/app/templates/modals/add-stage.html',
             controller: addStageModal,
             resolve: {
               data: () => {

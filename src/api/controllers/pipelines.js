@@ -7,6 +7,7 @@ let query = require('../../db/queries')
 let success = require('../utils/responses/success')
 let created = require('../utils/responses/created')
 let error = require('../utils/responses/error')
+let configurePipelineFromExisting = require('../../core/pipelines/configure-pipeline-from-existing')
 
 module.exports = {
 
@@ -41,10 +42,25 @@ module.exports = {
    * @param res
    */
   createPipeline: (req, res) => {
+
+    let pipelineConfigIdToCopyFrom = false
+
+    // If there is a pipeline config id provided (to copy from, capture and separate it)
+    if (typeof req.body.copy_pipeline_config_id !== 'undefined') {
+      pipelineConfigIdToCopyFrom = req.body.copy_pipeline_config_id
+      delete req.body.copy_pipeline_config_id
+    }
+
     query.insert(req.body, PIPELINE_CONFIGS)
       .then(id => {
         query.first(id, PIPELINE_CONFIGS)
-          .then(created.bind(res))
+          .then(() => {
+            if (pipelineConfigIdToCopyFrom) {
+              configurePipelineFromExisting(id, pipelineConfigIdToCopyFrom).then(created.bind(res))
+            } else {
+              created.bind(res)()
+            }
+          })
           .catch(error.bind(res))
       })
       .catch(error.bind(res))
