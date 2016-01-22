@@ -1,14 +1,25 @@
 'use strict'
 
+function copyStageConfigs(targetPipelineId, sourcePipelineId) {
+  // TODO: implement
+}
+
+function copyVariables(targetPipelineId, sourcePipelineId) {
+  // TODO: implement
+}
+
 module.exports = function(targetPipelineId, sourcePipelineId) {
 
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
 
-    // TODO: Look up stage configs for source pipeline
+    let promises = [
+      copyStageConfigs(targetPipelineId, sourcePipelineId),
+      copyVariables(targetPipelineId, sourcePipelineId)
+    ]
 
-    // TODO: Inject stage configs into target pipeline (with new pipeline id)
-
-    resolve()
+    Promise.all(promises).then(() => {
+      resolve()
+    })
 
   })
 
