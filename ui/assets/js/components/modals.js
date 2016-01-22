@@ -24,13 +24,13 @@ export default ['$rootScope', '$uibModal', ($rootScope, $uibModal) => {
 
         case 'project':
           return {
-            templateUrl: '/assets/js/templates/modals/create-project.html',
+            templateUrl: '/assets/js/components/modals/create-project.html',
             controller: createProjectModal
           }
 
         case 'pipeline':
           return {
-            templateUrl: '/assets/js/templates/modals/create-pipeline.html',
+            templateUrl: '/assets/js/components/modals/create-pipeline.html',
             controller: createPipelineModal,
             resolve: {
               data: () => {
@@ -41,7 +41,7 @@ export default ['$rootScope', '$uibModal', ($rootScope, $uibModal) => {
 
         case 'pipeline-execution':
           return {
-            templateUrl: '/assets/js/templates/modals/create-pipeline-execution.html',
+            templateUrl: '/assets/js/components/modals/create-pipeline-execution.html',
             controller: createPipelineExecutionModal,
             resolve: {
               data: () => {
