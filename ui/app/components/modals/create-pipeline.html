@@ -13,6 +13,18 @@
         <label>Name</label>
         <input type="text" class="form-control" ng-model="form.name" />
     </div>
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" ng-model="copyConfigFromExisting"> Copy Configuration from Existing Pipeline
+        </label>
+    </div>
+    <div class="form-group" ng-if="copyConfigFromExisting">
+        <label>Copy Configuration from Pipeline:</label>
+        <select class="form-control" ng-model="form.copy_pipeline_config_id" required="required">
+            <option disabled="disabled" selected="selected" value="">-- Select a Pipeline --</option>
+            <option ng-repeat="config in pipelineConfigs" value="{{config.id}}">{{config.name}}</option>
+        </select>
+    </div>
 </div>
 <div class="modal-footer">
     <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
