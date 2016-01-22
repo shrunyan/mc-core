@@ -1,8 +1,12 @@
 export default ['$scope', '$http', '$uibModalInstance', 'data', function($scope, $http, $uibModalInstance, data) {
 
   $scope.form = {
-    name: ''
+    name: '',
+    project_id: '',
+    copy_pipeline_config_id: ''
   }
+
+  $scope.copyConfigFromExisting = false
 
   $http.get('/api/projects').then(response => {
     $scope.projects = response.data.data
@@ -19,12 +23,23 @@ export default ['$scope', '$http', '$uibModalInstance', 'data', function($scope,
 
   })
 
+  $http.get('/api/pipelines').then(response => {
+    $scope.pipelineConfigs = response.data.data
+  })
+
   $scope.ok = () => {
+
+    let data = {
+      project_id: $scope.form.project_id,
+      name: $scope.form.name
+    }
+
+    if ($scope.form.copy_pipeline_config_id != '' && $scope.copyConfigFromExisting) {
+      data['copy_pipeline_config_id'] = $scope.form.copy_pipeline_config_id
+    }
+
     $http
-      .post('/api/pipelines', {
-        project_id: $scope.form.project_id,
-        name: $scope.form.name
-      })
+      .post('/api/pipelines', data)
       .then(res => {
         $uibModalInstance.close(res.data.data)
       })
