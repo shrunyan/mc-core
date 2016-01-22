@@ -58,7 +58,7 @@ module.exports = {
             if (pipelineConfigIdToCopyFrom) {
               configurePipelineFromExisting(id, pipelineConfigIdToCopyFrom).then(created.bind(res))
             } else {
-              created.bind(res)
+              created.bind(res)()
             }
           })
           .catch(error.bind(res))
