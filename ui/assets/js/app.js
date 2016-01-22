@@ -5,7 +5,7 @@ import 'angular-moment'
 import 'angular-socket-io'
 import routerAdder from './helpers/add-route'
 import authInterceptor from './helpers/auth-interceptor'
-import controllers from './controllers'
+import components from './components'
 
 const app = angular.module('mission-control', [
   'ui.router',
@@ -50,34 +50,35 @@ app.filter('keysLength', function() {
   return function(input) { return Object.keys(input).length }
 })
 
-app.run(controllers.socketManager)
-app.run(controllers.user)
-app.run(controllers.login)
-app.run(controllers.modals)
-app.run(controllers.helpers)
+app.run(components.socketManager)
+app.run(components.user)
+app.run(components.login)
+app.run(components.modals)
+app.run(components.helpers)
 
 // Routes
-addRoute('dashboard', '/dashboard', 'dashboard.html', controllers.dashboard)
+addRoute('dashboard', '/dashboard', 'dashboard.html', components.dashboard)
 
-addRoute('projects', '/projects', 'projects.html', controllers.projects)
-// addRoute('project', '/project/:project', '/project/project.html', controllers.project)
+addRoute('projects', '/projects', 'projects.html', components.projects)
+// addRoute('project', '/project/:project', '/project/project.html', components.project)
 
-addRoute('pipelines', '/pipelines', 'pipelines.html', controllers.pipelines)
-addRoute('pipeline-execution-details', '/pipelines/executions/{id}', 'pipeline-execution-details.html', controllers.pipelineExecutionDetails)
-addRoute('pipeline', '/pipelines/{id}', 'pipeline.html', controllers.pipeline)
-addRoute('configure-pipeline', '/pipelines/{id}/configure', 'configure-pipeline.html', controllers.configurePipeline)
+addRoute('pipelines', '/pipelines', 'pipelines.html', components.pipelines)
+addRoute('pipeline-execution-details', '/pipelines/executions/{id}', 'pipeline-execution-details.html', components.pipelineExecutionDetails)
+addRoute('pipeline', '/pipelines/{id}', 'pipeline.html', components.pipeline)
+addRoute('configure-pipeline', '/pipelines/{id}/configure', 'configure-pipeline.html', components.configurePipeline)
 
-addRoute('health', '/health', 'health.html', controllers.health)
+addRoute('health', '/health', 'health.html', components.health)
 
-addRoute('applications', '/resources/applications', '/resources/applications.html', controllers.applications)
-addRoute('application-builds', '/resources/application-builds', '/resources/application-builds.html', controllers.applicationBuilds)
-addRoute('servers', '/resources/servers', '/resources/servers.html', controllers.servers)
-addRoute('files', '/resources/files', '/resources/files.html', controllers.files)
-addRoute('credentials', '/resources/credentials', '/resources/credentials.html', controllers.credentials)
-addRoute('github-repositories', '/resources/github-repositories', '/resources/github-repositories.html', controllers.githubRepositories)
+addRoute('applications', '/resources/applications', 'applications.html', components.applications)
+addRoute('application-builds', '/resources/application-builds', 'application-builds.html', components.applicationBuilds)
+addRoute('servers', '/resources/servers', 'servers.html', components.servers)
+addRoute('files', '/resources/files', 'files.html', components.files)
+addRoute('credentials', '/resources/credentials', 'credentials.html', components.credentials)
+addRoute('github-repositories', '/resources/github-repositories', 'github-repositories.html', components.githubRepositories)
 
-addRoute('configuration', '/settings/general/configuration', '/settings/general/configuration.html', controllers.configuration)
-addRoute('users', '/settings/general/users', '/settings/general/users.html', controllers.users)
+addRoute('configuration', '/settings/general/configuration', 'configuration.html', components.configuration)
+addRoute('users', '/settings/general/users', 'users.html', components.users)
 
-addRoute('slack', '/settings/notifications/slack', '/settings/notifications/slack.html', controllers.slack)
-addRoute('email', '/settings/notifications/email', '/settings/notifications/email.html', controllers.email)
+addRoute('slack', '/settings/notifications/slack', 'slack.html', components.slack)
+addRoute('email', '/settings/notifications/email', 'email.html', components.email)
+
