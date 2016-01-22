@@ -77,7 +77,7 @@ module.exports = {
             let stageType = registry.getStageTypes()[i]
             if (stageType.id == config.type.split('.').slice(-1)[0]) {
               // Include stage type object
-              execution.stageConfigsById[config.id] = Object.assign(config, {'type': stageType})
+              execution.stageConfigsById[config.id] = Object.assign({}, config, {'type': stageType})
               break;
             }
           }
