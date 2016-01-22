@@ -34,7 +34,7 @@ export default ['$scope', '$http', '$uibModalInstance', 'data', function($scope,
       name: $scope.form.name
     }
 
-    if ($scope.form.copy_pipeline_config_id != '' && $scope.copyConfigFromExisting) {
+    if ($scope.form.copy_pipeline_config_id !== '' && $scope.copyConfigFromExisting) {
       data['copy_pipeline_config_id'] = $scope.form.copy_pipeline_config_id
     }
 
