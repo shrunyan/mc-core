@@ -65,7 +65,7 @@
                     <td class="text-danger" ng-if="stage.status === 'failed'"><i class="fa fa-times"></i> Failed</td>
                     <td class="text-muted" ng-if="stage.status === 'skipped'"><i class="fa fa-long-arrow-right"></i> Skipped</td>
 
-                    <td>{{ execution.stageConfigsById[stage.stage_config_id].name }}<br><small class="text-muted">GitHub › Clone Repository</small></td>
+                    <td>{{ execution.stageConfigsById[stage.stage_config_id].name }}<br><small class="text-muted">{{ execution.stageConfigsById[stage.stage_config_id].type.name || execution.stageConfigsById[stage.stage_config_id].type }}</small></td>
 
                 </tr>
 
