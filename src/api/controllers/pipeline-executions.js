@@ -71,8 +71,8 @@ module.exports = {
         // Append a copy of the stageConfigs arranged by ID
         execution.stageConfigsById = {}
         execution.stageConfigs.forEach(config => {
-            let stageType = registry.get(config.type)
-            execution.stageConfigsById[config.id] = Object.assign({}, config, {'type': stageType || config.type})
+          let stageType = registry.get(config.type)
+          execution.stageConfigsById[config.id] = Object.assign({}, config, {'type': stageType || config.type})
         })
 
         // Append owner
