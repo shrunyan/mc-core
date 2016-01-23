@@ -52,13 +52,13 @@ export default ['$rootScope', '$uibModal', ($rootScope, $uibModal) => {
 
         case 'check':
           return {
-            templateUrl: '/app/templates/modals/create-check.html',
+            templateUrl: '/app/components/modals/create-check.html',
             controller: createCheckModal
           }
 
         case 'stage':
           return {
-            templateUrl: '/app/templates/modals/add-stage.html',
+            templateUrl: '/app/components/modals/add-stage.html',
             controller: addStageModal,
             resolve: {
               data: () => {
