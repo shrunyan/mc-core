@@ -72,15 +72,8 @@ module.exports = {
         execution.stageConfigsById = {}
 
         execution.stageConfigs.forEach(config => {
-          execution.stageConfigsById[config.id] = config
-          for (let i = 0; i < registry.getStageTypes().length; i++) {
-            let stageType = registry.getStageTypes()[i]
-            if (stageType.id == config.type.split('.').slice(-1)[0]) {
-              // Include stage type object
-              execution.stageConfigsById[config.id] = Object.assign({}, config, {'type': stageType})
-              break;
-            }
-          }
+            let stageType = registry.get(config.type)
+            execution.stageConfigsById[config.id] = Object.assign({}, config, {'type': stageType || config.type})
         })
 
         // Append owner
