@@ -1,6 +1,7 @@
 'use strict'
 
 let connection = require('../../db/connection')
+let registry = require('../../extensions/registry')
 let logger = require('tracer').colorConsole()
 let basic = require('./basic-response-helper')
 let renderDetails = require('../../extensions/render-log-details')
@@ -70,7 +71,8 @@ module.exports = {
         // Append a copy of the stageConfigs arranged by ID
         execution.stageConfigsById = {}
         execution.stageConfigs.forEach(config => {
-          execution.stageConfigsById[config.id] = config
+          let stageType = registry.get(config.type)
+          execution.stageConfigsById[config.id] = Object.assign({}, config, {'type': stageType || config.type})
         })
 
         // Append owner
