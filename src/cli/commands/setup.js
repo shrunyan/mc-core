@@ -209,7 +209,7 @@ module.exports = () => {
 
   function enterEmail() {
     return new Promise((resolve) => {
-      promptly.prompt('Enter your Misison Control email.', (err, email) => {
+      promptly.prompt('Enter your Mission Control email:', (err, email) => {
         if (err) {
           console.log(err)
         }
@@ -220,7 +220,7 @@ module.exports = () => {
 
   function enterPassword(user) {
     return new Promise((resolve) => {
-      promptly.prompt('Enter your Misison Control password.', (err, password) => {
+      promptly.prompt('Enter your Mission Control password:', (err, password) => {
         if (err) {
           console.log(err)
         }
@@ -232,7 +232,7 @@ module.exports = () => {
 
   function enterFirstName(user) {
     return new Promise((resolve) => {
-      promptly.prompt('Enter your First Name.', (err, first) => {
+      promptly.prompt('Enter your First Name:', (err, first) => {
         if (err) {
           console.log(err)
         }
@@ -244,7 +244,7 @@ module.exports = () => {
 
   function enterLastName(user) {
     return new Promise((resolve) => {
-      promptly.prompt('Enter your Last Name.', (err, last) => {
+      promptly.prompt('Enter your Last Name:', (err, last) => {
         if (err) {
           console.log(err)
         }
