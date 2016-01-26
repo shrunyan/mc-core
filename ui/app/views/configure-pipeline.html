@@ -147,7 +147,7 @@
         <h3>Stages</h3>
 
         <!-- Stages -->
-        <div class="panel panel-default pipeline-stage" ng-repeat="stage in stages">
+        <div class="panel panel-default pipeline-stage" ng-repeat="stage in stages | orderBy:'sort' ">
             <div class="title-block">
                 <i class="fa fa-check-square-o icon"></i>
                 <a class="btn btn-default configure" ng-click="toggleOptions($event)">
