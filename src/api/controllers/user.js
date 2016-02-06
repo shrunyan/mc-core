@@ -3,7 +3,7 @@
 let logger = require('tracer').colorConsole()
 let connection = require('../../db/connection')
 let validateLogin = require('../../security/validate-login')
-let createJwt = require('../../security/create-jwt')
+let sign = require('../../security/jwt/sign')
 
 module.exports = {
 
@@ -51,7 +51,7 @@ module.exports = {
     // Look up user
     validateLogin(req.body.email, req.body.password)
       .then((userId) => {
-        let token = createJwt(userId)
+        let token = sign(userId)
 
         res.cookie('mc_jwt', token, {
           maxAge: 3 * 24 * 60 * 60 * 1000,
