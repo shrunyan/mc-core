@@ -2,7 +2,7 @@
 
 let logger = require('tracer').colorConsole()
 let connection = require('../../db/connection')
-let validateAndDecodeJwt = require('../../security/validate-and-decode-jwt')
+let verify = require('../../security/jwt/verify')
 
 let respondUnauthorized = (res) => {
   res.status(401).send({message: 'Unauthorized'})
@@ -16,9 +16,9 @@ module.exports = function authMiddleware(req, res, next) {
     return
   }
 
-  validateAndDecodeJwt(req.cookies.mc_jwt).then((decoded) => {
+  verify(req.cookies.mc_jwt).then((decoded) => {
 
-    logger.debug('validateAndDecodeJwt:then()')
+    logger.debug('verify:then()')
 
     // If user_id was not provided in the JWT, they aren't authorized
     if (!decoded.user_id) {
