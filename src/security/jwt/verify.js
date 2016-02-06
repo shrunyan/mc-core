@@ -9,7 +9,7 @@ const logger = require('tracer').colorConsole()
  * @param  {String} providedJwt signed jwt
  * @return {Object}             decoded jwt
  */
-module.exports = function verify(providedJwt) {
+module.exports = function verifyJwt(providedJwt) {
   return new Promise((resolve, reject) => {
     try {
       // Attempt to decode the jwt
