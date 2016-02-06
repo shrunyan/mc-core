@@ -18,7 +18,8 @@ var options = {
     'ui/less/*.less'
   ],
   HTML: [
-    'ui/**/*.html'
+    'ui/**/*.html',
+    'ui/favicon.ico'
   ]
 }
 
@@ -68,7 +69,7 @@ gulp.task('less', function() {
 })
 
 gulp.task('html', function() {
-  gulp.src('ui/**/*.html')
+  gulp.src(options.HTML)
     .pipe(gulp.dest(options.DEST))
 })
 
