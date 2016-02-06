@@ -7,6 +7,7 @@ let redis = require('redis')
 let knex = require('knex')
 let promptly = require('promptly')
 let bcrypt = require('bcryptjs')
+let crypto = require('crypto')
 
 const ENV_FILE_PATH = '.env'
 const MIGRATIONS_SOURCE_PATH = 'node_modules/mc-core/src/db/migrations'
@@ -40,9 +41,6 @@ module.exports = () => {
   })
 
 // Check options
-  if (!process.env.SECRET_KEY) {
-    console.log(colors.red('Your .env file is missing a SECRET_KEY. This is used to sign JWT issued to Mission Control users.'))
-  }
   if (!process.env.DB_USER) {
     console.log(colors.yellow('Your .env file is missing the MySQL DB_USER'))
   }
@@ -75,11 +73,67 @@ module.exports = () => {
 
 // Run Setup
   checkRedisConn()
+    .then(checkSecretKey)
     .then(checkMysqlConn)
     .then(checkMysqlUserTable)
     .then(createMysqlUserTable)
     .then(createMysqlUserRecord)
     .then(() => process.exit(0))
+
+  function checkSecretKey() {
+    return new Promise((resolve) => {
+      if (!process.env.SECRET_KEY) {
+        console.log(colors.yellow('Your .env file is missing a SECRET_KEY. This is used to sign JWT issued to Mission Control users and for encryption.'))
+
+        // Prompt to ask if they'd like to set up one now
+        promptly.confirm('Would you like to generate one now? [Y/n]', {default: 'y'}, (err, value) => {
+
+          if (err) {
+            console.log(err)
+          }
+
+          if (value) {
+            console.log('Generating secret key...')
+            let generatedKey = crypto.randomBytes(32).toString('hex')
+
+            console.log('Generated secret key: ' + generatedKey)
+            console.log(colors.yellow('Consider noting your secret key somewhere secure for backup purposes.'))
+
+            // Read the .env file
+            fs.readFile('.env', 'utf8', (err, data) => {
+
+              if (err) {
+                console.log(err)
+              }
+
+              let newDataContents
+
+              // If it has the secret key line in it, add the new secret key
+              if (data.match(/SECRET_KEY=/g)) {
+                newDataContents = data.replace(/SECRET_KEY=.*/g, 'SECRET_KEY=' + generatedKey)
+              } else {
+
+                // If there wasn't already a SECRET_KEY line, add one at the end (with line breaks around it)
+                newDataContents = data + '\n' + 'SECRET_KEY=' + generatedKey + '\n'
+              }
+
+              // Save the changes to the file
+              fs.writeFile('.env', newDataContents, () => {
+                resolve()
+              })
+
+            })
+
+            resolve()
+          } else {
+            resolve()
+          }
+        })
+      } else {
+        resolve()
+      }
+    })
+  }
 
   function checkRedisConn() {
     return new Promise((resolve) => {
@@ -155,7 +209,7 @@ module.exports = () => {
 
   function enterEmail() {
     return new Promise((resolve) => {
-      promptly.prompt('Enter your Misison Control email.', (err, email) => {
+      promptly.prompt('Enter your Mission Control email:', (err, email) => {
         if (err) {
           console.log(err)
         }
@@ -166,7 +220,7 @@ module.exports = () => {
 
   function enterPassword(user) {
     return new Promise((resolve) => {
-      promptly.prompt('Enter your Misison Control password.', (err, password) => {
+      promptly.prompt('Enter your Mission Control password:', (err, password) => {
         if (err) {
           console.log(err)
         }
@@ -178,7 +232,7 @@ module.exports = () => {
 
   function enterFirstName(user) {
     return new Promise((resolve) => {
-      promptly.prompt('Enter your First Name.', (err, first) => {
+      promptly.prompt('Enter your First Name:', (err, first) => {
         if (err) {
           console.log(err)
         }
@@ -190,7 +244,7 @@ module.exports = () => {
 
   function enterLastName(user) {
     return new Promise((resolve) => {
-      promptly.prompt('Enter your Last Name.', (err, last) => {
+      promptly.prompt('Enter your Last Name:', (err, last) => {
         if (err) {
           console.log(err)
         }

@@ -1,26 +1,41 @@
 'use strict'
 
-let logger = require('tracer').colorConsole()
+const PIPELINE_STAGE_CONFIGS = 'pipeline_stage_configs'
+const PIPELINE_CONFIG_ID = 'pipeline_config_id'
+
 let registry = require('../../extensions/registry')
-let basic = require('./basic-response-helper')
-let connection = require('../../db/connection')
+let query = require('../../db/queries')
+let success = require('../utils/responses/success')
+let error = require('../utils/responses/error')
 
 module.exports = {
 
   setStageConfig: function setStageConfig(req, res) {
-    basic.insertRespond(req, res, 'pipeline_stage_configs')
+    // Prevent null for stages options/outputmap
+    req.body.options = req.body.options || {}
+    req.body.output_map = req.body.output_map || {}
+
+    query.insert(req.body, PIPELINE_STAGE_CONFIGS)
+      .then(success.bind(res))
+      .catch(error.bind(res))
   },
 
   updateStageConfig: function updateStageConfig(req, res) {
-    basic.patchRespond(req, res, 'pipeline_stage_configs')
+    delete req.body.id
+
+    query.patch(req.params.id, req.body, PIPELINE_STAGE_CONFIGS)
+      .then(success.bind(res))
+      .catch(error.bind(res))
   },
 
   deleteStageConfig: function deleteStageConfig(req, res) {
-    basic.deleteRespond(req, res, 'pipeline_stage_configs')
+    query.remove(req.params.id, PIPELINE_STAGE_CONFIGS)
+      .then(success.bind(res))
+      .catch(error.bind(res))
   },
 
   getAvailableTypes: function getAvailableTypes(req, res) {
-    res.status(201).send({data: registry.getStageTypes()})
+    success.call(res, registry.getStageTypes())
   },
 
   /**
@@ -30,22 +45,18 @@ module.exports = {
    * @param res
    */
   getListForPipeline: function getListForPipeline(req, res) {
-    connection
-      .table('pipeline_stage_configs')
-      .where('pipeline_config_id', req.params.id)
+    query.where(req.params.id, PIPELINE_CONFIG_ID, PIPELINE_STAGE_CONFIGS)
       .then(items => {
-        res.status(200).send({
-          data: items.map(item => {
-            if (typeof item.output_map !== 'string' || item.output_map.substr(0, 1) !== '{') {
-              item.output_map = '{}'
-            }
-            item.output_map = JSON.parse(item.output_map)
-            item.options = JSON.parse(item.options)
-            return item
-          })
+
+        let data = items.map(item => {
+          item.output_map = JSON.parse(item.output_map)
+          item.options = JSON.parse(item.options)
+          return item
         })
+
+        success.call(res, data)
       })
-      .catch(err => logger.error(err))
+      .catch(error.bind(res))
   }
 
 }

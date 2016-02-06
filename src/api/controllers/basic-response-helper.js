@@ -2,20 +2,7 @@
 
 let connection = require('../../db/connection')
 let logger = require('tracer').colorConsole()
-
-/**
- * Stringify's all parameters that are objects
- * @param  {Object} params Request body
- * @return {Object}      Process request parameters
- */
-function parseParams(params) {
-  for (let paramKey in params) {
-    if (typeof params[paramKey] === 'object') {
-      params[paramKey] = JSON.stringify(params[paramKey])
-    }
-  }
-  return params
-}
+let parseParams = require('../utils/parse-params')
 
 module.exports = {
 
@@ -156,29 +143,30 @@ module.exports = {
    * @param table
    */
   insertRespond: (req, res, table) => {
-
-    // Create a new object from the incoming data
-    let item = req.body
-
     // Protect the ID field by not allowing the user to specify it
-    delete item.id
+    delete req.body.id
 
-    // Add metadata fields automatically
-    item.created_at = new Date()
-    item.updated_at = new Date()
+    connection
+      .table(table)
+      .insert(parseParams(req.body), 'id')
+      .then(id => {
 
-    connection.insert(item, 'id').into(table).then((id) => {
+        connection
+          .table(table)
+          .where('id', id)
+          .first()
+          .then(item => {
+            res.status(201).send({data: item})
+          })
+          .catch(err => {
+            logger.error(err)
+            res.status(500).send({message: 'An error occurred.'})
+          })
 
-      connection.table(table).where('id', id).first().then((item) => {
-        res.status(201).send({data: item})
-      }).catch(err => {
+      })
+      .catch(err => {
         logger.error(err)
         res.status(500).send({message: 'An error occurred.'})
       })
-
-    }).catch(err => {
-      logger.error(err)
-      res.status(500).send({message: 'An error occurred.'})
-    })
   }
 }

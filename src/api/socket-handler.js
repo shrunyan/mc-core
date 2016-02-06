@@ -32,7 +32,7 @@ let authenticateSocketUser = (socket) => {
 
     if (typeof parsedCookies.mc_jwt !== 'undefined') {
 
-      let decoded = jwt.verify(parsedCookies.mc_jwt, process.env.SECRET_KEY)
+      let decoded = jwt.verify(parsedCookies.mc_jwt, process.env.SECRET_KEY, {algorithms: ['HS256']})
 
       if (typeof decoded.user_id !== 'undefined') {
 
