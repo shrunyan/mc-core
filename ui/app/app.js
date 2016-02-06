@@ -3,6 +3,7 @@ import 'angular-ui-bootstrap'
 import 'angular-ui-router'
 import 'angular-moment'
 import 'angular-socket-io'
+import angularDragula from 'angular-dragula'
 import routerAdder from './helpers/add-route'
 import authInterceptor from './helpers/auth-interceptor'
 import components from './components'
@@ -12,7 +13,8 @@ const app = angular.module('mission-control', [
   'ui.router',
   'ui.bootstrap',
   'angularMoment',
-  'btford.socket-io'
+  'btford.socket-io',
+  angularDragula(angular)
 ])
 const addRoute = routerAdder(app)
 
