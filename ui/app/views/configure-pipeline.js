@@ -322,17 +322,15 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', 'dragulaServi
    * Allow users to drag stage icons to change stage execution order
    */
   dragulaService.options($scope, 'stages', {
-    moves: function(el, container, handle) {
-      return handle.className.indexOf('dragHandle') > -1
-    }
+    moves: (el, container, handle) => handle.className.indexOf('dragHandle') > -1
   })
 
   /**
    * Reset stage display orders after drag n drop
    */
-  $scope.$on('stages.drop', function(e, el, container) {
+  $scope.$on('stages.drop', (e, el, container) => {
     // Loop over each of the stage DOM elements to determine their sort order
-    container.children().map(function(elementPosition, stageElement) {
+    container.children().map((elementPosition, stageElement) => {
       // Find the angular stage model from the DOM element
       let stage = $scope.stages.find(stage => {
         let stageId = stageElement.dataset.id
