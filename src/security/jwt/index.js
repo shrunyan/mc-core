@@ -1,6 +1,6 @@
 'use strict'
 
 module.exports = {
-  create: require('./create'),
+  sign: require('./sign'),
   verify: require('./verify')
 }
