@@ -19,7 +19,10 @@
   ],
   "main": "build/server.js",
   "scripts": {
-    "test": "./node_modules/.bin/eslint . && NODE_ENV=test ./node_modules/.bin/tape 'test/**/spec.*.js' | ./node_modules/.bin/tap-spec",
+    "test": "NODE_ENV=test ./node_modules/.bin/tap test/**/spec.*.js",
+    "lint": "./node_modules/.bin/eslint src",
+    "cover": "npm test -- --cov --coverage-report=lcov",
+    "release": "npm run lint && npm run cover",
     "postinstall": "node_modules/.bin/gulp"
   },
   "author": "Andy Fleming <andy@zesty.io>",
@@ -89,6 +92,7 @@
     "mock-express-response": "0.1.1",
     "sinon": "1.17.2",
     "supertest": "1.1.0",
+    "tap": "5.4.2",
     "tap-spec": "4.1.1",
     "tape": "4.2.2"
   }

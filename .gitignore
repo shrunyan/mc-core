@@ -5,8 +5,11 @@ node_modules/
 build/
 ui-build/
 logs/
+coverage/
+.nyc_output/
 
 # Files
 .DS_Store
 .env
 npm-debug.log
+.coveralls.yml
