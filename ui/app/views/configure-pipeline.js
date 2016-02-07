@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, $scope, $http, $stateParams, $state) {
+export default ['$q', '$scope', '$http', '$stateParams', '$state', 'dragulaService', function($q, $scope, $http, $stateParams, $state, dragulaService) {
 
   // This must be predefined for ng-model
   // values as objects
@@ -317,6 +317,32 @@ export default ['$q', '$scope', '$http', '$stateParams', '$state', function($q, 
     }
 
   }
+
+  /**
+   * Allow users to drag stage icons to change stage execution order
+   */
+  dragulaService.options($scope, 'stages', {
+    moves: (el, container, handle) => handle.className.indexOf('dragHandle') > -1
+  })
+
+  /**
+   * Reset stage display orders after drag n drop
+   */
+  $scope.$on('stages.drop', (e, el, container) => {
+    // Loop over each of the stage DOM elements to determine their sort order
+    container.children().map((elementPosition, stageElement) => {
+      // Find the angular stage model from the DOM element
+      let stage = $scope.stages.find(stage => {
+        let stageId = stageElement.dataset.id
+        if (parseInt(stageId, 10) === parseInt(stage.id, 10)) {
+          return stage
+        }
+      })
+      stage.sort = elementPosition
+      $http.patch('/api/stage/' + stage.id, { sort: stage.sort })
+    })
+    $scope.$apply()
+  })
 
   // Initialize view
   $scope.loadStages()

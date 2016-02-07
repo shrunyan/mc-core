@@ -146,46 +146,49 @@
 
         <h3>Stages</h3>
 
-        <!-- Stages -->
-        <div class="panel panel-default pipeline-stage" ng-repeat="stage in stages">
-            <div class="title-block">
-                <i class="fa fa-check-square-o icon"></i>
-                <a class="btn btn-default configure" ng-click="toggleOptions($event)">
-                  <i class="fa fa-sliders text-muted"></i> Options
-                </a>
+        <!-- Drag N Drop Container -->
+        <div dragula='"stages"'>
+            <!-- Stages -->
+            <div class="panel panel-default pipeline-stage" ng-repeat="stage in stages | orderBy:'sort' " data-id="{{stage.id}}">
+                <div class="title-block">
+                    <i class="fa fa-check-square-o icon dragHandle"></i>
+                    <a class="btn btn-default configure" ng-click="toggleOptions($event)">
+                      <i class="fa fa-sliders text-muted"></i> Options
+                    </a>
 
-                <h3>{{ $index + 1 }}. {{ stage.name }}</h3>
-                <small class="text-muted">Extension Name › {{ stage.schema.name }}</small>
-            </div>
-            <div class="panel-body">
-                <div class="row" ng-repeat="(key, option) in stageOptions.current[stage.id]">
-                    <div class="col-md-4">
-                        <h4>{{ stageOptions.metadata[stage.id][key].name }}</h4>
-                        <p>{{ stageOptions.metadata[stage.id][key].description }}</p>
-                    </div>
-                    <div class="col-md-8" ng-switch="stageOptions.metadata[stage.id][key].type">
-                        <textarea ng-switch-when="textarea" ng-model="stageOptions.current[stage.id][key]" class="form-control monospace" rows="10">{{ option }}</textarea>
-                        <input ng-switch-default ng-model="stageOptions.current[stage.id][key]" type="text" class="form-control monospace" />
-                    </div>
+                    <h3>{{ $index + 1 }}. {{ stage.name }}</h3>
+                    <small class="text-muted">Extension Name › {{ stage.schema.name }}</small>
                 </div>
-                <hr>
-                <div ng-if="(stageOutputs.current[stage.id] | keysLength) > 0">
-                    <h3>Output</h3>
-                    <div class="row" ng-repeat="(name, output) in stageOutputs.current[stage.id]">
+                <div class="panel-body">
+                    <div class="row" ng-repeat="(key, option) in stageOptions.current[stage.id]">
                         <div class="col-md-4">
-                            <code>{{ name }}</code>
-                            <br><small>{{ output.description }}</small>
+                            <h4>{{ stageOptions.metadata[stage.id][key].name }}</h4>
+                            <p>{{ stageOptions.metadata[stage.id][key].description }}</p>
                         </div>
-                        <div class="col-md-8">
-                            <input type="text" class="form-control" placeholder="(unused)" ng-model="stageOutputs.current[stage.id][name]">
+                        <div class="col-md-8" ng-switch="stageOptions.metadata[stage.id][key].type">
+                            <textarea ng-switch-when="textarea" ng-model="stageOptions.current[stage.id][key]" class="form-control monospace" rows="10">{{ option }}</textarea>
+                            <input ng-switch-default ng-model="stageOptions.current[stage.id][key]" type="text" class="form-control monospace" />
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12">
-                    <button class="btn btn-danger pull-left" ng-click="removeStage(stage.id)">Delete Stage</button>
-                    <button class="btn btn-success pull-right" ng-click="saveOptionsAndOutputs(stage.id)" ng-disabled="(stageOptions.current[stage.id] | json) == (stageOptions.saved[stage.id] | json) && (stageOutputs.current[stage.id] | json) == (stageOutputs.saved[stage.id] | json)">Save Stage Config</button>
-                  </div>
+                    <hr>
+                    <div ng-if="(stageOutputs.current[stage.id] | keysLength) > 0">
+                        <h3>Output</h3>
+                        <div class="row" ng-repeat="(name, output) in stageOutputs.current[stage.id]">
+                            <div class="col-md-4">
+                                <code>{{ name }}</code>
+                                <br><small>{{ output.description }}</small>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" placeholder="(unused)" ng-model="stageOutputs.current[stage.id][name]">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <button class="btn btn-danger pull-left" ng-click="removeStage(stage.id)">Delete Stage</button>
+                        <button class="btn btn-success pull-right" ng-click="saveOptionsAndOutputs(stage.id)" ng-disabled="(stageOptions.current[stage.id] | json) == (stageOptions.saved[stage.id] | json) && (stageOutputs.current[stage.id] | json) == (stageOutputs.saved[stage.id] | json)">Save Stage Config</button>
+                      </div>
+                    </div>
                 </div>
             </div>
         </div>
