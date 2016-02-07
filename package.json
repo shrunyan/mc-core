@@ -19,9 +19,9 @@
   ],
   "main": "build/server.js",
   "scripts": {
-    "test": "NODE_ENV=test ./node_modules/.bin/tap test/**/spec.*.js",
+    "test": "NODE_ENV=test ./node_modules/.bin/tap --reporter=spec test/**/spec.*.js",
     "lint": "./node_modules/.bin/eslint src",
-    "cover": "npm test -- --cov --coverage-report=lcov",
+    "cover": "node_modules/.bin/istanbul cover node_modules/argg test/**/*.js && open coverage/lcov-report/index.html",
     "release": "npm run lint && npm run cover",
     "postinstall": "node_modules/.bin/gulp"
   },
@@ -91,6 +91,7 @@
   "devDependencies": {
     "node-mocks-http": "1.5.1",
     "proxyquire": "1.7.3",
+    "argg": "0.0.2",
     "mock-express-request": "0.1.1",
     "mock-express-response": "0.1.1",
     "sinon": "1.17.2",
