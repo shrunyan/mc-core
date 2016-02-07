@@ -3,5 +3,8 @@
     "jQuery": true,
     "$": true,
     "io": true
+  },
+  "env": {
+    "browser": true
   }
 }

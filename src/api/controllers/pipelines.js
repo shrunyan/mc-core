@@ -1,7 +1,13 @@
 'use strict'
 
-let basic = require('./basic-response-helper')
-let executePipelineCommand = require('../../core/pipelines/execute-pipeline-command')
+const PIPELINE_CONFIGS = 'pipeline_configs'
+
+let execPipeline = require('../../core/pipelines/execute-pipeline-command')
+let query = require('../../db/queries')
+let success = require('../utils/responses/success')
+let created = require('../utils/responses/created')
+let error = require('../utils/responses/error')
+let configurePipelineFromExisting = require('../../core/pipelines/configure-pipeline-from-existing')
 
 module.exports = {
 
@@ -12,7 +18,9 @@ module.exports = {
    * @param res
    */
   getList: (req, res) => {
-    basic.getList(req, res, 'pipeline_configs')
+    query.all(PIPELINE_CONFIGS)
+      .then(success.bind(res))
+      .catch(error.bind(res))
   },
 
   /**
@@ -22,7 +30,9 @@ module.exports = {
    * @param res
    */
   getPipeline: (req, res) => {
-    basic.getOne(req, res, 'pipeline_configs')
+    query.first(req.params.id, PIPELINE_CONFIGS)
+      .then(success.bind(res))
+      .catch(error.bind(res))
   },
 
   /**
@@ -32,7 +42,28 @@ module.exports = {
    * @param res
    */
   createPipeline: (req, res) => {
-    basic.insertRespond(req, res, 'pipeline_configs')
+
+    let pipelineConfigIdToCopyFrom = false
+
+    // If there is a pipeline config id provided (to copy from, capture and separate it)
+    if (typeof req.body.copy_pipeline_config_id !== 'undefined') {
+      pipelineConfigIdToCopyFrom = req.body.copy_pipeline_config_id
+      delete req.body.copy_pipeline_config_id
+    }
+
+    query.insert(req.body, PIPELINE_CONFIGS)
+      .then(id => {
+        query.first(id, PIPELINE_CONFIGS)
+          .then(() => {
+            if (pipelineConfigIdToCopyFrom) {
+              configurePipelineFromExisting(id, pipelineConfigIdToCopyFrom).then(created.bind(res))
+            } else {
+              created.bind(res)()
+            }
+          })
+          .catch(error.bind(res))
+      })
+      .catch(error.bind(res))
   },
 
   /**
@@ -43,18 +74,28 @@ module.exports = {
    */
   executePipeline: (req, res) => {
     try {
-      executePipelineCommand(req.params.id, req.body, req.user.id, (id) => {
+      const PIPELINE_ID = req.params.id
+      const USER_ID = req.user.id
+      const PARAMS = req.body
+      const CALLBACK = (id) => {
 
-        res.status(200).send({
+        success.call(res, {
           data: {
             pipeline_execution_id: id
           }
         })
 
-      })
+      }
+
+      let options = {
+        input: PARAMS,
+        userId: USER_ID
+      }
+
+      execPipeline(PIPELINE_ID, options, CALLBACK)
 
     } catch (err) {
-      res.status(500).send()
+      error.call(res, err)
     }
   }
 

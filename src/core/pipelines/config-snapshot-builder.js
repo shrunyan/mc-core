@@ -10,13 +10,14 @@ let logger = require('tracer').colorConsole()
  * - initial variable values
  * - stages
  * - stage configuration values
+ * - pipeline variables configuration
  *
  * Ultimately, this is used to execute a pipeline and its stages.
  *
  * @param {int|string} pipelineId
  * @param {function} callback
  */
-module.exports = function(pipelineId, callback) {
+module.exports = function snapshot(pipelineId, callback) {
 
   let snapshot = {}
   let promises = []
@@ -25,8 +26,10 @@ module.exports = function(pipelineId, callback) {
   promises.push(new Promise((resolve, reject) => {
 
     connection.first().where('id', pipelineId).from('pipeline_configs').then((pipeline) => {
+
       snapshot.pipeline = pipeline
       resolve()
+
     }).catch(err => {
       logger.error(err)
       reject()
@@ -40,7 +43,6 @@ module.exports = function(pipelineId, callback) {
     connection.select().where('pipeline_config_id', pipelineId).orderBy('sort').from('pipeline_stage_configs').then((rows) => {
 
       snapshot.stageConfigs = rows
-
       resolve()
 
     }).catch(err => {
@@ -50,7 +52,20 @@ module.exports = function(pipelineId, callback) {
 
   }))
 
-  Promise.all(promises).then(() => {
-    callback(snapshot)
-  })
+  // Load variables
+  promises.push(new Promise((resolve, reject) => {
+
+    connection.select().where('pipeline_config_id', pipelineId).from('pipeline_variables').then((rows) => {
+
+      snapshot.variables = rows
+      resolve()
+
+    }).catch(err => {
+      logger.error(err)
+      reject()
+    })
+
+  }))
+
+  return Promise.all(promises).then(() => callback(snapshot))
 }
