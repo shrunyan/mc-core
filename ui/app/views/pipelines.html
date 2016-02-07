@@ -1,0 +1,107 @@
+<div class="pull-right" style="display:inline-block">
+    <div class="btn-group">
+        <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-plus"></i> Create New <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu pull-right">
+            <li><a ng-click="modal.open('project', refresh)"><i class="fa fa-code"></i> Project</a></li>
+            <li><a ng-click="modal.open('pipeline', refresh)"><i class="fa fa-tasks"></i> Pipeline</a></li>
+        </ul>
+    </div>
+</div>
+
+<h1>Pipelines</h1>
+
+<hr>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Active Pipeline Executions
+            </div>
+            <table class="table">
+                <tr ng-if="activePipelines.length === 0">
+                    <td class="text-center"><em class="text-muted">No active pipeline executions</em></td>
+                </tr>
+                <tr ng-repeat="pe in activePipelines">
+                    <td>
+                        <a ui-sref="pipeline-execution-details({id: pe.id})">Project Name » {{ pe.config_snapshot.pipeline.name }} » #{{ pe.id }}</a>
+                        <br><small class="text-muted"></small>
+                        <table class="stage-bar">
+                            <tbody>
+                            <tr>
+                                <td ng-repeat="stage in pe.stages" ng-class="{'running pulse':stage.status === 'running', successful: stage.status === 'succeeded', failure: stage.status === 'failed'}">&nbsp;</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <small class="text-muted"><span ng-if="!pe.current_stage_num">Starting</span><span ng-if="pe.current_stage_num">Stage {{ pe.current_stage_num }} of {{ pe.stages.length }} &ndash; {{ pe.current_stage_name }}</span></small>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Recently Completed Executions
+            </div>
+            <table class="table">
+                <tbody>
+                <tr ng-repeat="pe in pipelineExecutions">
+                    <td class="text-center" style="vertical-align:middle;width: 30px;padding-right: 0;">
+                        <i class="fa fa-circle text-info" ng-if="pe.status === 'created'"></i>
+                        <i class="fa fa-circle text-info" ng-if="pe.status === 'queued'"></i>
+                        <i class="fa fa-circle text-info pulse" ng-if="pe.status === 'running'"></i>
+                        <i class="fa fa-circle text-warning" ng-if="pe.status === 'awaiting_confirmation'"></i>
+                        <i class="fa fa-circle text-danger" ng-if="pe.status === 'failed'"></i>
+                        <i class="fa fa-circle text-success" ng-if="pe.status === 'succeeded'"></i>
+                    </td>
+                    <td><a ui-sref="pipeline-execution-details({id: pe.id})">Execution #{{ pe.id }}<span ng-if="pe.status === 'awaiting_confirmation'"> &ndash; Awaiting Confirmation</span></a><br><small class="text-muted">{{ pe.pipeline_config_name }}</small></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <a ui-sref="pipeline-executions">View All</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="panel panel-default" ng-repeat="project in projects">
+            <div class="panel-heading">
+                <i class="fa fa-code"></i> {{ project.name }}
+            </div>
+            <table class="table">
+                <thead ng-if="project.pipelines.length !== 0">
+                <tr>
+                    <th>Pipeline</th>
+                    <th style="width: 190px;">Recent Executions</th>
+                    <th style="width: 170px;">Options</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="pipeline in project.pipelines">
+                    <td><a ui-sref="pipeline({id: pipeline.id})"><strong><i class="fa fa-tasks"></i> {{ pipeline.name }}</strong></a></td>
+                    <td>
+                        <a ng-repeat="pe in pipeline.executions" ui-sref="pipeline-execution-details({id: pe.id})"><i class="fa fa-circle" ng-class="{'text-success':pe.status === 'succeeded', 'text-danger':pe.status === 'failed'}" style="padding-right: 5px"></i></a>
+
+                    </td>
+                    <td><!--<a class="btn btn-xs btn-default"><i class="fa fa-list-ul"></i> View All</a> --><a class="btn btn-xs btn-default" ui-sref="configure-pipeline({id: pipeline.id})"><i class="fa fa-gear"></i> Configure</a> <a class="btn btn-xs btn-primary" ng-click="execute(pipeline.id)"><i class="fa fa-play"></i> Execute</a></td>
+                </tr>
+                <tr ng-if="project.pipelines.length === 0">
+                   <td colspan="3" class="text-center" style="line-height: 30px; padding: 20px 10px">
+                      <em class="text-muted">No pipelines have been created for this project yet.</em>
+                      <br>
+                      <a ng-click="modal.open('pipeline', refresh,  {project_id: project.id})" class="btn btn-default btn-xs">
+                        <i class="fa fa-plus text-muted"></i> Create New Pipeline
+                      </a>
+                   </td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

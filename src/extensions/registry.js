@@ -2,6 +2,7 @@
 
 //let validator = require('mc-extension-validator')
 let glob = require('glob')
+let webhookHelper = require('./webhook-helper')
 
 const EXT_PATH = process.cwd() + '/node_modules/mc-ext-*'
 
@@ -9,6 +10,8 @@ let registry = {
 
   _extensions: {},
   _typesByFqids: {},
+  _webhooks: [],
+  _stageTypes: [],
 
   /**
    * Resolve all `mc-ext-*` modules and register them
@@ -56,6 +59,8 @@ let registry = {
 
     this.registerStageTypes(module)
     this.registerLogTypes(module)
+    this.registerWebhooks(module)
+    //this.registerAccountsTypes(module)
 
   },
 
@@ -70,6 +75,10 @@ let registry = {
         // Register the stage as vendor.extension_id.stages.example
         let fqid = module.vendor + '.' + module.id + '.stages.' + stage.id
         this._typesByFqids[fqid] = stage
+
+        let stageCopy = Object.assign({}, stage)
+        stageCopy.fqid = fqid
+        this._stageTypes.push(stageCopy)
 
       })
     }
@@ -93,6 +102,50 @@ let registry = {
 
   },
 
+  registerWebhooks: function registerWebhooks(module) {
+
+    console.log('running registry:registerWebhooks for ' + module.vendor + ' ' + module.name)
+
+    if (Array.isArray(module.webhooks)) {
+
+      module.webhooks.forEach(webhook => {
+
+        console.log('found webhook')
+        console.dir(webhook)
+
+        let verb = (typeof webhook.method === 'string') ? webhook.method.toLowerCase() : 'all'
+        let allowedVerbs = ['all', 'get', 'post', 'put', 'patch', 'delete']
+
+        if (allowedVerbs.indexOf(verb) === -1) {
+          console.log('invalid webhook route verb')
+          return
+        }
+
+        this._webhooks.push({
+          verb: verb,
+          path: '/ext/' + module.vendor + '/' + module.id + '/webhooks/' + webhook.route,
+          handler: (req, res) => { webhook.handler(req, res, webhookHelper) }
+        })
+
+      })
+
+    }
+
+  },
+
+  registerWebhookRoutes: function registerWebhookRoutes(app) {
+
+    console.log('registering webhook routes with express app')
+
+    // Register the route with express
+    this._webhooks.forEach(webhook => {
+      console.log('Registering extension webhook')
+      console.log(webhook.verb.toUpperCase() + ': ' + webhook.path)
+      app[webhook.verb](webhook.path, webhook.handler)
+    })
+
+  },
+
   /**
    * Get an item/type from the extension via the FQID (full-qualified identifier)
    *
@@ -113,16 +166,7 @@ let registry = {
    * @return {Array}
    */
   getStageTypes: function getStageTypes() {
-    let stages = []
-
-    for (let fqid in this._typesByFqids) {
-      // Shallow clone so we don't mutate the stage object
-      let stage = Object.assign({}, this._typesByFqids[fqid])
-      stage.fqid = fqid
-      stages.push(stage)
-    }
-
-    return stages
+    return this._stageTypes
   }
 
 }

@@ -9,7 +9,8 @@ let queue = require('../../queues/queue')('pipeline_executions')
 let state = {
   pipelineId: null,
   userId: null,
-  params: null,
+  input: null,
+  webhookData: null,
   callback: null
 }
 
@@ -34,7 +35,8 @@ function getSnapshot() {
       status: 'created',
       created_at: new Date(),
       updated_at: new Date(),
-      input: JSON.stringify(state.params),
+      input: JSON.stringify(state.input),
+      webhook_data: JSON.stringify(state.webhookData),
       config_snapshot: JSON.stringify(snapshot)
     }
   })
@@ -88,10 +90,12 @@ module.exports = (function() {
   * @param userId
   * @param callback
   */
-  return function command(pipelineId, params, userId, callback) {
+  return function command(pipelineId, options, callback) {
+
     state.pipelineId = pipelineId
-    state.userId = userId
-    state.params = params || {}
+    state.userId = options.userId || null
+    state.webhookData = options.webhookData || {}
+    state.input = options.input || {}
     state.callback = callback
 
     getConfig()

@@ -1,0 +1,196 @@
+<div class="pull-right" style="display:inline-block">
+    <a class="btn btn-success" ng-click="modal.open('stage', refresh, {pipelineId: pipeline.id})">
+      <i class="fa fa-plus"></i> Add Stage
+    </a>
+</div>
+
+<h1><i class="fa fa-tasks"></i> {{ pipeline.name }}</h1>
+<h4 style="margin-top: 0;color: #aaa;font-weight: normal;margin-bottom: 30px;"><i class="fa fa-code"></i> {{ project.name }}</h4>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">Pipeline Settings</div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label>Pipeline Name</label>
+                    <div>
+                        <a href="javascript:void(0);" class="btn btn-xs btn-default pull-right"><i class="fa fa-pencil"></i></a>
+                        {{ pipeline.name }}
+                    </div>
+                </div>
+                <hr>
+                <div class="form-group">
+                    <label><i class="fa fa-code"></i> Project</label>
+                    <div>
+                        <a href="javascript:void(0);" class="btn btn-xs btn-default pull-right"><i class="fa fa-pencil"></i></a>
+                        {{ project.name }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right column -->
+    <div class="col-md-9">
+
+        <!-- Pipeline Variables -->
+        <div class="panel panel-default">
+            <div class="panel-heading"><a ng-click="toggleStandardSection()" class="pull-right btn btn-xs btn-default"><span ng-if="!standardVariablesSectionShowing"><i class="fa fa-plus"></i> Expand</span><span ng-if="standardVariablesSectionShowing"><i class="fa fa-minus"></i> Minimize</span></a>Standard Variables and Helpers</div>
+            <table class="table" ng-if="standardVariablesSectionShowing">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="monospace"><span class="text-muted">mc.</span>workspace_path</td>
+                    <td>The path of the workspace for a given pipeline execution.<br><small>Example Value: <code>/path/to/workspaces/pe_123/</code></small></td>
+                </tr>
+                <tr>
+                    <td class="monospace"><span class="text-muted">mc.</span>timestamp()</td>
+                    <td>Generates a timestamp unix timestamp.<br><small>Example Value: <code>12398134572</code></small></td>
+                </tr>
+                </tbody>
+
+            </table>
+        </div>
+
+
+        <!-- Pipeline Variables -->
+        <div class="panel panel-default">
+            <div class="panel-heading"><a ng-click="toggleCustomSection()" class="pull-right btn btn-xs btn-default"><span ng-if="!customVariablesSectionShowing"><i class="fa fa-plus"></i> Expand</span><span ng-if="customVariablesSectionShowing"><i class="fa fa-minus"></i> Minimize</span></a>Custom Variables — {{ variables.length }}</div>
+            <table class="table" ng-if="customVariablesSectionShowing">
+                <thead>
+                <tr>
+                    <th style="width: 270px;">Name</th>
+                    <th>Details</th>
+                    <th>Options</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="var in variables">
+                    <td class="monospace"><span class="text-muted">mc.var.</span>{{ var.name }}</td>
+                    <td ng-if="var.required"><i class="fa fa-check"></i> Required</td>
+                    <td ng-if="!var.required">Optional. Default: <code>{{ var.default_value }}</code></td>
+                    <td><a ng-click="editVar(var)" class="btn btn-xs btn-default" ng-if="!editVarFormShowing"><i class="fa fa-pencil"></i> Edit</a> <a ng-click="deleteVar(var)" class="btn btn-xs btn-default"><i class="fa fa-trash"></i> Delete</a></td>
+                </tr>
+                <tr ng-if="!createVarFormShowing">
+                    <td colspan="3" class="" style="padding-top: 8px;padding-bottom: 7px;">
+                        <a class="btn btn-sm btn-success" ng-click="showCreateVarForm()"><i class="fa fa-plus"></i> Add Custom Variable/Input</a>
+                    </td>
+                </tr>
+                <tr ng-if="createVarFormShowing">
+                    <td>
+                        <div class="form-group"><label>Name</label>
+                            <div class="input-group input-group-sm">
+                                <div class="input-group-addon monospace">mc.var.</div>
+                                <input type="text" class="form-control monospace" ng-model="createVarFormValues.name">
+                            </div>
+                        </div><div class="form-group"><label>Description</label><textarea class="form-control" ng-model="createVarFormValues.description"></textarea></div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label>Mode</label>
+                            <select class="form-control" ng-model="createVarFormValues.required">
+                                <option value="1">Required input</option>
+                                <option value="0">Optional Input</option>
+                            </select>
+                        </div>
+                        <div class="form-group" ng-if="createVarFormValues.required != 1">
+                            <label>Default Value</label>
+                            <input type="text" class="form-control monospace" ng-model="createVarFormValues.default_value">
+                        </div>
+                    </td>
+
+                    <td>
+                        <a ng-click="cancelCreateVar()" class="btn btn-default">Cancel</a>&nbsp;
+                        <a ng-click="createVar()" class="btn btn-success">Create</a>
+                    </td>
+                </tr>
+                <tr ng-if="editVarFormShowing">
+                    <td>
+                        <div class="form-group"><label>Name</label>
+                            <div class="input-group input-group-sm">
+                                <div class="input-group-addon monospace">mc.var.</div>
+                                <input type="text" class="form-control monospace" ng-model="editVarFormValues.name">
+                            </div>
+                        </div><div class="form-group"><label>Description</label><textarea class="form-control" ng-model="editVarFormValues.description"></textarea></div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label>Mode</label>
+                            <select class="form-control" ng-model="editVarFormValues.required">
+                                <option value="1">Required input</option>
+                                <option value="0">Optional Input</option>
+                            </select>
+                        </div>
+                        <div class="form-group" ng-if="editVarFormValues.required != 1">
+                            <label>Default Value</label>
+                            <input type="text" class="form-control monospace" ng-model="editVarFormValues.default_value">
+                        </div>
+                    </td>
+
+                    <td>
+                        <a ng-click="cancelVarEdits()" class="btn btn-default">Cancel</a>&nbsp;
+                        <a ng-click="saveVarEdits()" class="btn btn-success">Save</a>
+                    </td>
+                </tr>
+
+                </tbody>
+
+            </table>
+        </div>
+
+        <h3>Stages</h3>
+
+        <!-- Drag N Drop Container -->
+        <div dragula='"stages"'>
+            <!-- Stages -->
+            <div class="panel panel-default pipeline-stage" ng-repeat="stage in stages | orderBy:'sort' " data-id="{{stage.id}}">
+                <div class="title-block">
+                    <i class="fa fa-check-square-o icon dragHandle"></i>
+                    <a class="btn btn-default configure" ng-click="toggleOptions($event)">
+                      <i class="fa fa-sliders text-muted"></i> Options
+                    </a>
+
+                    <h3>{{ $index + 1 }}. {{ stage.name }}</h3>
+                    <small class="text-muted">Extension Name › {{ stage.schema.name }}</small>
+                </div>
+                <div class="panel-body">
+                    <div class="row" ng-repeat="(key, option) in stageOptions.current[stage.id]">
+                        <div class="col-md-4">
+                            <h4>{{ stageOptions.metadata[stage.id][key].name }}</h4>
+                            <p>{{ stageOptions.metadata[stage.id][key].description }}</p>
+                        </div>
+                        <div class="col-md-8" ng-switch="stageOptions.metadata[stage.id][key].type">
+                            <textarea ng-switch-when="textarea" ng-model="stageOptions.current[stage.id][key]" class="form-control monospace" rows="10">{{ option }}</textarea>
+                            <input ng-switch-default ng-model="stageOptions.current[stage.id][key]" type="text" class="form-control monospace" />
+                        </div>
+                    </div>
+                    <hr>
+                    <div ng-if="(stageOutputs.current[stage.id] | keysLength) > 0">
+                        <h3>Output</h3>
+                        <div class="row" ng-repeat="(name, output) in stageOutputs.current[stage.id]">
+                            <div class="col-md-4">
+                                <code>{{ name }}</code>
+                                <br><small>{{ output.description }}</small>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" placeholder="(unused)" ng-model="stageOutputs.current[stage.id][name]">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <button class="btn btn-danger pull-left" ng-click="removeStage(stage.id)">Delete Stage</button>
+                        <button class="btn btn-success pull-right" ng-click="saveOptionsAndOutputs(stage.id)" ng-disabled="(stageOptions.current[stage.id] | json) == (stageOptions.saved[stage.id] | json) && (stageOutputs.current[stage.id] | json) == (stageOutputs.saved[stage.id] | json)">Save Stage Config</button>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
