@@ -1,61 +1,153 @@
 'use strict'
 
+const FAILED = 'failed'
+const SUCCEEDED = 'succeeded'
+const RUNNING = 'running'
+const SKIPPED = 'skipped'
+const STAGE_TABLE = 'pipeline_stage_executions'
+const PIPELINE_LOGS_TABLE = 'pipeline_execution_logs'
+
 let connection = require('../../db/connection')
 let logger = require('tracer').colorConsole()
+let registry = require('../../extensions/registry')
+let status = require('../../workers/status')
 
-module.exports.Stage = class Stage {
+function createExec(pipelineId, configId, stageNum, callback) {
+  return connection
+    .insert({
+      pipeline_execution_id: pipelineId,
+      stage_config_id: configId,
+      stage_num: stageNum,
+      status: 'running',
+      created_at: new Date(),
+      updated_at: new Date(),
+      skipped_at: new Date()
+    })
+    .into(STAGE_TABLE)
+    .then((rows) => {
+      callback(rows[0])
+    })
+    //.catch(err => logger.error(err))
+}
 
-  /**
-   *
-   */
-  constructor(successCallback, failureCallback, stageConfig, pipelineExecutionId, stageExecutionId, stageNum) {
-    this.successCallback = successCallback
-    this.failureCallback = failureCallback
-    this.stageConfig = stageConfig
-    this.stageConfig.options = JSON.parse(this.stageConfig.options)
-    this.pipelineExecutionId = pipelineExecutionId
-    this.stageExecutionId = stageExecutionId
+/**
+ * Stage Instance
+ * @type {Object}
+ */
+module.exports = class Stage {
+  constructor(stageNum, config, pipeline, tokenResolver, onReady) {
+    this.events = {}
     this.stageNum = stageNum
+    this.pipeline = pipeline
+    this.config = config
+    this._output = {}
+    this.opts = JSON.parse(config.options)
+    tokenResolver.processEach(this.opts)
+    this.hasFailed = false
+    this.exec = createExec(this.pipeline.id, this.config.id, this.stageNum, (id) => {
+      this.stageId = id
+      onReady()
+    })
   }
 
-  /**
-   * Mark a stage as failed
-   */
-  fail() {
-    this.failureCallback()
+  on(name, handler) {
+    if (typeof handler === 'function') {
+      this.events[name] = handler
+    } else {
+      throw new Error('Can not register a non function as event handler.')
+    }
   }
 
-  /**
-   * Mark a stage as successful
-   */
+  trigger(name) {
+    if (this.events[name]) {
+      this.events[name]()
+    }
+  }
+
+  fail(err) {
+    logger.debug('Stage FAILED | ', JSON.stringify(err))
+    logger.debug('about to call status() with args: [this.stageId, FAILED, STAGE_TABLE]')
+    logger.debug([this.stageId, FAILED, STAGE_TABLE])
+    status(this.stageId, FAILED, STAGE_TABLE)
+    this.trigger(FAILED)
+  }
+
   succeed() {
-    this.successCallback()
+    logger.debug('Stage SUCCESS')
+    status(this.stageId, SUCCEEDED, STAGE_TABLE)
+    this.trigger(SUCCEEDED)
+  }
+
+  skip() {
+    logger.debug('Stage SKIPPED')
+    status(this.stageId, SKIPPED, STAGE_TABLE)
+  }
+
+  running() {
+    logger.debug('Stage RUNNING')
+    status(this.stageId, RUNNING, STAGE_TABLE)
+    this.trigger(RUNNING)
+  }
+
+  option(key) {
+    return this.opts[key]
+  }
+
+  options() {
+    return this.opts
+  }
+
+  output(data) {
+    for (let key in data) {
+      this._output[key] = data[key]
+    }
   }
 
   /**
-   * Get an option that the user configured for this stage instance
+   * To capture the output after the stage execution. (not intended for end user)
    */
-  option(key) {
-    return this.stageConfig.options[key]
+  getOutput() {
+    return this._output
   }
 
   /**
    * Add a new log
    *
-   * @param {string|class|object} log
+   * Usage Syntax 1:
+   * stage.log('This is a log title')
+   *
+   * Usage Syntax 2:
+   * stage.log('mc.basics.logs.snippet', title, args)
    */
-  log(log) {
+  log() {
 
-    // If a string is passed, format it as an object
-    if (typeof log === 'string') {
-      log = {
-        title: log
+    let log
+
+    if (arguments.length === 1) {
+      if (typeof arguments[0] === 'string') {
+        log = {
+          title: arguments[0]
+        }
+      } else {
+        throw new Error('Argument 1 must be a string')
       }
+    } else if (arguments.length >= 2 && arguments.length <= 3) {
+
+      let logType = registry.get(arguments[0])
+      let args = (Array.isArray(arguments[2])) ? arguments[2] : []
+
+      log = {
+        type: arguments[0],
+        title: arguments[1],
+        data: logType.generate.apply(this, args)
+      }
+    } else {
+      throw new Error('Wrong number of arguments')
     }
 
     let data = {
-      pipeline_execution_id: this.pipelineExecutionId,
-      stage_execution_id: this.stageExecutionId,
+      pipeline_execution_id: this.pipeline.id,
+      stage_execution_id: this.stageId,
       stage_num: this.stageNum,
       logged_at: new Date(),
       type: log.type || null,
@@ -63,9 +155,9 @@ module.exports.Stage = class Stage {
       data: log.data ? JSON.stringify(log.data) : null
     }
 
-    connection.insert(data).into('pipeline_execution_logs').catch((err) => {
-      logger.error(err)
-    })
+    return connection
+      .table(PIPELINE_LOGS_TABLE)
+      .insert(data)
+      .catch(err => logger.error(err))
   }
-
 }

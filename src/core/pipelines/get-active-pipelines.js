@@ -25,11 +25,11 @@ module.exports = (callback) => {
             .from('pipeline_stage_executions')
             .then((stageExecutions) => {
 
-              console.log('results from pipeline_stage_executions (in get-active-pipelines)')
-              console.log(stageExecutions)
+              // console.log('results from pipeline_stage_executions (in get-active-pipelines)')
+              // console.log(stageExecutions)
 
-              console.log('pe.config_snapshot.stageConfigs')
-              console.log(pe.config_snapshot.stageConfigs)
+              // console.log('pe.config_snapshot.stageConfigs')
+              // console.log(pe.config_snapshot.stageConfigs)
 
               pe.config_snapshot.stageConfigs.forEach(sc => {
 

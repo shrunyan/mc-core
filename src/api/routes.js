@@ -1,6 +1,7 @@
 'use strict'
 
 let express = require('express')
+let registry = require('../extensions/registry')
 let middleware = {
   auth: require('./middleware/auth'),
   notFound: require('./middleware/not-found')
@@ -8,10 +9,12 @@ let middleware = {
 let controllers = {
   pipelines: require('./controllers/pipelines'),
   pipelineExecutions: require('./controllers/pipeline-executions'),
+  pipelineVariables: require('./controllers/pipeline-variables'),
   projects: require('./controllers/projects'),
   user: require('./controllers/user'),
   checks: require('./controllers/checks'),
-  stages: require('./controllers/stages')
+  stages: require('./controllers/stages'),
+  gitHubWebhooks: require('./controllers/github-webhooks')
 }
 
 module.exports = function(app) {
@@ -39,6 +42,12 @@ module.exports = function(app) {
   app.get('/api/pipelines/:id/executions', controllers.pipelineExecutions.getListForPipeline)
   app.post('/api/pipelines/:id/execute', controllers.pipelines.executePipeline)
 
+  // Pipeline Variables
+  app.get('/api/pipelines/:pipeline_id/variables', controllers.pipelineVariables.getListForPipeline)
+  app.post('/api/pipelines/:pipeline_id/variables', controllers.pipelineVariables.createVar)
+  app.patch('/api/pipelines/:pipeline_id/variables/:id', controllers.pipelineVariables.updateVar)
+  app.delete('/api/pipelines/:pipeline_id/variables/:id', controllers.pipelineVariables.deleteVar)
+
   // Pipeline Stages
   app.get('/api/pipelines/:id/stages', controllers.stages.getListForPipeline)
   app.get('/api/stage-types', controllers.stages.getAvailableTypes)
@@ -53,13 +62,22 @@ module.exports = function(app) {
   app.get('/api/pipeline-executions/:id/with-details', controllers.pipelineExecutions.getOneWithDetails)
   // TODO: POST /api/pipeline-executions
 
-  // Pipeline Stage Executions
-
-  // Pipeline Execution Logs
-
   // Health Checks
   app.get('/api/checks', controllers.checks.getAll)
   app.post('/api/check', controllers.checks.create)
+
+  // WEBHOOKS
+
+  //app.post('/hooks/execute-pipeline/:id', controllers.hooks.executePipeline)
+
+  // Register Extension Webhooks
+  registry.registerWebhookRoutes(app)
+
+  //app.post('/github-webhooks/pipelines/:id', controllers.gitHubWebhooks.receive)
+  // /extensions/public/... (public)
+  // /extensions/public/mc-ext-github/hooks/execute-pipeline/:id
+  // /ext/mc-ext-github/execute-pipeline/:id
+  // /extensions/api/... (private)
 
   // Static files
   app.use(express.static('./node_modules/mc-core/ui-build/'))
